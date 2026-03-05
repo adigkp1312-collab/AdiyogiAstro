@@ -1,8 +1,11 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import Button from '@/components/ui/Button';
 
 export default function PromoBanner() {
+  const router = useRouter();
+
   return (
     <div className="mx-4 rounded-card relative overflow-hidden border border-primary/30">
       {/* Cosmic gradient background */}
@@ -20,7 +23,7 @@ export default function PromoBanner() {
         <p className="text-xs text-white/70 mb-3">
           Top up your wallet and get extra credits for consultations
         </p>
-        <Button variant="accent" size="sm">
+        <Button variant="accent" size="sm" onClick={() => router.push('/wallet/recharge')}>
           Recharge Now
         </Button>
       </div>
