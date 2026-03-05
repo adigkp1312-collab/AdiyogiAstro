@@ -10,6 +10,7 @@ import { formatCurrency } from '@/lib/utils';
 import KundliWatermark from '@/components/ui/KundliWatermark';
 import InsufficientBalanceModal from '@/components/wallet/InsufficientBalanceModal';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import type { Astrologer } from '@/types';
 
 type FilterType = 'all' | 'ai' | 'human';
@@ -22,6 +23,7 @@ export default function ChatPage() {
   const [showBalanceModal, setShowBalanceModal] = useState(false);
   const [balanceInfo, setBalanceInfo] = useState({ current: 0, required: 0 });
   const { accessToken, user } = useAuth();
+  const { t } = useLanguage();
   const router = useRouter();
 
   // Fetch astrologers from API
@@ -95,7 +97,7 @@ export default function ChatPage() {
 
       {/* Header */}
       <div className="px-4 pt-4 pb-3 border-b border-border/30">
-        <h1 className="text-lg font-bold text-text-primary mb-3">Chat with Astrologers</h1>
+        <h1 className="text-lg font-bold text-text-primary mb-3">{t('chatWithAstrologer')}</h1>
 
         {/* Filter pills */}
         <div className="flex gap-2">
@@ -215,9 +217,9 @@ export default function ChatPage() {
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                         </svg>
-                        Starting...
+                        {t('loading')}
                       </span>
-                    ) : 'Chat'}
+                    ) : t('chat')}
                   </Button>
                 </div>
               </div>

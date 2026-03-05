@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Badge from '@/components/ui/Badge';
 import KundliWatermark from '@/components/ui/KundliWatermark';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 // Get current time in IST (UTC+5:30)
 function getIST() {
@@ -110,6 +111,7 @@ function getTodayPanchang() {
 export default function PanchangPage() {
   const panchang = getTodayPanchang();
   const [showInauspicious, setShowInauspicious] = useState(false);
+  const { t } = useLanguage();
 
   return (
     <div className="bg-background min-h-screen starfield">
@@ -119,9 +121,9 @@ export default function PanchangPage() {
       <div className="relative z-10">
         {/* Header */}
         <div className="px-4 pt-6 pb-2">
-          <h1 className="text-lg font-bold text-text-primary mb-1">Panchang</h1>
+          <h1 className="text-lg font-bold text-text-primary mb-1">{t('panchangTitle')}</h1>
           <p className="text-xs text-text-secondary">{panchang.date}</p>
-          <p className="text-[10px] text-text-secondary/60 mt-0.5">All times in IST (Indian Standard Time)</p>
+          <p className="text-[10px] text-text-secondary/60 mt-0.5">{t('allTimesIST')}</p>
         </div>
 
         {/* Hindu Calendar Info */}
@@ -141,12 +143,12 @@ export default function PanchangPage() {
         <div className="mx-4 mt-3 grid grid-cols-2 gap-3">
           <div className="bg-surface-card rounded-card p-3 border border-border/30 text-center">
             <span className="text-xl">🌅</span>
-            <p className="text-[10px] uppercase tracking-wider text-text-secondary font-semibold mt-1">Sunrise</p>
+            <p className="text-[10px] uppercase tracking-wider text-text-secondary font-semibold mt-1">{t('sunrise')}</p>
             <p className="text-sm font-bold text-accent">{panchang.sunrise}</p>
           </div>
           <div className="bg-surface-card rounded-card p-3 border border-border/30 text-center">
             <span className="text-xl">🌇</span>
-            <p className="text-[10px] uppercase tracking-wider text-text-secondary font-semibold mt-1">Sunset</p>
+            <p className="text-[10px] uppercase tracking-wider text-text-secondary font-semibold mt-1">{t('sunset')}</p>
             <p className="text-sm font-bold text-accent">{panchang.sunset}</p>
           </div>
         </div>
@@ -154,43 +156,43 @@ export default function PanchangPage() {
         {/* Main Panchang Elements */}
         <div className="px-4 mt-4">
           <h3 className="text-sm uppercase tracking-widest text-text-secondary font-semibold mb-3 text-center">
-            Panch Ang (Five Limbs)
+            {t('fiveLimbs')}
           </h3>
           <div className="space-y-2">
             {[
               {
-                label: 'Tithi',
+                labelKey: 'tithi' as const,
                 value: panchang.tithi,
                 desc: 'Lunar day - determines auspiciousness of activities',
                 icon: '🌙',
               },
               {
-                label: 'Nakshatra',
+                labelKey: 'nakshatra' as const,
                 value: panchang.nakshatra,
                 desc: 'Lunar mansion - influences mood and energy',
                 icon: '⭐',
               },
               {
-                label: 'Yoga',
+                labelKey: 'yoga' as const,
                 value: panchang.yoga,
                 desc: 'Sun-Moon angular relationship',
                 icon: '🔮',
               },
               {
-                label: 'Karana',
+                labelKey: 'karana' as const,
                 value: panchang.karana,
                 desc: 'Half of a Tithi - affects short-term activities',
                 icon: '☯️',
               },
               {
-                label: 'Var',
+                labelKey: 'var' as const,
                 value: panchang.var,
                 desc: 'Day of the week and its ruling planet',
                 icon: '📿',
               },
             ].map((item) => (
               <div
-                key={item.label}
+                key={item.labelKey}
                 className="bg-surface-card rounded-card px-4 py-3 border border-border/30 flex items-center gap-3 hover:border-primary/40 transition-all duration-300"
               >
                 <div className="w-9 h-9 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 border border-primary/20">
@@ -198,7 +200,7 @@ export default function PanchangPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <p className="text-[10px] uppercase tracking-wider text-text-secondary font-semibold">{item.label}</p>
+                    <p className="text-[10px] uppercase tracking-wider text-text-secondary font-semibold">{t(item.labelKey)}</p>
                     <p className="text-sm font-bold text-primary-light">{item.value}</p>
                   </div>
                   <p className="text-[10px] text-text-secondary/70 mt-0.5">{item.desc}</p>
@@ -211,7 +213,7 @@ export default function PanchangPage() {
         {/* Auspicious Times */}
         <div className="px-4 mt-5">
           <h3 className="text-sm uppercase tracking-widest text-text-secondary font-semibold mb-3 text-center">
-            Shubh Muhurat
+            {t('shubhMuhurat')}
           </h3>
           <div className="space-y-2">
             {panchang.auspicious.map((item) => (
@@ -236,7 +238,7 @@ export default function PanchangPage() {
             className="w-full flex items-center justify-center gap-2 mb-3"
           >
             <h3 className="text-sm uppercase tracking-widest text-text-secondary font-semibold text-center">
-              Inauspicious Times
+              {t('inauspiciousTimes')}
             </h3>
             <svg
               className={`w-4 h-4 text-text-secondary transition-transform duration-300 ${showInauspicious ? 'rotate-180' : ''}`}

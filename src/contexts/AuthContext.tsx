@@ -15,6 +15,7 @@ interface AuthContextType extends AuthState {
   sendOTP: (phone: string) => Promise<{ success: boolean; error?: string }>;
   verifyOTP: (phone: string, otp: string) => Promise<{ isNewUser: boolean; error?: string }>;
   register: (data: RegistrationData) => Promise<{ success: boolean; error?: string }>;
+  updateProfilePic: (imageData: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   refreshUser: () => Promise<void>;
 }
@@ -173,6 +174,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const updateProfilePic = async (imageData: string) => {
+    try {
+      const token = state.accessToken || localStorage.getItem('nakshatra_access_token');
+      const res = await fetch('/api/user/profile-pic', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ imageData }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) return { success: false, error: data.error };
+
+      setState(prev => ({
+        ...prev,
+        user: data.user,
+      }));
+      return { success: true };
+    } catch {
+      return { success: false, error: 'Failed to upload profile picture' };
+    }
+  };
+
   const logout = useCallback(() => {
     clearAuth();
   }, []);
@@ -186,7 +212,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [state.accessToken, state.refreshToken]);
 
   return (
-    <AuthContext.Provider value={{ ...state, sendOTP, verifyOTP, register, logout, refreshUser }}>
+    <AuthContext.Provider value={{ ...state, sendOTP, verifyOTP, register, updateProfilePic, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

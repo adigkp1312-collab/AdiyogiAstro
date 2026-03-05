@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
+import PlaceAutocomplete from '@/components/ui/PlaceAutocomplete';
 import KundliWatermark from '@/components/ui/KundliWatermark';
 
 export default function RegisterPage() {
@@ -134,11 +135,11 @@ export default function RegisterPage() {
               </p>
             </div>
 
-            <Input
+            <PlaceAutocomplete
               label="Place of Birth"
-              placeholder="Enter city name (e.g., DELHI)"
+              placeholder="Search for your city..."
               value={formData.pob_city}
-              onChange={(e) => updateField('pob_city', e.target.value)}
+              onChange={(val) => updateField('pob_city', val)}
               error={errors.pob_city}
               icon={
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7C3AED"/>
+      <stop offset="50%" style="stop-color:#6D28D9"/>
+      <stop offset="100%" style="stop-color:#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="star" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF"/>
+      <stop offset="100%" style="stop-color:#E8D5B7"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#C4B5FD;stop-opacity:0.4"/>
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <rect width="96" height="96" rx="19.200000000000003" fill="url(#bg)"/>
+  <circle cx="48" cy="48" r="36.480000000000004" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="0.96"/>
+  <circle cx="48" cy="48" r="25.536" fill="url(#glow)"/>
+  <polygon points="48,21.119999999999997 54.31986703264867,39.30144927648056 73.56439915801373,39.69362319120141 58.225759663205494,51.322550723519434 63.79966758162168,69.74637680879859 48,58.752 32.20033241837832,69.74637680879859 37.774240336794506,51.322550723519434 22.43560084198627,39.69362319120142 41.68013296735133,39.30144927648057" fill="url(#star)" opacity="0.95"/>
+  <circle cx="48" cy="48" r="4.032" fill="#F59E0B" opacity="0.9"/>
+  <circle cx="48" cy="16.991999999999997" r="1.1520000000000001" fill="rgba(255,255,255,0.5)"/><circle cx="69.92596707103247" cy="26.074032928967533" r="1.1520000000000001" fill="rgba(255,255,255,0.5)"/><circle cx="79.00800000000001" cy="48" r="1.1520000000000001" fill="rgba(255,255,255,0.5)"/><circle cx="69.92596707103247" cy="69.92596707103246" r="1.1520000000000001" fill="rgba(255,255,255,0.5)"/><circle cx="48" cy="79.00800000000001" r="1.1520000000000001" fill="rgba(255,255,255,0.5)"/><circle cx="26.074032928967533" cy="69.92596707103247" r="1.1520000000000001" fill="rgba(255,255,255,0.5)"/><circle cx="16.991999999999997" cy="48.00000000000001" r="1.1520000000000001" fill="rgba(255,255,255,0.5)"/><circle cx="26.074032928967526" cy="26.074032928967533" r="1.1520000000000001" fill="rgba(255,255,255,0.5)"/>
+</svg>

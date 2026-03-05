@@ -10,8 +10,12 @@ import AstrologerCarousel from '@/components/home/AstrologerCarousel';
 import PromoBanner from '@/components/home/PromoBanner';
 import SectionDivider from '@/components/ui/SectionDivider';
 import KundliWatermark from '@/components/ui/KundliWatermark';
+import InstallPrompt from '@/components/pwa/InstallPrompt';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function HomePage() {
+  const { t } = useLanguage();
+
   return (
     <div className="bg-background min-h-screen starfield">
       {/* Kundli watermark backgrounds */}
@@ -26,13 +30,13 @@ export default function HomePage() {
         <WelcomeGiftBanner />
         <QuickChatInput />
 
-        <SectionDivider label="Explore More" />
+        <SectionDivider label={t('exploreMore')} />
         <ExploreMoreGrid />
 
-        <SectionDivider label="Top Astrologers" />
+        <SectionDivider label={t('topAstrologers')} />
         <AstrologerCarousel />
 
-        <SectionDivider label="Special Offer" />
+        <SectionDivider label={t('specialOffer')} />
         <PromoBanner />
 
         {/* Trust Footer */}
@@ -40,27 +44,30 @@ export default function HomePage() {
           <div className="flex items-center justify-center gap-4 mb-3">
             <div className="text-center">
               <p className="text-sm font-bold text-primary-light">15 Lakh+</p>
-              <p className="text-[10px] text-text-secondary">Secured Chats</p>
+              <p className="text-[10px] text-text-secondary">{t('securedChats')}</p>
             </div>
             <div className="w-px h-8 bg-border" />
             <div className="text-center">
               <p className="text-sm font-bold text-primary-light">100+</p>
-              <p className="text-[10px] text-text-secondary">Verified Astrologers</p>
+              <p className="text-[10px] text-text-secondary">{t('verifiedAstrologers')}</p>
             </div>
             <div className="w-px h-8 bg-border" />
             <div className="text-center">
               <p className="text-sm font-bold text-primary-light">24/7</p>
-              <p className="text-[10px] text-text-secondary">AI Available</p>
+              <p className="text-[10px] text-text-secondary">{t('aiAvailable')}</p>
             </div>
           </div>
           <p className="text-xs text-text-secondary">
-            Made in India, for India
+            {t('madeInIndia')}
           </p>
           <p className="text-[10px] text-text-secondary mt-1 mb-2">
             Predictions are for guidance purposes only
           </p>
         </div>
       </div>
+
+      {/* PWA Install Prompt */}
+      <InstallPrompt />
     </div>
   );
 }

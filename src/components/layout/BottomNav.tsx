@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const tabs = [
   {
-    label: 'Home',
+    key: 'home' as const,
     href: '/home',
     icon: (active: boolean) => (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.5">
@@ -14,7 +15,7 @@ const tabs = [
     ),
   },
   {
-    label: 'My Life',
+    key: 'myLife' as const,
     href: '/mylife',
     icon: (active: boolean) => (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -26,7 +27,7 @@ const tabs = [
     ),
   },
   {
-    label: 'Chat',
+    key: 'chat' as const,
     href: '/chat',
     icon: (active: boolean) => (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.5">
@@ -45,6 +46,7 @@ const tabs = [
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const { t } = useLanguage();
 
   return (
     <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md z-50">
@@ -72,7 +74,7 @@ export default function BottomNav() {
                   )}
                 </div>
                 <span className={`text-[10px] ${isActive ? 'font-bold text-primary' : 'font-medium'}`}>
-                  {tab.label}
+                  {t(tab.key)}
                 </span>
                 {isActive && (
                   <div className="w-1 h-1 rounded-full bg-primary shadow-glow-sm" />
