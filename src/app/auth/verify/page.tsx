@@ -21,7 +21,19 @@ function VerifyContent() {
       router.replace('/auth/login');
       return;
     }
-    inputRefs.current[0]?.focus();
+    // In dev mode, auto-fill OTP after a short delay
+    if (process.env.NODE_ENV === 'development') {
+      const devOtp = '123456'.split('');
+      setTimeout(() => {
+        setOtp(devOtp);
+        inputRefs.current[5]?.focus();
+        // Auto-verify after filling
+        handleVerify('123456');
+      }, 500);
+    } else {
+      inputRefs.current[0]?.focus();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phone, router]);
 
   useEffect(() => {
