@@ -14,12 +14,12 @@ export default function ExploreMoreGrid() {
               feature.comingSoon ? 'opacity-80' : 'hover:shadow-elevated transition-shadow cursor-pointer'
             }`}
           >
-            {/* Icon */}
-            <div className="opacity-20 absolute right-2 top-2">
+            {/* Colored Icon */}
+            <div className={`absolute right-2 top-2 w-11 h-11 ${feature.iconBg || 'bg-white/20'} rounded-xl flex items-center justify-center backdrop-blur-sm`}>
               {feature.icon}
             </div>
 
-            <div>
+            <div className="pr-12">
               <h3 className="text-white font-bold text-sm">{feature.title}</h3>
               <p className="text-white/80 text-xs mt-0.5">{feature.subtitle}</p>
             </div>
