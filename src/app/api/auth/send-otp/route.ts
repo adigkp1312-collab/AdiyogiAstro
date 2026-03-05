@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@/lib/db';
 import { generateOTP, getOTPExpiry } from '@/lib/auth/otp';
 import { validatePhone } from '@/lib/utils';
+import { sendOTPviaMSG91, isMSG91Configured } from '@/lib/sms/msg91';
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,15 +27,23 @@ export async function POST(request: NextRequest) {
       phone, otp, expiresAt
     );
 
-    // In production, send SMS here (e.g., via MSG91, Twilio)
-    // For dev, OTP is always "123456"
-    console.log(`[DEV] OTP for ${phone}: ${otp}`);
+    // Send OTP via MSG91 if configured, otherwise log to console (dev mode)
+    if (isMSG91Configured()) {
+      const smsResult = await sendOTPviaMSG91(phone, otp);
+      if (!smsResult.success) {
+        console.error('[SMS] Failed to send OTP:', smsResult.message);
+        // Still return success since OTP is stored — user can retry
+      }
+    } else {
+      // Dev mode fallback — OTP printed to server console
+      console.log(`[DEV] OTP for ${phone}: ${otp}`);
+    }
 
     return NextResponse.json({
       success: true,
       message: 'OTP sent successfully',
-      // Only expose OTP in development
-      ...(process.env.NODE_ENV === 'development' && { devOTP: otp }),
+      // Only expose OTP in development when MSG91 is not configured
+      ...(!isMSG91Configured() && process.env.NODE_ENV === 'development' && { devOTP: otp }),
     });
   } catch (error) {
     console.error('Send OTP error:', error);
