@@ -13,7 +13,7 @@ export function seedDatabase(db: Database.Database): void {
   const astrologers = [
     // ── AI Jyotish Astrologers ──
     {
-      name: 'Jyotishi Acharya Devvrat',
+      name: 'AI Jyotishi Acharya Devvrat',
       photo_url: null,
       specializations: JSON.stringify(['Vedic Jyotish', 'Kundli Analysis', 'Graha Dasha']),
       experience_years: null,
@@ -30,7 +30,7 @@ export function seedDatabase(db: Database.Database): void {
       bio: 'Param Jyotishi — AI Vedic astrologer trained on ancient Brihat Parashara Hora Shastra. Specializes in Kundli reading, Graha Dasha predictions, and life-path guidance. Available 24/7.'
     },
     {
-      name: 'Pandit Shubhankar Joshi',
+      name: 'AI Pandit Shubhankar Joshi',
       photo_url: null,
       specializations: JSON.stringify(['Prashna Kundli', 'Muhurat', 'Vastu Shastra']),
       experience_years: null,
@@ -47,7 +47,7 @@ export function seedDatabase(db: Database.Database): void {
       bio: 'AI Jyotish Pandit specializing in Prashna Kundli (horary astrology), Shubh Muhurat selection, and Vastu guidance. Ask any question and get instant cosmic clarity.'
     },
     {
-      name: 'Guru Nakshatra Devi',
+      name: 'AI Guru Nakshatra Devi',
       photo_url: null,
       specializations: JSON.stringify(['Nakshatra Vidya', 'Love & Marriage', 'Mangal Dosh']),
       experience_years: null,
@@ -64,7 +64,7 @@ export function seedDatabase(db: Database.Database): void {
       bio: 'AI Nakshatra expert & relationship Jyotishi. Deep insights into love compatibility, Mangal Dosh analysis, Guna Milan for marriage, and emotional well-being through the stars.'
     },
     {
-      name: 'Acharya Brihaspati Sharma',
+      name: 'AI Acharya Brihaspati Sharma',
       photo_url: null,
       specializations: JSON.stringify(['Career & Wealth', 'Shani Sade Sati', 'Gemstone Remedies']),
       experience_years: null,
@@ -81,7 +81,7 @@ export function seedDatabase(db: Database.Database): void {
       bio: 'AI Acharya for career growth, Dhan Yoga analysis, and wealth predictions. Expert in Shani Sade Sati remedies, Ratna (gemstone) recommendations, and professional guidance.'
     },
     {
-      name: 'Jyotishacharya Meera Trivedi',
+      name: 'AI Jyotishacharya Meera Trivedi',
       photo_url: null,
       specializations: JSON.stringify(['Numerology', 'Rashi Phal', 'Health Astrology']),
       experience_years: null,
@@ -98,7 +98,7 @@ export function seedDatabase(db: Database.Database): void {
       bio: 'AI Jyotishacharya combining Vedic Numerology with Rashi Phal. Specializes in health predictions through medical astrology, lucky numbers, and daily/weekly forecasts.'
     },
     {
-      name: 'Pandit Surya Narayan Mishra',
+      name: 'AI Pandit Surya Narayan Mishra',
       photo_url: null,
       specializations: JSON.stringify(['Lal Kitab', 'Pitra Dosh', 'Yantra & Mantra']),
       experience_years: null,
@@ -115,7 +115,7 @@ export function seedDatabase(db: Database.Database): void {
       bio: 'AI Lal Kitab specialist with deep knowledge of ancestral (Pitra) Dosh remedies, Yantra suggestions, and Mantra guidance. Practical, affordable remedies for everyday problems.'
     },
     {
-      name: 'Devi Chandrika Shastri',
+      name: 'AI Devi Chandrika Shastri',
       photo_url: null,
       specializations: JSON.stringify(['KP Jyotish', 'Transit Predictions', 'Annual Horoscope']),
       experience_years: null,
@@ -132,7 +132,7 @@ export function seedDatabase(db: Database.Database): void {
       bio: 'AI KP (Krishnamurti Paddhati) Jyotish expert. Precise timing predictions using sub-lord theory. Specializes in Gochar (transit) effects and Varshphal (annual horoscope) analysis.'
     },
     {
-      name: 'Acharya Vidya Sagar Pandey',
+      name: 'AI Acharya Vidya Sagar Pandey',
       photo_url: null,
       specializations: JSON.stringify(['Vedic Jyotish', 'Kal Sarpa Dosh', 'Education & Exams']),
       experience_years: null,
