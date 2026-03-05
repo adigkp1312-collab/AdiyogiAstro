@@ -53,7 +53,17 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
+                // First unregister any broken service workers, then register fresh
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                  var needsReload = false;
+                  registrations.forEach(function(reg) {
+                    if (reg.installing || reg.waiting) {
+                      // A broken or waiting SW exists — unregister it
+                      reg.unregister();
+                      needsReload = true;
+                    }
+                  });
+                  // Register the (fixed) service worker
                   navigator.serviceWorker.register('/sw.js')
                     .then(function(registration) {
                       console.log('SW registered: ', registration.scope);

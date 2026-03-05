@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "nakshatra-dev",
+      "name": "dev",
       "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
-      "runtimeArgs": ["C:\\Users\\user\\Downloads\\F1\\nakshatra\\node_modules\\next\\dist\\bin\\next", "dev", "-p", "4321"],
-      "port": 4321
+      "runtimeArgs": ["node_modules/.bin/next", "dev", "--port", "3456"],
+      "port": 3456
     }
   ]
 }

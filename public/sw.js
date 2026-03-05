@@ -1,19 +1,26 @@
-const CACHE_NAME = 'nakshatra-v1';
+const CACHE_NAME = 'nakshatra-v2';
 const OFFLINE_URL = '/offline.html';
 
-// Assets to pre-cache on install
+// Assets to pre-cache on install (non-critical — failures won't block install)
 const PRECACHE_ASSETS = [
   OFFLINE_URL,
   '/manifest.json',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png',
+  '/icons/icon-192x192.svg',
+  '/icons/icon-512x512.svg',
 ];
 
-// Install event - pre-cache essential assets
+// Install event - pre-cache essential assets (resilient — individual failures are OK)
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(PRECACHE_ASSETS);
+      // Cache each asset individually so one failure doesn't break install
+      return Promise.allSettled(
+        PRECACHE_ASSETS.map((url) =>
+          cache.add(url).catch((err) => {
+            console.warn('SW: Failed to pre-cache', url, err);
+          })
+        )
+      );
     })
   );
   // Activate immediately without waiting
@@ -65,7 +72,6 @@ self.addEventListener('fetch', (event) => {
     url.pathname.startsWith('/images/') ||
     url.pathname.endsWith('.css') ||
     url.pathname.endsWith('.js') ||
-    url.pathname.endsWith('.png') ||
     url.pathname.endsWith('.svg') ||
     url.pathname.endsWith('.woff2')
   ) {

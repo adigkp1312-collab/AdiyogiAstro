@@ -1,15 +1,28 @@
 'use client';
 
-import { useState, useMemo, useRef, useEffect } from 'react';
+import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import KundliWatermark from '@/components/ui/KundliWatermark';
 import { useLanguage } from '@/contexts/LanguageContext';
 import {
   getMonthData,
   REGIONAL_CALENDARS,
+  type CalendarType,
   type DayPanchang,
   type Festival,
 } from '@/lib/calendar-utils';
+import {
+  REGIONAL_MONTHS,
+  REGIONAL_FESTIVALS,
+  NAVRATRI_SCHEDULE,
+  getRegionalMonthForDate,
+  getRegionalYear,
+  getRegionalYearName,
+  getSankrantiDates,
+  getNavratriStartDates,
+  MONTH_NAMES_SHORT,
+  MONTH_NAMES_FULL,
+} from '@/lib/regional-calendar-data';
 
 // IST helper
 function getIST() {
@@ -506,7 +519,374 @@ function FestivalList({ festivals }: { festivals: { date: number; festival: Fest
   );
 }
 
-function RegionalCalendarGrid() {
+// ---- Regional Detail Panels ----
+
+function HinduCalendarDetail({ year, month }: { year: number; month: number }) {
+  const data = useMemo(() => getMonthData(year, month), [year, month]);
+  const days: { day: number; panchang: DayPanchang }[] = [];
+  let dayNum = 0;
+  for (const d of data.days) {
+    if (d) {
+      dayNum++;
+      days.push({ day: dayNum, panchang: d });
+    }
+  }
+
+  return (
+    <div className="space-y-2">
+      <p className="text-[10px] text-text-secondary/60 uppercase tracking-wider font-semibold px-1">
+        {MONTH_NAMES[month]} {year} — Daily Panchang
+      </p>
+      <div className="bg-surface/30 rounded-xl border border-border/20 overflow-hidden">
+        {/* Header */}
+        <div className="grid grid-cols-4 gap-px bg-amber-500/10 border-b border-border/20 px-3 py-2">
+          <span className="text-[9px] font-bold text-amber-400 uppercase">Date</span>
+          <span className="text-[9px] font-bold text-amber-400 uppercase">Tithi</span>
+          <span className="text-[9px] font-bold text-amber-400 uppercase">Nakshatra</span>
+          <span className="text-[9px] font-bold text-amber-400 uppercase">Yoga</span>
+        </div>
+        {/* Rows */}
+        <div className="max-h-[300px] overflow-y-auto">
+          {days.map(({ day, panchang }) => (
+            <div key={day} className={`grid grid-cols-4 gap-px px-3 py-1.5 border-b border-border/10 ${
+              panchang.festivals.length > 0 ? 'bg-amber-500/5' : ''
+            }`}>
+              <span className="text-[11px] font-semibold text-text-primary">{day}</span>
+              <span className="text-[10px] text-text-secondary truncate">{panchang.tithi.replace('Shukla ', 'S.').replace('Krishna ', 'K.')}</span>
+              <span className="text-[10px] text-text-secondary truncate">{panchang.nakshatra}</span>
+              <span className="text-[10px] text-text-secondary truncate">{panchang.yoga}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FestivalCalendarDetail({ year, filterType }: { year: number; filterType: 'major' | 'fast' }) {
+  const allFestivals = useMemo(() => {
+    const result: { month: number; festivals: { date: number; festival: Festival }[] }[] = [];
+    for (let m = 0; m < 12; m++) {
+      const data = getMonthData(year, m);
+      const seen = new Set<string>();
+      const filtered = data.festivals.filter(f => {
+        if (f.festival.type !== filterType) return false;
+        const key = `${f.date}-${f.festival.name}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+      if (filtered.length > 0) {
+        result.push({ month: m, festivals: filtered });
+      }
+    }
+    return result;
+  }, [year, filterType]);
+
+  const label = filterType === 'major' ? 'Major Festivals' : 'Vrat & Fasting Days';
+
+  return (
+    <div className="space-y-3">
+      <p className="text-[10px] text-text-secondary/60 uppercase tracking-wider font-semibold px-1">
+        {label} — {year}
+      </p>
+      {allFestivals.length === 0 ? (
+        <div className="text-center py-6">
+          <span className="text-2xl">🕉️</span>
+          <p className="text-xs text-text-secondary mt-2">No data available for {year}</p>
+        </div>
+      ) : (
+        allFestivals.map(({ month, festivals }) => (
+          <div key={month}>
+            <div className="flex items-center gap-2 mb-1.5">
+              <div className={`w-1.5 h-1.5 rounded-full ${filterType === 'major' ? 'bg-amber-400' : 'bg-cyan-400'}`} />
+              <span className="text-[11px] font-bold text-white">{MONTH_NAMES[month]}</span>
+              <span className="text-[9px] text-text-secondary/50">{festivals.length}</span>
+            </div>
+            <div className="space-y-1.5 ml-3.5">
+              {festivals.map((f, i) => (
+                <div key={i} className="flex items-center gap-2.5 bg-surface/30 rounded-lg px-3 py-2 border border-border/15">
+                  <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold ${
+                    filterType === 'major'
+                      ? 'bg-amber-500/15 text-amber-400 border border-amber-500/20'
+                      : 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/20'
+                  }`}>
+                    {f.date}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-[11px] font-semibold truncate ${f.festival.color}`}>{f.festival.name}</p>
+                    <p className="text-[9px] text-text-secondary/50 truncate">{f.festival.nameHi}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      )}
+    </div>
+  );
+}
+
+function RegionalCalDetail({ region, year }: { region: string; year: number }) {
+  const info = REGIONAL_MONTHS[region];
+  const festivals = REGIONAL_FESTIVALS[region] || [];
+  if (!info) return <p className="text-xs text-text-secondary">No data available</p>;
+
+  const regYear = getRegionalYear(region, year);
+  const yearName = getRegionalYearName(region);
+
+  return (
+    <div className="space-y-4">
+      {/* Regional Year */}
+      <div className="flex items-center gap-2 bg-amber-500/10 rounded-xl px-4 py-2.5 border border-amber-500/20">
+        <span className="text-lg">📜</span>
+        <div>
+          <p className="text-xs font-bold text-amber-400">{yearName} {regYear}</p>
+          <p className="text-[9px] text-amber-300/60">Regional year for Gregorian {year}</p>
+        </div>
+      </div>
+
+      {/* Month mapping */}
+      <div>
+        <p className="text-[10px] text-text-secondary/60 uppercase tracking-wider font-semibold px-1 mb-2">
+          Month Names
+        </p>
+        <div className="bg-surface/30 rounded-xl border border-border/20 overflow-hidden">
+          <div className="grid grid-cols-2 gap-px bg-amber-500/10 border-b border-border/20 px-3 py-2">
+            <span className="text-[9px] font-bold text-amber-400 uppercase">Gregorian</span>
+            <span className="text-[9px] font-bold text-amber-400 uppercase">Regional</span>
+          </div>
+          {MONTH_NAMES_SHORT.map((greg, i) => (
+            <div key={i} className="grid grid-cols-2 gap-px px-3 py-1.5 border-b border-border/10">
+              <span className="text-[11px] text-text-secondary">{greg}</span>
+              <span className="text-[11px] font-medium text-text-primary">{getRegionalMonthForDate(region, i)}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Regional festivals */}
+      {festivals.length > 0 && (
+        <div>
+          <p className="text-[10px] text-text-secondary/60 uppercase tracking-wider font-semibold px-1 mb-2">
+            Key Festivals
+          </p>
+          <div className="space-y-1.5">
+            {festivals.map((f, i) => (
+              <div key={i} className="flex items-center gap-2.5 bg-surface/30 rounded-lg px-3 py-2 border border-border/15">
+                <div className="w-7 h-7 rounded-lg bg-orange-500/15 text-orange-400 border border-orange-500/20 flex items-center justify-center text-[10px] font-bold">
+                  {f.day}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[11px] font-semibold text-white truncate">{f.name}</p>
+                  <p className="text-[9px] text-text-secondary/50 truncate">{f.nameLocal}</p>
+                </div>
+                <span className="text-[9px] text-text-secondary/40">{MONTH_NAMES_SHORT[f.month - 1]}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SankrantiDetail({ year }: { year: number }) {
+  const dates = getSankrantiDates();
+  const now = new Date();
+  const currentMonth = now.getMonth() + 1;
+
+  return (
+    <div className="space-y-2">
+      <p className="text-[10px] text-text-secondary/60 uppercase tracking-wider font-semibold px-1">
+        Solar Transits — {year}
+      </p>
+      <div className="bg-surface/30 rounded-xl border border-border/20 overflow-hidden">
+        <div className="grid grid-cols-[1fr_1.5fr_1fr] gap-px bg-amber-500/10 border-b border-border/20 px-3 py-2">
+          <span className="text-[9px] font-bold text-amber-400 uppercase">Date</span>
+          <span className="text-[9px] font-bold text-amber-400 uppercase">Sankranti</span>
+          <span className="text-[9px] font-bold text-amber-400 uppercase">Zodiac</span>
+        </div>
+        {dates.map((s, i) => {
+          const isCurrent = s.month === currentMonth;
+          return (
+            <div key={i} className={`grid grid-cols-[1fr_1.5fr_1fr] gap-px px-3 py-2 border-b border-border/10 ${
+              isCurrent ? 'bg-amber-500/10' : ''
+            }`}>
+              <span className="text-[11px] font-semibold text-text-primary">
+                {s.day} {MONTH_NAMES_SHORT[s.month - 1]}
+              </span>
+              <div>
+                <p className="text-[11px] font-medium text-white truncate">{s.name}</p>
+                <p className="text-[9px] text-text-secondary/50 truncate">{s.nameHi}</p>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="text-sm">{s.zodiacSymbol}</span>
+                <span className="text-[10px] text-text-secondary truncate">{s.zodiac}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function NavratriDetail({ year }: { year: number }) {
+  const starts = getNavratriStartDates(year);
+
+  const formatDate = (m: number, d: number) => `${d} ${MONTH_NAMES_FULL[m - 1]}`;
+
+  return (
+    <div className="space-y-5">
+      {/* Chaitra Navratri */}
+      <div>
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-base">🌸</span>
+          <div>
+            <p className="text-xs font-bold text-white">Chaitra Navratri</p>
+            <p className="text-[9px] text-text-secondary/50">Starts {formatDate(starts.chaitra.month, starts.chaitra.day)}, {year}</p>
+          </div>
+        </div>
+        <NavratriTable />
+      </div>
+
+      {/* Sharad Navratri */}
+      <div>
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-base">🔱</span>
+          <div>
+            <p className="text-xs font-bold text-white">Sharad Navratri</p>
+            <p className="text-[9px] text-text-secondary/50">Starts {formatDate(starts.sharad.month, starts.sharad.day)}, {year}</p>
+          </div>
+        </div>
+        <NavratriTable />
+      </div>
+    </div>
+  );
+}
+
+function NavratriTable() {
+  return (
+    <div className="bg-surface/30 rounded-xl border border-border/20 overflow-hidden">
+      <div className="grid grid-cols-[40px_1fr_70px] gap-px bg-red-500/10 border-b border-border/20 px-3 py-2">
+        <span className="text-[9px] font-bold text-red-400 uppercase">Day</span>
+        <span className="text-[9px] font-bold text-red-400 uppercase">Goddess</span>
+        <span className="text-[9px] font-bold text-red-400 uppercase">Color</span>
+      </div>
+      {NAVRATRI_SCHEDULE.map((d) => (
+        <div key={d.day} className="grid grid-cols-[40px_1fr_70px] gap-px px-3 py-2 border-b border-border/10">
+          <span className="text-[11px] font-bold text-white">{d.day}</span>
+          <div>
+            <p className="text-[11px] font-medium text-white">{d.deity}</p>
+            <p className="text-[9px] text-text-secondary/50 truncate">{d.meaning}</p>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded-full border border-white/20" style={{ backgroundColor: d.colorHex }} />
+            <span className="text-[10px] text-text-secondary">{d.color}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function RegionalDetailPanel({
+  cal, year, month, onClose,
+}: {
+  cal: CalendarType; year: number; month: number; onClose: () => void;
+}) {
+  // Determine content
+  let content: React.ReactNode;
+  switch (cal.key) {
+    case 'hindu':
+      content = <HinduCalendarDetail year={year} month={month} />;
+      break;
+    case 'festival':
+      content = <FestivalCalendarDetail year={year} filterType="major" />;
+      break;
+    case 'fast':
+      content = <FestivalCalendarDetail year={year} filterType="fast" />;
+      break;
+    case 'tamil': case 'bengali': case 'telugu':
+    case 'gujarati': case 'kannada': case 'malayalam':
+      content = <RegionalCalDetail region={cal.key} year={year} />;
+      break;
+    case 'sankranti':
+      content = <SankrantiDetail year={year} />;
+      break;
+    case 'navratri':
+      content = <NavratriDetail year={year} />;
+      break;
+    default:
+      content = <p className="text-xs text-text-secondary py-4 text-center">Content coming soon</p>;
+  }
+
+  return (
+    <div className="mx-4 mt-3 animate-in slide-in-from-bottom-4 duration-400">
+      <div className="relative overflow-hidden bg-surface-card rounded-2xl border border-amber-500/20">
+        {/* Gradient header */}
+        <div className={`bg-gradient-to-r ${cal.gradient} relative h-14`}>
+          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute -bottom-5 left-4">
+            <div className="w-10 h-10 rounded-xl bg-surface-card border-2 border-background flex items-center justify-center text-xl shadow-lg">
+              {cal.icon}
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center text-white/80 hover:text-white transition-colors"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="p-4 pt-7">
+          {/* Title */}
+          <h3 className="text-sm font-bold text-white mb-0.5">{cal.name}</h3>
+          <p className="text-[10px] text-text-secondary/60 mb-4">{cal.description}</p>
+
+          {/* Content */}
+          {content}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RegionalCalendarGrid({
+  year, month, calendarGridRef,
+}: {
+  year: number; month: number; calendarGridRef: React.RefObject<HTMLDivElement | null>;
+}) {
+  const [selectedCal, setSelectedCal] = useState<string | null>(null);
+  const detailRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to detail panel when selected
+  useEffect(() => {
+    if (selectedCal && selectedCal !== 'monthly' && detailRef.current) {
+      setTimeout(() => {
+        detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    }
+  }, [selectedCal]);
+
+  const handleTileClick = useCallback((key: string) => {
+    if (key === 'monthly') {
+      // Scroll to the main calendar grid
+      calendarGridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setSelectedCal(null);
+      return;
+    }
+    setSelectedCal(prev => prev === key ? null : key);
+  }, [calendarGridRef]);
+
+  const selectedCalData = selectedCal
+    ? REGIONAL_CALENDARS.find(c => c.key === selectedCal)
+    : null;
+
   return (
     <div className="mx-4 mt-6">
       <div className="flex items-center gap-2 mb-3">
@@ -520,41 +900,59 @@ function RegionalCalendarGrid() {
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        {REGIONAL_CALENDARS.map((cal) => (
-          <div
-            key={cal.key}
-            className="relative group bg-surface-card rounded-2xl border border-border/40 overflow-hidden transition-all duration-300 hover:border-amber-500/30 active:scale-[0.97]"
-          >
-            {/* Top gradient strip */}
-            <div className={`h-1 bg-gradient-to-r ${cal.gradient}`} />
+        {REGIONAL_CALENDARS.map((cal) => {
+          const isSelected = selectedCal === cal.key;
+          return (
+            <button
+              key={cal.key}
+              onClick={() => handleTileClick(cal.key)}
+              className={`relative group bg-surface-card rounded-2xl border overflow-hidden transition-all duration-300 text-left ${
+                isSelected
+                  ? 'ring-2 ring-amber-400/60 border-amber-500/40 scale-[0.97] shadow-lg shadow-amber-500/10'
+                  : 'border-border/40 hover:border-amber-500/30 active:scale-[0.97]'
+              }`}
+            >
+              {/* Top gradient strip */}
+              <div className={`h-1 bg-gradient-to-r ${cal.gradient}`} />
 
-            <div className="p-3.5">
-              {/* Icon & Title */}
-              <div className="flex items-start gap-2.5 mb-1.5">
-                <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${cal.gradient} flex items-center justify-center text-lg shadow-md flex-shrink-0`}>
-                  {cal.icon}
+              <div className="p-3.5">
+                {/* Icon & Title */}
+                <div className="flex items-start gap-2.5 mb-1.5">
+                  <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${cal.gradient} flex items-center justify-center text-lg shadow-md flex-shrink-0`}>
+                    {cal.icon}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="text-[12px] font-bold text-white leading-tight truncate">{cal.name}</h4>
+                    <p className="text-[10px] text-text-secondary/70 truncate">{cal.nameHi}</p>
+                  </div>
                 </div>
-                <div className="min-w-0 flex-1">
-                  <h4 className="text-[12px] font-bold text-white leading-tight truncate">{cal.name}</h4>
-                  <p className="text-[10px] text-text-secondary/70 truncate">{cal.nameHi}</p>
-                </div>
+
+                {/* Description */}
+                <p className="text-[10px] text-text-secondary/50 leading-relaxed line-clamp-2 mt-1">
+                  {cal.description}
+                </p>
               </div>
 
-              {/* Description */}
-              <p className="text-[10px] text-text-secondary/50 leading-relaxed line-clamp-2 mt-1">
-                {cal.description}
-              </p>
-            </div>
-
-            {/* Coming soon overlay */}
-            <div className="absolute inset-0 bg-background/40 backdrop-blur-[1px] flex items-center justify-center rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <span className="text-[10px] font-bold text-amber-400 bg-surface-card/90 px-3 py-1 rounded-full border border-amber-500/30">
-                Coming Soon
-              </span>
-            </div>
-          </div>
-        ))}
+              {/* Selected indicator */}
+              {isSelected && (
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-amber-400 to-orange-400" />
+              )}
+            </button>
+          );
+        })}
       </div>
+
+      {/* Detail Panel */}
+      {selectedCal && selectedCalData && (
+        <div ref={detailRef}>
+          <RegionalDetailPanel
+            cal={selectedCalData}
+            year={year}
+            month={month}
+            onClose={() => setSelectedCal(null)}
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -569,6 +967,7 @@ export default function CalendarPage() {
   const [viewYear, setViewYear] = useState(ist.getFullYear());
   const [viewMonth, setViewMonth] = useState(ist.getMonth());
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const calendarGridRef = useRef<HTMLDivElement>(null);
 
   const today = useMemo(() => ({
     y: ist.getFullYear(),
@@ -688,12 +1087,14 @@ export default function CalendarPage() {
         />
 
         {/* Calendar Grid */}
-        <CalendarGrid
-          data={monthData}
-          today={today}
-          selectedDay={selectedDay}
-          onSelectDay={(d) => setSelectedDay(selectedDay === d ? null : d)}
-        />
+        <div ref={calendarGridRef}>
+          <CalendarGrid
+            data={monthData}
+            today={today}
+            selectedDay={selectedDay}
+            onSelectDay={(d) => setSelectedDay(selectedDay === d ? null : d)}
+          />
+        </div>
 
         {/* Selected Day Detail */}
         {selectedDay && selectedDayPanchang && (
@@ -710,7 +1111,7 @@ export default function CalendarPage() {
         <FestivalList festivals={monthData.festivals} />
 
         {/* Regional Calendar Grid */}
-        <RegionalCalendarGrid />
+        <RegionalCalendarGrid year={viewYear} month={viewMonth} calendarGridRef={calendarGridRef} />
 
         {/* CTA */}
         <div className="px-4 pt-6 pb-8">
