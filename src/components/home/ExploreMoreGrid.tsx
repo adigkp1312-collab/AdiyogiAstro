@@ -15,7 +15,7 @@ export default function ExploreMoreGrid() {
             }`}
           >
             {/* Colored Icon */}
-            <div className={`absolute right-2 top-2 w-11 h-11 ${feature.iconBg || 'bg-white/20'} rounded-xl flex items-center justify-center backdrop-blur-sm`}>
+            <div className={`absolute right-3 top-3 w-12 h-12 ${feature.iconBg || 'bg-white/20'} rounded-2xl flex items-center justify-center border border-white/20 shadow-lg`}>
               {feature.icon}
             </div>
 
