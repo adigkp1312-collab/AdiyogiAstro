@@ -29,9 +29,11 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   if (!isAuthenticated) return null;
 
   return (
-    <div className="min-h-screen pb-20 bg-background">
-      {children}
-      <BottomNav />
+    <div className="max-w-md mx-auto min-h-screen bg-background relative overflow-x-hidden">
+      <div className="min-h-screen pb-20 bg-background">
+        {children}
+        <BottomNav />
+      </div>
     </div>
   );
 }

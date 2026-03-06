@@ -4,9 +4,9 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Nakshatra - Vedic Astrology & Horoscope",
-  description: "Personalized Vedic astrology insights, daily horoscopes, Panchang data, and live astrologer consultations.",
-  keywords: "vedic astrology, horoscope, nakshatra, panchang, kundli, astrologer consultation",
+  title: "Nakshatra - Your Personal Vedic Astrology Guide",
+  description: "Personalized Vedic astrology insights, daily horoscopes, Panchang data, Kundli charts, and live astrologer consultations. Discover your life journey with AI-powered predictions.",
+  keywords: "vedic astrology, horoscope, nakshatra, panchang, kundli, astrologer consultation, dasha, moon sign",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -21,8 +21,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
   viewportFit: "cover",
   themeColor: "#7C3AED",
 };
@@ -44,9 +42,7 @@ export default function RootLayout({
       <body className="antialiased bg-background">
         <LanguageProvider>
           <AuthProvider>
-            <div className="max-w-md mx-auto min-h-screen bg-background relative overflow-x-hidden">
-              {children}
-            </div>
+            {children}
           </AuthProvider>
         </LanguageProvider>
         <script
