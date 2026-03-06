@@ -24,6 +24,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validate DOB is a valid date and not in the future
+    const dobDate = new Date(dob);
+    if (isNaN(dobDate.getTime())) {
+      return NextResponse.json(
+        { error: 'Invalid date of birth format' },
+        { status: 400 }
+      );
+    }
+    if (dobDate > new Date()) {
+      return NextResponse.json(
+        { error: 'Date of birth cannot be in the future' },
+        { status: 400 }
+      );
+    }
+
     const db = getDb();
 
     // Calculate placeholder moon sign and dasha

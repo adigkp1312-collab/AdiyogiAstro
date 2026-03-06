@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { usePolling } from './usePolling';
 import type { Message } from '@/types';
 import { CHAT_POLL_INTERVAL_MS } from '@/lib/constants';
@@ -66,6 +66,18 @@ export function useChatMessages(
     shouldPoll
   );
 
+  // Track pending timeouts for cleanup on unmount
+  const pendingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (pendingTimeoutRef.current) {
+        clearTimeout(pendingTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const sendMessage = useCallback(
     async (content: string) => {
       if (!accessToken || isSending) return;
@@ -101,7 +113,8 @@ export function useChatMessages(
         }
 
         // Trigger a refresh to quickly pick up AI responses
-        setTimeout(() => refresh(), 1500);
+        if (pendingTimeoutRef.current) clearTimeout(pendingTimeoutRef.current);
+        pendingTimeoutRef.current = setTimeout(() => refresh(), 1500);
       } catch (err) {
         console.error('Failed to send message:', err);
       } finally {

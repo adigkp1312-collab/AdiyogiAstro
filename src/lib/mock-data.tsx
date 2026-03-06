@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Astrologer } from '@/types';
 
 export const mockAstrologers: Astrologer[] = [
@@ -98,7 +99,21 @@ export const mockAstrologers: Astrologer[] = [
   },
 ];
 
-export const exploreFeatures = [
+interface ExploreFeature {
+  title: string;
+  subtitle: string;
+  badge: string;
+  href: string;
+  gradient: string;
+  iconBg: string;
+  icon: React.ReactNode;
+  comingSoon: boolean;
+  textClass?: string;
+  subtitleClass?: string;
+  iconBorderClass?: string;
+}
+
+export const exploreFeatures: ExploreFeature[] = [
   {
     title: 'CHAT',
     subtitle: 'Chat and Get Answers',
@@ -118,10 +133,10 @@ export const exploreFeatures = [
     subtitle: "Today's Good Time",
     badge: 'KRISHNA PRATIPADA',
     href: '/panchang',
-    gradient: 'from-accent-dark to-amber-600',
-    iconBg: 'bg-yellow-400/40',
+    gradient: 'from-[#800020] to-[#a0153e]',
+    iconBg: 'bg-[#c2185b]/50',
     icon: (
-      <svg className="w-7 h-7 text-yellow-200 drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
+      <svg className="w-7 h-7 text-white drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
         <path d="M20 3h-1V2h-2v1H7V2H5v1H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z" />
         <circle cx="9" cy="13" r="1.5" />
         <circle cx="15" cy="13" r="1.5" />
@@ -136,9 +151,9 @@ export const exploreFeatures = [
     badge: 'GUN MILAN',
     href: '/compatibility',
     gradient: 'from-pink-600 to-rose-500',
-    iconBg: 'bg-pink-300/40',
+    iconBg: 'bg-pink-400/50',
     icon: (
-      <svg className="w-7 h-7 text-pink-200 drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
+      <svg className="w-7 h-7 text-white drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
       </svg>
     ),
@@ -149,10 +164,10 @@ export const exploreFeatures = [
     subtitle: 'Birth Chart Insights',
     badge: 'BIRTH CHART',
     href: '/kundli',
-    gradient: 'from-indigo-600 to-blue-600',
-    iconBg: 'bg-blue-300/40',
+    gradient: 'from-red-600 to-red-500',
+    iconBg: 'bg-red-400/50',
     icon: (
-      <svg className="w-7 h-7 text-blue-200 drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
+      <svg className="w-7 h-7 text-white drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
       </svg>
     ),
@@ -163,10 +178,10 @@ export const exploreFeatures = [
     subtitle: 'Vedic Calculators',
     badge: 'NEW',
     href: '/calculators',
-    gradient: 'from-cyan-600 to-teal-600',
-    iconBg: 'bg-cyan-300/40',
+    gradient: 'from-orange-500 to-orange-600',
+    iconBg: 'bg-orange-400/50',
     icon: (
-      <svg className="w-7 h-7 text-cyan-200 drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
+      <svg className="w-7 h-7 text-white drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
         <path d="M12 7l1.2 3.8L17 12l-3.8 1.2L12 17l-1.2-3.8L7 12l3.8-1.2z" />
       </svg>
@@ -178,10 +193,10 @@ export const exploreFeatures = [
     subtitle: 'Auspicious Times',
     badge: 'SHUBH MUHURAT',
     href: '/muhurat',
-    gradient: 'from-orange-600 to-amber-500',
-    iconBg: 'bg-orange-300/40',
+    gradient: 'from-yellow-500 to-yellow-400',
+    iconBg: 'bg-yellow-300/50',
     icon: (
-      <svg className="w-7 h-7 text-orange-200 drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
+      <svg className="w-7 h-7 text-white drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
       </svg>
     ),
@@ -193,9 +208,9 @@ export const exploreFeatures = [
     badge: 'HINDU CALENDAR',
     href: '/calendar',
     gradient: 'from-amber-500 to-yellow-500',
-    iconBg: 'bg-amber-300/40',
+    iconBg: 'bg-amber-400/50',
     icon: (
-      <svg className="w-7 h-7 text-amber-100 drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
+      <svg className="w-7 h-7 text-white drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
         <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z" />
         <circle cx="9" cy="14" r="1.2" />
         <circle cx="15" cy="14" r="1.2" />

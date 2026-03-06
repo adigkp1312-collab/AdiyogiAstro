@@ -36,7 +36,7 @@ export default function TransactionHistoryPage() {
         <div className="sticky top-0 z-20 bg-background/80 backdrop-blur-lg border-b border-border/20">
           <div className="flex items-center gap-3 px-4 py-3">
             <button
-              onClick={() => router.back()}
+              onClick={() => window.history.length > 1 ? router.back() : router.push('/home')}
               className="w-9 h-9 rounded-full bg-surface-card border border-border/40 flex items-center justify-center text-text-secondary hover:text-text-primary hover:border-primary/40 transition-all duration-300"
             >
               <svg

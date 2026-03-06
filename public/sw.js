@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nakshatra-v2';
+const CACHE_NAME = 'nakshatra-v3';
 const OFFLINE_URL = '/offline.html';
 
 // Assets to pre-cache on install (non-critical — failures won't block install)
@@ -60,7 +60,17 @@ self.addEventListener('fetch', (event) => {
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
-        .catch(() => caches.match(OFFLINE_URL))
+        .catch(() => {
+          // Only show offline page when the browser is truly offline
+          if (!self.navigator.onLine) {
+            return caches.match(OFFLINE_URL);
+          }
+          // If online but fetch failed (server restarting), return a simple retry page
+          return new Response(
+            '<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Loading...</title></head><body style="background:#0B0A1A;color:#E8E0F0;font-family:sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0"><div style="text-align:center"><p>Reconnecting...</p><script>setTimeout(function(){location.reload()},2000)</script></div></body></html>',
+            { headers: { 'Content-Type': 'text/html' } }
+          );
+        })
     );
     return;
   }

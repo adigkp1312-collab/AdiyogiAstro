@@ -126,7 +126,7 @@ export default function CompatibilityPage() {
         <div className="bg-gradient-to-r from-pink-600/20 via-rose-500/10 to-purple-600/20 border-b border-pink-500/20">
           <div className="px-4 pt-12 pb-6">
             <div className="flex items-center gap-3 mb-2">
-              <button onClick={() => router.back()} className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10">
+              <button onClick={() => window.history.length > 1 ? router.back() : router.push('/home')} className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10">
                 <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                 </svg>

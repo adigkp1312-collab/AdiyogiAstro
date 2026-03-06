@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import KundliWatermark from '@/components/ui/KundliWatermark';
+import { generateKundliPDF } from '@/lib/kundli-pdf';
 
 // Planets and their Vedic names
 const PLANETS = [
@@ -145,6 +146,7 @@ export default function KundliPage() {
   const { t } = useLanguage();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'chart' | 'planets' | 'houses'>('chart');
+  const [downloading, setDownloading] = useState(false);
 
   const dob = user?.dob || '1995-06-15';
   const placements = generatePlacements(dob);
@@ -153,6 +155,23 @@ export default function KundliPage() {
   const lagnaSign = placements[0]?.sign || 'Aries';
   const moonSign = user?.moon_sign || placements[1]?.sign || 'Cancer';
   const sunSign = placements[0]?.sign || 'Gemini';
+
+  const handleDownloadPDF = async () => {
+    if (downloading) return;
+    setDownloading(true);
+    try {
+      await generateKundliPDF({
+        userName: user?.name || 'User',
+        dob,
+        lagnaSign,
+        moonSign,
+        sunSign,
+        placements,
+      });
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   const tabs = [
     { key: 'chart' as const, label: 'Birth Chart' },
@@ -170,15 +189,31 @@ export default function KundliPage() {
         <div className="bg-gradient-to-r from-indigo-600/20 via-blue-500/10 to-purple-600/20 border-b border-indigo-500/20">
           <div className="px-4 pt-12 pb-6">
             <div className="flex items-center gap-3 mb-3">
-              <button onClick={() => router.back()} className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10">
+              <button onClick={() => window.history.length > 1 ? router.back() : router.push('/home')} className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10">
                 <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
-              <div>
+              <div className="flex-1">
                 <h1 className="text-xl font-bold text-white">Your Kundli</h1>
                 <p className="text-xs text-indigo-200/70">Vedic Birth Chart Analysis</p>
               </div>
+              <button
+                onClick={handleDownloadPDF}
+                disabled={downloading}
+                className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors disabled:opacity-50"
+                title="Download PDF"
+              >
+                {downloading ? (
+                  <svg className="w-4 h-4 text-white animate-spin" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="31.416" strokeDashoffset="10" strokeLinecap="round" />
+                  </svg>
+                ) : (
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                )}
+              </button>
             </div>
 
             {/* Quick Info */}

@@ -15,13 +15,13 @@ export default function ExploreMoreGrid() {
             }`}
           >
             {/* Colored Icon */}
-            <div className={`absolute right-3 top-3 w-12 h-12 ${feature.iconBg || 'bg-white/20'} rounded-2xl flex items-center justify-center border border-white/20 shadow-lg`}>
+            <div className={`absolute right-3 top-3 w-12 h-12 ${feature.iconBg || 'bg-white/20'} rounded-2xl flex items-center justify-center border ${feature.iconBorderClass || 'border-white/30'} shadow-xl backdrop-blur-sm`}>
               {feature.icon}
             </div>
 
             <div className="pr-12">
-              <h3 className="text-white font-bold text-sm">{feature.title}</h3>
-              <p className="text-white/80 text-xs mt-0.5">{feature.subtitle}</p>
+              <h3 className={`${feature.textClass || 'text-white'} font-bold text-sm`}>{feature.title}</h3>
+              <p className={`${feature.subtitleClass || 'text-white/80'} text-xs mt-0.5`}>{feature.subtitle}</p>
             </div>
 
             <div>
