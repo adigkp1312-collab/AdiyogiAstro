@@ -329,6 +329,7 @@ const features = [
     desc: 'Personalized predictions based on your birth chart and real-time planetary positions. Not generic sun-sign readings.',
     color: 'from-amber-500/20 to-orange-500/10',
     borderColor: 'border-amber-500/20',
+    href: '/home',
   },
   {
     icon: (
@@ -340,6 +341,7 @@ const features = [
     desc: 'Deep Vedic Dasha system predictions for each life phase - Love, Career, Money, and Health with precise timelines.',
     color: 'from-purple-500/20 to-violet-500/10',
     borderColor: 'border-purple-500/20',
+    href: '/mylife',
   },
   {
     icon: (
@@ -351,6 +353,7 @@ const features = [
     desc: 'Consult with 100+ verified human astrologers via chat or call. Available 24/7 in multiple Indian languages.',
     color: 'from-green-500/20 to-emerald-500/10',
     borderColor: 'border-green-500/20',
+    href: '/chat',
   },
   {
     icon: (
@@ -362,6 +365,7 @@ const features = [
     desc: 'Get instant answers from our AI-powered astrologer. Smart, empathetic, and available anytime - completely free.',
     color: 'from-cyan-500/20 to-blue-500/10',
     borderColor: 'border-cyan-500/20',
+    href: '/chat',
   },
   {
     icon: (
@@ -373,6 +377,7 @@ const features = [
     desc: 'Daily Tithi, Nakshatra, auspicious timings, Rahu Kaal, and festival calendar with accurate Hindu Panchang data.',
     color: 'from-indigo-500/20 to-purple-500/10',
     borderColor: 'border-indigo-500/20',
+    href: '/panchang',
   },
   {
     icon: (
@@ -384,6 +389,7 @@ const features = [
     desc: 'Generate detailed birth charts with house analysis, planetary positions, Doshas, Yogas, and strengths - exportable as PDF.',
     color: 'from-rose-500/20 to-pink-500/10',
     borderColor: 'border-rose-500/20',
+    href: '/kundli',
   },
 ];
 
@@ -409,16 +415,23 @@ function FeaturesSection() {
         {/* Features grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
-            <div
+            <Link
               key={index}
-              className={`group glass-card p-6 sm:p-8 hover:border-primary/40 transition-all duration-500 hover:shadow-glow hover:-translate-y-1`}
+              href={feature.href}
+              className={`group glass-card p-6 sm:p-8 hover:border-primary/40 transition-all duration-500 hover:shadow-glow hover:-translate-y-1 block`}
             >
               <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.color} border ${feature.borderColor} flex items-center justify-center text-primary-light mb-5 group-hover:scale-110 transition-transform duration-300`}>
                 {feature.icon}
               </div>
               <h3 className="text-lg font-bold text-text-primary mb-3">{feature.title}</h3>
               <p className="text-text-secondary text-sm leading-relaxed">{feature.desc}</p>
-            </div>
+              <span className="inline-flex items-center gap-1 text-primary-light text-sm font-medium mt-4 group-hover:gap-2 transition-all">
+                Explore
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
+            </Link>
           ))}
         </div>
       </div>
@@ -784,11 +797,18 @@ function Footer() {
           <div>
             <h3 className="text-sm font-semibold text-text-primary uppercase tracking-wider mb-4">Features</h3>
             <ul className="space-y-3">
-              {['Daily Horoscope', 'Kundli Charts', 'Panchang', 'Dasha Predictions', 'AI Astrologer', 'Muhurat Finder'].map((item) => (
-                <li key={item}>
-                  <a href="#features" onClick={(e) => scrollToSection(e, '#features')} className="text-sm text-text-secondary hover:text-text-primary transition-colors">
-                    {item}
-                  </a>
+              {[
+                { label: 'Daily Horoscope', href: '/home' },
+                { label: 'Kundli Charts', href: '/kundli' },
+                { label: 'Panchang', href: '/panchang' },
+                { label: 'Dasha Predictions', href: '/mylife' },
+                { label: 'AI Astrologer', href: '/chat' },
+                { label: 'Muhurat Finder', href: '/muhurat' },
+              ].map((item) => (
+                <li key={item.label}>
+                  <Link href={item.href} className="text-sm text-text-secondary hover:text-text-primary transition-colors">
+                    {item.label}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -798,10 +818,15 @@ function Footer() {
           <div>
             <h3 className="text-sm font-semibold text-text-primary uppercase tracking-wider mb-4">Company</h3>
             <ul className="space-y-3">
-              {['About Us', 'Careers', 'Blog', 'Contact'].map((item) => (
-                <li key={item}>
-                  <a href="#about" onClick={(e) => scrollToSection(e, '#about')} className="text-sm text-text-secondary hover:text-text-primary transition-colors">
-                    {item}
+              {[
+                { label: 'About Us', href: '#about' },
+                { label: 'Careers', href: '#' },
+                { label: 'Blog', href: '#' },
+                { label: 'Contact', href: '#' },
+              ].map((item) => (
+                <li key={item.label}>
+                  <a href={item.href} onClick={(e) => scrollToSection(e, item.href)} className="text-sm text-text-secondary hover:text-text-primary transition-colors">
+                    {item.label}
                   </a>
                 </li>
               ))}
