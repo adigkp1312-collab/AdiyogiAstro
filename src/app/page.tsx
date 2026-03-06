@@ -3,6 +3,20 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
+// ─── Smooth scroll helper ───
+function scrollToSection(e: React.MouseEvent<HTMLAnchorElement>, href: string) {
+  if (href.startsWith('#')) {
+    e.preventDefault();
+    const id = href.slice(1);
+    const el = document.getElementById(id);
+    if (el) {
+      const navbarHeight = 80;
+      const top = el.getBoundingClientRect().top + window.scrollY - navbarHeight;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  }
+}
+
 // ─── Star background component ───
 function StarField() {
   return (
@@ -76,7 +90,8 @@ function Navbar() {
               <a
                 key={link.label}
                 href={link.href}
-                className="text-text-secondary hover:text-text-primary transition-colors text-sm font-medium"
+                onClick={(e) => scrollToSection(e, link.href)}
+                className="text-text-secondary hover:text-text-primary transition-colors text-sm font-medium cursor-pointer"
               >
                 {link.label}
               </a>
@@ -93,6 +108,7 @@ function Navbar() {
             </Link>
             <a
               href="#download"
+              onClick={(e) => scrollToSection(e, '#download')}
               className="bg-gradient-to-r from-primary to-primary-dark hover:from-primary-light hover:to-primary text-white px-6 py-2.5 rounded-pill text-sm font-semibold transition-all duration-300 shadow-glow hover:shadow-elevated"
             >
               Get the App
@@ -121,8 +137,8 @@ function Navbar() {
               <a
                 key={link.label}
                 href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="block py-3 text-text-secondary hover:text-text-primary transition-colors text-sm font-medium"
+                onClick={(e) => { scrollToSection(e, link.href); setMobileMenuOpen(false); }}
+                className="block py-3 text-text-secondary hover:text-text-primary transition-colors text-sm font-medium cursor-pointer"
               >
                 {link.label}
               </a>
@@ -133,6 +149,7 @@ function Navbar() {
               </Link>
               <a
                 href="#download"
+                onClick={(e) => { scrollToSection(e, '#download'); setMobileMenuOpen(false); }}
                 className="bg-gradient-to-r from-primary to-primary-dark text-white px-6 py-2.5 rounded-pill text-sm font-semibold text-center"
               >
                 Get the App
@@ -179,6 +196,7 @@ function HeroSection() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-slide-up">
               <a
                 href="#download"
+                onClick={(e) => scrollToSection(e, '#download')}
                 className="group bg-gradient-to-r from-primary to-primary-dark hover:from-primary-light hover:to-primary text-white px-8 py-4 rounded-pill text-base font-semibold transition-all duration-300 shadow-glow hover:shadow-elevated flex items-center justify-center gap-3"
               >
                 <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
@@ -546,6 +564,7 @@ function AboutSection() {
 
             <a
               href="#download"
+              onClick={(e) => scrollToSection(e, '#download')}
               className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary-dark text-white px-6 py-3 rounded-pill text-sm font-semibold shadow-glow hover:shadow-elevated transition-all duration-300"
             >
               Explore Your Life
@@ -767,7 +786,7 @@ function Footer() {
             <ul className="space-y-3">
               {['Daily Horoscope', 'Kundli Charts', 'Panchang', 'Dasha Predictions', 'AI Astrologer', 'Muhurat Finder'].map((item) => (
                 <li key={item}>
-                  <a href="#features" className="text-sm text-text-secondary hover:text-text-primary transition-colors">
+                  <a href="#features" onClick={(e) => scrollToSection(e, '#features')} className="text-sm text-text-secondary hover:text-text-primary transition-colors">
                     {item}
                   </a>
                 </li>
@@ -781,7 +800,7 @@ function Footer() {
             <ul className="space-y-3">
               {['About Us', 'Careers', 'Blog', 'Contact'].map((item) => (
                 <li key={item}>
-                  <a href="#about" className="text-sm text-text-secondary hover:text-text-primary transition-colors">
+                  <a href="#about" onClick={(e) => scrollToSection(e, '#about')} className="text-sm text-text-secondary hover:text-text-primary transition-colors">
                     {item}
                   </a>
                 </li>
