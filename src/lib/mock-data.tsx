@@ -133,10 +133,13 @@ export const exploreFeatures: ExploreFeature[] = [
     subtitle: "Today's Good Time",
     badge: 'KRISHNA PRATIPADA',
     href: '/panchang',
-    gradient: 'from-[#800020] to-[#a0153e]',
-    iconBg: 'bg-[#c2185b]/50',
+    gradient: 'from-white to-white',
+    iconBg: 'bg-amber-100',
+    textClass: 'text-gray-900',
+    subtitleClass: 'text-gray-600',
+    iconBorderClass: 'border-amber-300',
     icon: (
-      <svg className="w-7 h-7 text-white drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
+      <svg className="w-7 h-7 text-amber-600 drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
         <path d="M20 3h-1V2h-2v1H7V2H5v1H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z" />
         <circle cx="9" cy="13" r="1.5" />
         <circle cx="15" cy="13" r="1.5" />
