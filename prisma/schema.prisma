@@ -1,0 +1,191 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum SubscriptionTier {
+  FREE
+  PREMIUM
+  PRO
+}
+
+enum ZodiacSign {
+  ARIES
+  TAURUS
+  GEMINI
+  CANCER
+  LEO
+  VIRGO
+  LIBRA
+  SCORPIO
+  SAGITTARIUS
+  CAPRICORN
+  AQUARIUS
+  PISCES
+}
+
+enum HoroscopeType {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+model User {
+  id                String           @id @default(cuid())
+  name              String?
+  email             String?          @unique
+  emailVerified     DateTime?
+  image             String?
+  password          String?
+  role              Role             @default(USER)
+  subscriptionTier  SubscriptionTier @default(FREE)
+  stripeCustomerId  String?          @unique
+  birthDate         DateTime?
+  birthTime         String?
+  birthPlace        String?
+  birthLatitude     Float?
+  birthLongitude    Float?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  accounts             Account[]
+  sessions             Session[]
+  subscription         Subscription?
+  birthCharts          BirthChart[]
+  compatibilityReports CompatibilityReport[]
+  blogPosts            BlogPost[]            @relation("author")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Subscription {
+  id                   String   @id @default(cuid())
+  userId               String   @unique
+  stripeSubscriptionId String   @unique
+  stripePriceId        String
+  status               String
+  currentPeriodStart   DateTime
+  currentPeriodEnd     DateTime
+  cancelAtPeriodEnd    Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model BirthChart {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  birthDate   DateTime
+  birthTime   String?
+  birthPlace  String
+  latitude    Float
+  longitude   Float
+  chartData   Json
+  createdAt   DateTime @default(now())
+
+  user                  User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  compatibilityAsChart1 CompatibilityReport[] @relation("chart1")
+  compatibilityAsChart2 CompatibilityReport[] @relation("chart2")
+}
+
+model Horoscope {
+  id              String        @id @default(cuid())
+  sign            ZodiacSign
+  type            HoroscopeType
+  title           String
+  content         String        @db.Text
+  premiumContent  String?       @db.Text
+  publishDate     DateTime
+  isPublished     Boolean       @default(false)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@unique([sign, type, publishDate])
+}
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  excerpt     String?  @db.Text
+  content     String   @db.Text
+  coverImage  String?
+  category    String?
+  tags        String[]
+  isPremium   Boolean  @default(false)
+  isPublished Boolean  @default(false)
+  authorId    String
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  author User @relation("author", fields: [authorId], references: [id])
+}
+
+model CompatibilityReport {
+  id         String   @id @default(cuid())
+  userId     String
+  chart1Id   String
+  chart2Id   String
+  reportData Json
+  createdAt  DateTime @default(now())
+
+  user   User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chart1 BirthChart @relation("chart1", fields: [chart1Id], references: [id])
+  chart2 BirthChart @relation("chart2", fields: [chart2Id], references: [id])
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

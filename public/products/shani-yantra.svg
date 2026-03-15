@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200" width="160" height="200">
+  <defs>
+    <radialGradient id="yantraGlow" cx="50%" cy="50%">
+      <stop offset="0%" stop-color="#FFD700" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#FFD700" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="copperGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#CD7F32"/>
+      <stop offset="50%" stop-color="#DAA520"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </linearGradient>
+  </defs>
+  <!-- Glow -->
+  <circle cx="80" cy="95" r="70" fill="url(#yantraGlow)"/>
+  <!-- Copper plate -->
+  <rect x="20" y="30" width="120" height="130" rx="5" fill="url(#copperGrad)" stroke="#8B6914" stroke-width="2"/>
+  <!-- Border pattern -->
+  <rect x="28" y="38" width="104" height="114" rx="3" fill="none" stroke="#8B6914" stroke-width="1" opacity="0.6"/>
+  <!-- Yantra geometric pattern -->
+  <!-- Outer square -->
+  <rect x="35" y="45" width="90" height="100" fill="none" stroke="#654321" stroke-width="1.5"/>
+  <!-- Inner diamond -->
+  <polygon points="80,50 120,95 80,140 40,95" fill="none" stroke="#654321" stroke-width="1.2"/>
+  <!-- Inner triangles -->
+  <polygon points="80,60 110,115 50,115" fill="none" stroke="#654321" stroke-width="1"/>
+  <polygon points="80,130 50,75 110,75" fill="none" stroke="#654321" stroke-width="1"/>
+  <!-- Center circle -->
+  <circle cx="80" cy="95" r="15" fill="none" stroke="#654321" stroke-width="1.2"/>
+  <circle cx="80" cy="95" r="8" fill="#8B6914" opacity="0.3"/>
+  <!-- Shani symbol in center -->
+  <text x="80" y="99" text-anchor="middle" font-size="12" font-weight="bold" fill="#654321" font-family="serif">♄</text>
+  <!-- Corner lotus petals -->
+  <text x="38" y="52" font-size="10" fill="#8B6914" opacity="0.5">❋</text>
+  <text x="112" y="52" font-size="10" fill="#8B6914" opacity="0.5">❋</text>
+  <text x="38" y="148" font-size="10" fill="#8B6914" opacity="0.5">❋</text>
+  <text x="112" y="148" font-size="10" fill="#8B6914" opacity="0.5">❋</text>
+  <!-- Label -->
+  <text x="80" y="178" text-anchor="middle" font-size="10" font-weight="bold" fill="#8B6914" font-family="sans-serif">शनि यंत्र</text>
+  <text x="80" y="192" text-anchor="middle" font-size="7" fill="#999" font-family="sans-serif">Energized Brass</text>
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200" width="160" height="200">
+  <defs>
+    <linearGradient id="bookGrad2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4A1A6B"/>
+      <stop offset="100%" stop-color="#2D1045"/>
+    </linearGradient>
+  </defs>
+  <!-- Book -->
+  <rect x="25" y="15" width="110" height="165" rx="4" fill="url(#bookGrad2)" stroke="#3D1259" stroke-width="1"/>
+  <rect x="30" y="15" width="105" height="165" rx="3" fill="url(#bookGrad2)"/>
+  <!-- Spine -->
+  <rect x="25" y="15" width="8" height="165" rx="2" fill="#2D1045" opacity="0.5"/>
+  <!-- Star field on cover -->
+  <circle cx="50" cy="40" r="1" fill="#FFD700" opacity="0.6"/>
+  <circle cx="90" cy="35" r="1.2" fill="#FFD700" opacity="0.5"/>
+  <circle cx="110" cy="45" r="0.8" fill="#FFD700" opacity="0.4"/>
+  <circle cx="70" cy="55" r="1" fill="#FFD700" opacity="0.5"/>
+  <circle cx="120" cy="30" r="0.6" fill="#FFD700" opacity="0.3"/>
+  <!-- Zodiac circle -->
+  <circle cx="82" cy="90" r="30" fill="none" stroke="#FFD700" stroke-width="1" opacity="0.4"/>
+  <circle cx="82" cy="90" r="22" fill="none" stroke="#FFD700" stroke-width="0.5" opacity="0.3"/>
+  <!-- Zodiac symbols -->
+  <text x="82" y="65" text-anchor="middle" font-size="8" fill="#FFD700" opacity="0.7">♈</text>
+  <text x="104" y="76" text-anchor="middle" font-size="8" fill="#FFD700" opacity="0.7">♉</text>
+  <text x="112" y="94" text-anchor="middle" font-size="8" fill="#FFD700" opacity="0.7">♊</text>
+  <text x="104" y="110" text-anchor="middle" font-size="8" fill="#FFD700" opacity="0.7">♋</text>
+  <text x="82" y="118" text-anchor="middle" font-size="8" fill="#FFD700" opacity="0.7">♌</text>
+  <text x="60" y="110" text-anchor="middle" font-size="8" fill="#FFD700" opacity="0.7">♍</text>
+  <text x="52" y="94" text-anchor="middle" font-size="8" fill="#FFD700" opacity="0.7">♎</text>
+  <text x="60" y="76" text-anchor="middle" font-size="8" fill="#FFD700" opacity="0.7">♏</text>
+  <!-- Title -->
+  <rect x="40" y="130" width="80" height="35" rx="2" fill="white" opacity="0.1"/>
+  <text x="82" y="148" text-anchor="middle" font-size="11" font-weight="bold" fill="#FFD700" font-family="serif">ज्योतिष शास्त्र</text>
+  <text x="82" y="161" text-anchor="middle" font-size="7" fill="#E0C8FF" font-family="sans-serif">Vedic Astrology Guide</text>
+</svg>

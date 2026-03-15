@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200" width="160" height="200">
+  <defs>
+    <radialGradient id="gemGlow" cx="50%" cy="40%">
+      <stop offset="0%" stop-color="#FFF8E7"/>
+      <stop offset="100%" stop-color="#FFF0D4"/>
+    </radialGradient>
+  </defs>
+  <!-- Background glow -->
+  <circle cx="80" cy="95" r="70" fill="url(#gemGlow)" opacity="0.5"/>
+  <!-- Bracelet circle -->
+  <ellipse cx="80" cy="100" rx="50" ry="45" fill="none" stroke="#DAA520" stroke-width="6" opacity="0.3"/>
+  <ellipse cx="80" cy="100" rx="50" ry="45" fill="none" stroke="#B8860B" stroke-width="3"/>
+  <!-- 9 gemstones around the bracelet -->
+  <circle cx="80" cy="55" r="8" fill="#DC143C" stroke="#B8860B" stroke-width="1.5"/> <!-- Ruby -->
+  <circle cx="110" cy="65" r="7" fill="#FF6600" stroke="#B8860B" stroke-width="1.5"/> <!-- Coral -->
+  <circle cx="125" cy="90" r="7" fill="#228B22" stroke="#B8860B" stroke-width="1.5"/> <!-- Emerald -->
+  <circle cx="120" cy="118" r="7" fill="#FFD700" stroke="#B8860B" stroke-width="1.5"/> <!-- Yellow Sapphire -->
+  <circle cx="100" cy="138" r="7" fill="#4169E1" stroke="#B8860B" stroke-width="1.5"/> <!-- Blue Sapphire -->
+  <circle cx="60" cy="138" r="7" fill="#8B4513" stroke="#B8860B" stroke-width="1.5"/> <!-- Hessonite -->
+  <circle cx="38" cy="118" r="7" fill="#808080" stroke="#B8860B" stroke-width="1.5"/> <!-- Cat's Eye -->
+  <circle cx="35" cy="90" r="7" fill="#E6E6FA" stroke="#B8860B" stroke-width="1.5"/> <!-- Diamond -->
+  <circle cx="50" cy="65" r="7" fill="#FFA500" stroke="#B8860B" stroke-width="1.5"/> <!-- Pearl -->
+  <!-- Sparkles -->
+  <text x="70" y="30" font-size="10" fill="#FFD700" opacity="0.7">✦</text>
+  <text x="130" y="75" font-size="8" fill="#FFD700" opacity="0.5">✦</text>
+  <text x="25" y="130" font-size="9" fill="#FFD700" opacity="0.6">✦</text>
+  <!-- Label -->
+  <text x="80" y="170" text-anchor="middle" font-size="10" font-weight="bold" fill="#B8860B" font-family="sans-serif">नवरत्न</text>
+  <text x="80" y="183" text-anchor="middle" font-size="8" fill="#999" font-family="sans-serif">9 Precious Gems</text>
+</svg>

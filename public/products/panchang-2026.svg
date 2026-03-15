@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200" width="160" height="200">
+  <defs>
+    <linearGradient id="calGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FF6600"/>
+      <stop offset="100%" stop-color="#FF8C00"/>
+    </linearGradient>
+  </defs>
+  <!-- Calendar body -->
+  <rect x="20" y="35" width="120" height="150" rx="5" fill="white" stroke="#ddd" stroke-width="1"/>
+  <!-- Top header bar -->
+  <rect x="20" y="35" width="120" height="35" rx="5" fill="url(#calGrad)"/>
+  <rect x="20" y="55" width="120" height="15" fill="url(#calGrad)"/>
+  <!-- Binding rings -->
+  <circle cx="45" cy="35" r="5" fill="#ddd" stroke="#999" stroke-width="1"/>
+  <rect x="43" y="28" width="4" height="10" rx="1" fill="#999"/>
+  <circle cx="80" cy="35" r="5" fill="#ddd" stroke="#999" stroke-width="1"/>
+  <rect x="78" y="28" width="4" height="10" rx="1" fill="#999"/>
+  <circle cx="115" cy="35" r="5" fill="#ddd" stroke="#999" stroke-width="1"/>
+  <rect x="113" y="28" width="4" height="10" rx="1" fill="#999"/>
+  <!-- Header text -->
+  <text x="80" y="53" text-anchor="middle" font-size="10" font-weight="bold" fill="white" font-family="sans-serif">पंचांग 2026</text>
+  <text x="80" y="65" text-anchor="middle" font-size="7" fill="#FFE0B2" font-family="sans-serif">Panchang Calendar</text>
+  <!-- Calendar grid -->
+  <text x="32" y="85" font-size="7" fill="#999" font-family="sans-serif">सो</text>
+  <text x="48" y="85" font-size="7" fill="#999" font-family="sans-serif">मं</text>
+  <text x="64" y="85" font-size="7" fill="#999" font-family="sans-serif">बु</text>
+  <text x="80" y="85" font-size="7" fill="#999" font-family="sans-serif">गु</text>
+  <text x="96" y="85" font-size="7" fill="#999" font-family="sans-serif">शु</text>
+  <text x="112" y="85" font-size="7" fill="#999" font-family="sans-serif">श</text>
+  <text x="125" y="85" font-size="7" fill="#DC2626" font-family="sans-serif">र</text>
+  <!-- Date numbers -->
+  <text x="32" y="100" font-size="8" fill="#333" font-family="sans-serif">1</text>
+  <text x="48" y="100" font-size="8" fill="#333" font-family="sans-serif">2</text>
+  <text x="64" y="100" font-size="8" fill="#333" font-family="sans-serif">3</text>
+  <text x="80" y="100" font-size="8" fill="#333" font-family="sans-serif">4</text>
+  <text x="96" y="100" font-size="8" fill="#333" font-family="sans-serif">5</text>
+  <text x="112" y="100" font-size="8" fill="#333" font-family="sans-serif">6</text>
+  <text x="125" y="100" font-size="8" fill="#DC2626" font-family="sans-serif">7</text>
+  <!-- Highlight a date -->
+  <circle cx="80" cy="114" r="8" fill="#FF6600" opacity="0.15"/>
+  <text x="32" y="118" font-size="8" fill="#333" font-family="sans-serif">8</text>
+  <text x="48" y="118" font-size="8" fill="#333" font-family="sans-serif">9</text>
+  <text x="64" y="118" font-size="8" fill="#333" font-family="sans-serif">10</text>
+  <text x="80" y="118" font-size="8" font-weight="bold" fill="#FF6600" font-family="sans-serif">11</text>
+  <text x="96" y="118" font-size="8" fill="#333" font-family="sans-serif">12</text>
+  <text x="112" y="118" font-size="8" fill="#333" font-family="sans-serif">13</text>
+  <text x="125" y="118" font-size="8" fill="#DC2626" font-family="sans-serif">14</text>
+  <!-- Muhurat/Tithi info area -->
+  <rect x="30" y="135" width="100" height="40" rx="3" fill="#FFF7ED" stroke="#FFEDD5" stroke-width="1"/>
+  <text x="80" y="150" text-anchor="middle" font-size="7" fill="#FF6600" font-family="sans-serif">तिथि: एकादशी</text>
+  <text x="80" y="162" text-anchor="middle" font-size="7" fill="#999" font-family="sans-serif">नक्षत्र: रोहिणी</text>
+  <!-- NEW badge -->
+  <rect x="105" y="40" width="28" height="12" rx="2" fill="#22C55E"/>
+  <text x="119" y="49" text-anchor="middle" font-size="7" font-weight="bold" fill="white" font-family="sans-serif">2026</text>
+</svg>
