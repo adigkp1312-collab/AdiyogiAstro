@@ -5,57 +5,133 @@ export function LogoIcon({ className = "size-7" }: { className?: string }) {
       className={className}
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* Outer celestial ring */}
-      <circle cx="24" cy="24" r="22" fill="none" stroke="#FF6600" strokeWidth="2" opacity="0.3" />
-      {/* Inner glowing circle */}
-      <circle cx="24" cy="24" r="16" fill="url(#astroSunGrad)" />
-      {/* Om-inspired abstract mark */}
-      <path
-        d="M20 28c-2-1-3-3-2-5s3-3 5-3c3 0 4 2 4 4"
-        stroke="white"
-        strokeWidth="2"
-        fill="none"
-        strokeLinecap="round"
-      />
-      <path
-        d="M27 24c1 2 0 5-3 6"
-        stroke="white"
-        strokeWidth="2"
-        fill="none"
-        strokeLinecap="round"
-      />
-      <circle cx="28" cy="19" r="1.5" fill="white" />
-      <path
-        d="M25 17c1-1 3-1 4 0"
-        stroke="white"
-        strokeWidth="1.5"
-        fill="none"
-        strokeLinecap="round"
-      />
-      {/* Orbiting stars */}
-      <circle cx="10" cy="12" r="2" fill="#FF8C00" />
-      <circle cx="38" cy="14" r="1.5" fill="#FFB347" />
-      <circle cx="36" cy="36" r="1.8" fill="#FF6600" />
-      <circle cx="8" cy="34" r="1.2" fill="#FFB347" />
-      {/* Orbit path */}
-      <ellipse
-        cx="24"
-        cy="24"
-        rx="21"
-        ry="12"
-        fill="none"
-        stroke="#FF8C00"
-        strokeWidth="0.8"
-        opacity="0.25"
-        transform="rotate(-25 24 24)"
-      />
       <defs>
-        <radialGradient id="astroSunGrad" cx="40%" cy="35%">
-          <stop offset="0%" stopColor="#FFB347" />
-          <stop offset="50%" stopColor="#FF8C00" />
-          <stop offset="100%" stopColor="#FF6600" />
+        <radialGradient id="astroSunGrad" cx="50%" cy="45%">
+          <stop offset="0%" stopColor="#FFD700" />
+          <stop offset="40%" stopColor="#DAA520" />
+          <stop offset="100%" stopColor="#B8860B" />
         </radialGradient>
+        <radialGradient id="astroFaceGrad" cx="45%" cy="40%">
+          <stop offset="0%" stopColor="#CD9B1D" />
+          <stop offset="100%" stopColor="#8B6914" />
+        </radialGradient>
+        <linearGradient id="astroRingGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#DAA520" />
+          <stop offset="50%" stopColor="#FFD700" />
+          <stop offset="100%" stopColor="#B8860B" />
+        </linearGradient>
       </defs>
+
+      {/* Outer ring */}
+      <circle cx="24" cy="24" r="23" fill="none" stroke="url(#astroRingGrad)" strokeWidth="1.5" />
+      <circle cx="24" cy="24" r="21.5" fill="none" stroke="#DAA520" strokeWidth="0.5" opacity="0.5" />
+
+      {/* Zodiac band background */}
+      <circle cx="24" cy="24" r="21" fill="#FFF8E7" />
+      <circle cx="24" cy="24" r="14" fill="url(#astroSunGrad)" />
+
+      {/* Divider lines between zodiac sections */}
+      {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle) => (
+        <line
+          key={angle}
+          x1={24 + 14 * Math.cos((angle * Math.PI) / 180)}
+          y1={24 + 14 * Math.sin((angle * Math.PI) / 180)}
+          x2={24 + 21 * Math.cos((angle * Math.PI) / 180)}
+          y2={24 + 21 * Math.sin((angle * Math.PI) / 180)}
+          stroke="#DAA520"
+          strokeWidth="0.4"
+          opacity="0.6"
+        />
+      ))}
+
+      {/* Zodiac symbols around the ring */}
+      {[
+        { symbol: "♈", angle: -75 },
+        { symbol: "♉", angle: -45 },
+        { symbol: "♊", angle: -15 },
+        { symbol: "♋", angle: 15 },
+        { symbol: "♌", angle: 45 },
+        { symbol: "♍", angle: 75 },
+        { symbol: "♎", angle: 105 },
+        { symbol: "♏", angle: 135 },
+        { symbol: "♐", angle: 165 },
+        { symbol: "♑", angle: 195 },
+        { symbol: "♒", angle: 225 },
+        { symbol: "♓", angle: 255 },
+      ].map(({ symbol, angle }) => (
+        <text
+          key={symbol}
+          x={24 + 17.5 * Math.cos((angle * Math.PI) / 180)}
+          y={24 + 17.5 * Math.sin((angle * Math.PI) / 180) + 1.5}
+          textAnchor="middle"
+          fontSize="4"
+          fill="#B8860B"
+          fontWeight="bold"
+        >
+          {symbol}
+        </text>
+      ))}
+
+      {/* Sun face center circle */}
+      <circle cx="24" cy="24" r="10" fill="url(#astroFaceGrad)" stroke="#B8860B" strokeWidth="0.8" />
+
+      {/* Sun rays */}
+      {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle) => (
+        <line
+          key={`ray-${angle}`}
+          x1={24 + 10.5 * Math.cos((angle * Math.PI) / 180)}
+          y1={24 + 10.5 * Math.sin((angle * Math.PI) / 180)}
+          x2={24 + 13.5 * Math.cos((angle * Math.PI) / 180)}
+          y2={24 + 13.5 * Math.sin((angle * Math.PI) / 180)}
+          stroke="#FFD700"
+          strokeWidth="1.2"
+          strokeLinecap="round"
+        />
+      ))}
+
+      {/* Wavy rays between straight rays */}
+      {[15, 45, 75, 105, 135, 165, 195, 225, 255, 285, 315, 345].map((angle) => (
+        <line
+          key={`wray-${angle}`}
+          x1={24 + 10.5 * Math.cos((angle * Math.PI) / 180)}
+          y1={24 + 10.5 * Math.sin((angle * Math.PI) / 180)}
+          x2={24 + 12.5 * Math.cos((angle * Math.PI) / 180)}
+          y2={24 + 12.5 * Math.sin((angle * Math.PI) / 180)}
+          stroke="#DAA520"
+          strokeWidth="0.7"
+          strokeLinecap="round"
+        />
+      ))}
+
+      {/* Sun face - eyes */}
+      <ellipse cx="21.5" cy="23" rx="1.2" ry="1" fill="#654321" />
+      <ellipse cx="26.5" cy="23" rx="1.2" ry="1" fill="#654321" />
+      <ellipse cx="21.8" cy="22.7" rx="0.4" ry="0.3" fill="#FFD700" opacity="0.5" />
+      <ellipse cx="26.8" cy="22.7" rx="0.4" ry="0.3" fill="#FFD700" opacity="0.5" />
+
+      {/* Sun face - nose */}
+      <path
+        d="M23.5 24.5c0.3 0.5 0.7 0.5 1 0"
+        stroke="#8B6914"
+        strokeWidth="0.5"
+        fill="none"
+        strokeLinecap="round"
+      />
+
+      {/* Sun face - mouth */}
+      <path
+        d="M22 26.5c0.5 1 3.5 1 4 0"
+        stroke="#8B6914"
+        strokeWidth="0.6"
+        fill="none"
+        strokeLinecap="round"
+      />
+
+      {/* Small star decorations on outer ring */}
+      <circle cx="24" cy="2.5" r="0.8" fill="#FFD700" />
+      <circle cx="45" cy="24" r="0.7" fill="#DAA520" />
+      <circle cx="24" cy="45.5" r="0.8" fill="#FFD700" />
+      <circle cx="3" cy="24" r="0.7" fill="#DAA520" />
     </svg>
   );
 }
