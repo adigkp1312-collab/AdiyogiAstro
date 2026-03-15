@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Nakshatra - Offline</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0B0A1A; color: #E8E0F0;
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    }
+    .container { text-align: center; padding: 2rem; max-width: 360px; }
+    .icon {
+      width: 80px; height: 80px; margin: 0 auto 1.5rem;
+      background: linear-gradient(135deg, #7C3AED, #6D28D9);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 40px rgba(124, 58, 237, 0.3);
+    }
+    .icon svg { width: 40px; height: 40px; }
+    h1 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+    p { font-size: 0.875rem; color: #9B8FB8; line-height: 1.5; margin-bottom: 1.5rem; }
+    .retry-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      color: #0B0A1A; border: none; border-radius: 12px;
+      font-size: 0.875rem; font-weight: 600; cursor: pointer;
+    }
+    .retry-btn:active { transform: scale(0.97); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
+        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="white" opacity="0.9"/>
+      </svg>
+    </div>
+    <h1>You are Offline</h1>
+    <p>It seems you have lost your internet connection. The stars will align again once you are back online.</p>
+    <button class="retry-btn" onclick="location.reload()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M1 4v6h6M23 20v-6h-6"/>
+        <path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/>
+      </svg>
+      Try Again
+    </button>
+  </div>
+  <script>window.addEventListener('online', function(){ location.reload(); });</script>
+</body>
+</html>

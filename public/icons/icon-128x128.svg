@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7C3AED"/>
+      <stop offset="50%" style="stop-color:#6D28D9"/>
+      <stop offset="100%" style="stop-color:#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="star" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF"/>
+      <stop offset="100%" style="stop-color:#E8D5B7"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#C4B5FD;stop-opacity:0.4"/>
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <rect width="128" height="128" rx="25.6" fill="url(#bg)"/>
+  <circle cx="64" cy="64" r="48.64" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.28"/>
+  <circle cx="64" cy="64" r="34.047999999999995" fill="url(#glow)"/>
+  <polygon points="64,28.159999999999997 72.4264893768649,52.40193236864075 98.0858655440183,52.92483092160188 77.63434621760732,68.43006763135925 85.06622344216224,92.99516907839812 64,78.336 42.93377655783776,92.99516907839812 50.36565378239268,68.43006763135925 29.91413445598169,52.92483092160189 55.5735106231351,52.40193236864076" fill="url(#star)" opacity="0.95"/>
+  <circle cx="64" cy="64" r="5.376" fill="#F59E0B" opacity="0.9"/>
+  <circle cx="64" cy="22.656" r="1.536" fill="rgba(255,255,255,0.5)"/><circle cx="93.23462276137663" cy="34.76537723862338" r="1.536" fill="rgba(255,255,255,0.5)"/><circle cx="105.344" cy="64" r="1.536" fill="rgba(255,255,255,0.5)"/><circle cx="93.23462276137663" cy="93.23462276137661" r="1.536" fill="rgba(255,255,255,0.5)"/><circle cx="64" cy="105.344" r="1.536" fill="rgba(255,255,255,0.5)"/><circle cx="34.76537723862338" cy="93.23462276137663" r="1.536" fill="rgba(255,255,255,0.5)"/><circle cx="22.656" cy="64" r="1.536" fill="rgba(255,255,255,0.5)"/><circle cx="34.76537723862337" cy="34.76537723862338" r="1.536" fill="rgba(255,255,255,0.5)"/>
+</svg>
