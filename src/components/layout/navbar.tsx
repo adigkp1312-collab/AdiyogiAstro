@@ -115,8 +115,53 @@ export function Navbar({ session }: NavbarProps) {
     setMobileOpen(false);
   }, [pathname]);
 
+  const languages = [
+    { code: "hi", label: "हिन्दी", labelEn: "Hindi" },
+    { code: "bn", label: "বাংলা", labelEn: "Bengali" },
+    { code: "te", label: "తెలుగు", labelEn: "Telugu" },
+    { code: "mr", label: "मराठी", labelEn: "Marathi" },
+    { code: "ta", label: "தமிழ்", labelEn: "Tamil" },
+    { code: "gu", label: "ગુજરાતી", labelEn: "Gujarati" },
+    { code: "kn", label: "ಕನ್ನಡ", labelEn: "Kannada" },
+    { code: "ml", label: "മലയാളം", labelEn: "Malayalam" },
+    { code: "pa", label: "ਪੰਜਾਬੀ", labelEn: "Punjabi" },
+  ];
+
+  const [activeLang, setActiveLang] = React.useState("en");
+
   return (
     <header className="sticky top-0 z-50 w-full shadow-md">
+
+      {/* ============================================================= */}
+      {/*  LAYER 1 -- Language Bar                                       */}
+      {/* ============================================================= */}
+      <div className="border-b border-gray-200 bg-gray-50">
+        <div className="mx-auto flex max-w-7xl items-center justify-end gap-1 px-4 py-1 sm:gap-0">
+          <button
+            onClick={() => setActiveLang("en")}
+            className={`px-2 py-0.5 text-[11px] font-medium transition-colors ${
+              activeLang === "en"
+                ? "text-[#FF6600] underline underline-offset-2"
+                : "text-blue-700 hover:text-[#FF6600] hover:underline"
+            }`}
+          >
+            English
+          </button>
+          {languages.map((lang) => (
+            <button
+              key={lang.code}
+              onClick={() => setActiveLang(lang.code)}
+              className={`px-2 py-0.5 text-[11px] font-medium transition-colors ${
+                activeLang === lang.code
+                  ? "text-[#FF6600] underline underline-offset-2"
+                  : "text-blue-700 hover:text-[#FF6600] hover:underline"
+              }`}
+            >
+              {lang.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       {/* ============================================================= */}
       {/*  LAYER 2 -- Main Header (Logo + Zodiac Strip)                  */}
