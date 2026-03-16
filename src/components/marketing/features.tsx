@@ -38,7 +38,7 @@ const services = [
     { icon: HeartHandshake, key: "features.loveHoroscope", href: "/horoscopes", color: "text-rose-500" },
     { icon: BookOpen, key: "features.learnAstrology", href: "/blog", color: "text-teal-600" },
     { icon: Hash, key: "features.numerology", href: "/birth-chart/new", color: "text-amber-600" },
-    { icon: Gem, key: "features.gemstones", href: "/birth-chart/new", color: "text-emerald-600" },
+    { icon: Gem, key: "features.gemstones", href: "/gemstones", color: "text-emerald-600" },
   ],
   [
     { icon: Users, key: "features.celebrity", href: "/horoscopes", color: "text-violet-600" },
@@ -51,7 +51,7 @@ const services = [
 export function Features() {
   const { t } = useLanguage();
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-white via-orange-50/30 to-white py-8 sm:py-10">
+    <section className="relative overflow-hidden py-8 sm:py-10" style={{ backgroundColor: '#F5F0E1' }}>
       {/* Decorative elements */}
       <div className="pointer-events-none absolute -right-24 top-10 size-56 rounded-full bg-gradient-to-bl from-orange-100/40 to-transparent blur-3xl" />
       <div className="pointer-events-none absolute -left-16 bottom-10 size-48 rounded-full bg-gradient-to-tr from-amber-100/30 to-transparent blur-3xl" />
@@ -100,7 +100,7 @@ export function Features() {
             <Star className="mx-auto mb-1 size-6 text-[#FF6600]" />
             <p className="text-xs font-semibold text-gray-700">{t("features.dailyPanchang")}</p>
           </Link>
-          <Link href="/panchang" className="rounded-md border border-orange-200 bg-orange-50 p-3 text-center transition-colors hover:border-[#FF6600] hover:bg-orange-100">
+          <Link href="/festivals" className="rounded-md border border-orange-200 bg-orange-50 p-3 text-center transition-colors hover:border-[#FF6600] hover:bg-orange-100">
             <Calendar className="mx-auto mb-1 size-6 text-[#FF6600]" />
             <p className="text-xs font-semibold text-gray-700">{t("features.festivalCalendar")}</p>
           </Link>
@@ -108,10 +108,10 @@ export function Features() {
             <Orbit className="mx-auto mb-1 size-6 text-[#FF6600]" />
             <p className="text-xs font-semibold text-gray-700">{t("features.planetPositions")}</p>
           </Link>
-          <div className="rounded-md border border-orange-200 bg-orange-50 p-3 text-center">
+          <Link href="/gemstones" className="rounded-md border border-orange-200 bg-orange-50 p-3 text-center transition-colors hover:border-[#FF6600] hover:bg-orange-100">
             <Gem className="mx-auto mb-1 size-6 text-[#FF6600]" />
             <p className="text-xs font-semibold text-gray-700">{t("features.luckyGemstones")}</p>
-          </div>
+          </Link>
         </div>
       </div>
     </section>
