@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Check, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface PricingTier {
   name: string;
@@ -73,25 +74,35 @@ function formatPrice(price: number): string {
 }
 
 export function PricingCards() {
+  const { t } = useLanguage();
   const [billingPeriod, setBillingPeriod] = useState<"monthly" | "yearly">(
     "monthly"
   );
 
   return (
-    <section className="bg-white py-10 sm:py-14">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden py-10 sm:py-14 cosmic-gradient">
+      {/* Large decorative orbs */}
+      <div className="pointer-events-none absolute -left-32 top-1/4 size-80 rounded-full bg-gradient-to-r from-orange-100/30 to-amber-50/20 blur-3xl" style={{ animation: "orb-float-1 20s ease-in-out infinite" }} />
+      <div className="pointer-events-none absolute -right-24 bottom-1/4 size-72 rounded-full bg-gradient-to-l from-amber-100/25 to-orange-50/15 blur-3xl" style={{ animation: "orb-float-2 16s ease-in-out infinite" }} />
+      {/* Mandala rings */}
+      <div className="pointer-events-none absolute left-1/2 top-12 -translate-x-1/2">
+        <div className="size-[500px] rounded-full border border-orange-200/10 opacity-40" />
+        <div className="absolute inset-4 rounded-full border border-orange-200/8" />
+        <div className="absolute inset-10 rounded-full border border-orange-100/5" />
+      </div>
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="mx-auto max-w-2xl text-center">
           <div className="mb-2 inline-block border-b-2 border-[#FF6600] pb-1">
             <p className="text-sm font-semibold uppercase tracking-widest text-[#FF6600]">
-              Pricing
+              {t("pricing.label")}
             </p>
           </div>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Choose Your Plan
+            {t("pricing.title")}
           </h2>
           <p className="mt-4 text-lg text-gray-600">
-            Start free and upgrade as you explore deeper into the cosmos.
+            {t("pricing.subtitle")}
           </p>
         </div>
 
@@ -107,7 +118,7 @@ export function PricingCards() {
                 : "text-gray-500 hover:text-gray-700"
             )}
           >
-            Monthly
+            {t("pricing.monthly")}
           </button>
           <button
             type="button"
@@ -119,9 +130,9 @@ export function PricingCards() {
                 : "text-gray-500 hover:text-gray-700"
             )}
           >
-            Yearly
+            {t("pricing.yearly")}
             <span className="ml-2 inline-flex rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
-              Save 20%
+              {t("pricing.save20")}
             </span>
           </button>
         </div>
@@ -148,7 +159,7 @@ export function PricingCards() {
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
                     <div className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#FF6600] to-[#FF8C00] px-4 py-1 text-xs font-bold text-white shadow-sm">
                       <Sparkles className="size-3" />
-                      Most Popular
+                      {t("pricing.mostPopular")}
                     </div>
                   </div>
                 )}
@@ -179,14 +190,14 @@ export function PricingCards() {
                     )}
                   </div>
                   {price === 0 && (
-                    <p className="mt-1 text-sm text-gray-500">Free forever</p>
+                    <p className="mt-1 text-sm text-gray-500">{t("pricing.freeForever")}</p>
                   )}
                   {billingPeriod === "yearly" && tier.monthlyPrice > 0 && (
                     <p className="mt-1 text-sm text-gray-500">
                       <span className="text-gray-400 line-through">
                         {formatPrice(tier.monthlyPrice * 12)}
                       </span>{" "}
-                      billed annually
+                      {t("pricing.billedAnnually")}
                     </p>
                   )}
                 </div>

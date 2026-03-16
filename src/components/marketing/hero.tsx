@@ -2,11 +2,13 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PlaceAutocomplete } from "@/components/shared/place-autocomplete";
 import { calculatePanchang, type PanchangData } from "@/lib/astrology/panchang";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const days = Array.from({ length: 31 }, (_, i) => i + 1);
 const months = [
@@ -18,6 +20,7 @@ const minutes = Array.from({ length: 60 }, (_, i) => i);
 
 export function Hero() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [panchangData, setPanchangData] = useState<PanchangData | null>(null);
   const [gender, setGender] = useState<"male" | "female">("male");
   const [name, setName] = useState("");
@@ -51,15 +54,25 @@ export function Hero() {
   }
 
   return (
-    <section className="bg-orange-50/50 py-6 sm:py-8">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <section className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-amber-50/60 to-white py-6 sm:py-8">
+      {/* Decorative floating orbs */}
+      <div className="pointer-events-none absolute -left-20 -top-20 size-72 rounded-full bg-gradient-to-br from-orange-200/30 to-amber-100/20 blur-3xl" style={{ animation: "orb-float-1 12s ease-in-out infinite" }} />
+      <div className="pointer-events-none absolute -right-16 top-1/3 size-60 rounded-full bg-gradient-to-br from-amber-200/25 to-orange-100/15 blur-3xl" style={{ animation: "orb-float-2 15s ease-in-out infinite" }} />
+      <div className="pointer-events-none absolute bottom-0 left-1/3 size-48 rounded-full bg-gradient-to-t from-orange-100/20 to-transparent blur-2xl" style={{ animation: "orb-float-3 10s ease-in-out infinite" }} />
+      {/* Subtle sacred geometry lines */}
+      <div className="pointer-events-none absolute inset-0 opacity-[0.025]" style={{ backgroundImage: "radial-gradient(circle at 15% 85%, #FF6600 1.5px, transparent 1.5px), radial-gradient(circle at 85% 15%, #FF8C00 1.5px, transparent 1.5px), radial-gradient(circle at 50% 50%, #FFA500 1px, transparent 1px)", backgroundSize: "50px 50px, 70px 70px, 90px 90px" }} />
+      {/* Decorative corner mandalas */}
+      <div className="pointer-events-none absolute -right-12 -top-12 size-48 rounded-full border border-orange-200/30 opacity-40" />
+      <div className="pointer-events-none absolute -right-8 -top-8 size-36 rounded-full border border-orange-300/20 opacity-30" />
+      <div className="pointer-events-none absolute -bottom-10 -left-10 size-40 rounded-full border border-orange-200/25 opacity-30" />
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1fr_220px]">
           {/* LEFT: Kundli / Birth Chart Quick Form */}
           <div className="rounded-lg border-2 border-orange-400 bg-white shadow-sm">
             {/* Header */}
             <div className="rounded-t-md bg-gradient-to-r from-[#FF6600] to-[#FF8C00] px-4 py-2.5">
               <h2 className="text-lg font-bold text-white">
-                Free Kundli - Birth Chart
+                {t("hero.freeKundli")}
               </h2>
             </div>
 
@@ -68,11 +81,11 @@ export function Hero() {
               {/* Name */}
               <div>
                 <label className="mb-1 block text-sm font-semibold text-gray-700">
-                  Name
+                  {t("hero.name")}
                 </label>
                 <Input
                   type="text"
-                  placeholder="Enter your name"
+                  placeholder={t("hero.enterName")}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="h-9 w-full rounded border border-gray-300 bg-white px-3 text-sm text-gray-900 placeholder:text-gray-400 focus-visible:border-orange-400 focus-visible:ring-orange-400/30"
@@ -82,7 +95,7 @@ export function Hero() {
               {/* Gender */}
               <div>
                 <label className="mb-1 block text-sm font-semibold text-gray-700">
-                  Gender
+                  {t("hero.gender")}
                 </label>
                 <div className="flex gap-1">
                   <button
@@ -94,7 +107,7 @@ export function Hero() {
                         : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
                     }`}
                   >
-                    Male
+                    {t("hero.male")}
                   </button>
                   <button
                     type="button"
@@ -105,7 +118,7 @@ export function Hero() {
                         : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
                     }`}
                   >
-                    Female
+                    {t("hero.female")}
                   </button>
                 </div>
               </div>
@@ -113,7 +126,7 @@ export function Hero() {
               {/* Date of Birth */}
               <div>
                 <label className="mb-1 block text-sm font-semibold text-gray-700">
-                  Date of Birth
+                  {t("hero.dob")}
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   <select
@@ -121,7 +134,7 @@ export function Hero() {
                     onChange={(e) => setDay(e.target.value)}
                     className="h-9 rounded border border-gray-300 bg-white px-2 text-sm text-gray-700 focus:border-orange-400 focus:outline-none focus:ring-1 focus:ring-orange-400/30"
                   >
-                    <option value="">Day</option>
+                    <option value="">{t("hero.day")}</option>
                     {days.map((d) => (
                       <option key={d} value={d}>
                         {d}
@@ -133,7 +146,7 @@ export function Hero() {
                     onChange={(e) => setMonth(e.target.value)}
                     className="h-9 rounded border border-gray-300 bg-white px-2 text-sm text-gray-700 focus:border-orange-400 focus:outline-none focus:ring-1 focus:ring-orange-400/30"
                   >
-                    <option value="">Month</option>
+                    <option value="">{t("hero.month")}</option>
                     {months.map((m, i) => (
                       <option key={m} value={i + 1}>
                         {m}
@@ -142,7 +155,7 @@ export function Hero() {
                   </select>
                   <Input
                     type="number"
-                    placeholder="Year"
+                    placeholder={t("hero.year")}
                     value={year}
                     onChange={(e) => setYear(e.target.value)}
                     className="h-9 w-full rounded border border-gray-300 bg-white px-3 text-sm text-gray-900 placeholder:text-gray-400 focus-visible:border-orange-400 focus-visible:ring-orange-400/30"
@@ -153,7 +166,7 @@ export function Hero() {
               {/* Time of Birth */}
               <div>
                 <label className="mb-1 block text-sm font-semibold text-gray-700">
-                  Time of Birth
+                  {t("hero.tob")}
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   <select
@@ -161,7 +174,7 @@ export function Hero() {
                     onChange={(e) => setHour(e.target.value)}
                     className="h-9 rounded border border-gray-300 bg-white px-2 text-sm text-gray-700 focus:border-orange-400 focus:outline-none focus:ring-1 focus:ring-orange-400/30"
                   >
-                    <option value="">Hrs</option>
+                    <option value="">{t("hero.hrs")}</option>
                     {hours.map((h) => (
                       <option key={h} value={h}>
                         {h.toString().padStart(2, "0")}
@@ -173,7 +186,7 @@ export function Hero() {
                     onChange={(e) => setMinute(e.target.value)}
                     className="h-9 rounded border border-gray-300 bg-white px-2 text-sm text-gray-700 focus:border-orange-400 focus:outline-none focus:ring-1 focus:ring-orange-400/30"
                   >
-                    <option value="">Min</option>
+                    <option value="">{t("hero.min")}</option>
                     {minutes.map((m) => (
                       <option key={m} value={m}>
                         {m.toString().padStart(2, "0")}
@@ -186,7 +199,7 @@ export function Hero() {
               {/* Birth Place */}
               <div>
                 <label className="mb-1 block text-sm font-semibold text-gray-700">
-                  Birth Place
+                  {t("hero.birthPlace")}
                 </label>
                 <PlaceAutocomplete
                   value={birthPlace}
@@ -202,7 +215,7 @@ export function Hero() {
                     setLatitude(place.latitude);
                     setLongitude(place.longitude);
                   }}
-                  placeholder="Enter birth place (e.g., New Delhi)"
+                  placeholder={t("hero.enterBirthPlace")}
                   className="h-9"
                 />
               </div>
@@ -213,7 +226,7 @@ export function Hero() {
                 onClick={handleGetKundli}
                 className="h-11 w-full rounded-md bg-gradient-to-r from-[#FF6600] to-[#FF8C00] text-base font-bold text-white shadow-md hover:from-[#e65c00] hover:to-[#e07800] hover:shadow-lg"
               >
-                GET KUNDLI
+                {t("hero.getKundli")}
               </Button>
             </div>
           </div>
@@ -223,7 +236,7 @@ export function Hero() {
             {/* Header */}
             <div className="rounded-t-md bg-gradient-to-r from-[#FF6600] to-[#FF8C00] px-4 py-2.5">
               <h2 className="text-lg font-bold text-white">
-                TODAY&apos;S PANCHANG
+                {t("panchang.title")}
               </h2>
             </div>
 
@@ -246,14 +259,14 @@ export function Hero() {
                     <table className="w-full text-sm">
                       <tbody>
                         {[
-                          { label: "Tithi", value: `${panchangData.paksha} ${panchangData.tithi}` },
-                          { label: "Nakshatra", value: panchangData.nakshatra },
-                          { label: "Yoga", value: panchangData.yoga },
-                          { label: "Karana", value: panchangData.karana },
-                          { label: "Sunrise", value: panchangData.sunrise },
-                          { label: "Sunset", value: panchangData.sunset },
-                          { label: "Moon Sign", value: panchangData.moonSign },
-                          { label: "Sun Sign", value: panchangData.sunSign },
+                          { label: t("panchang.tithi"), value: `${panchangData.paksha} ${panchangData.tithi}` },
+                          { label: t("panchang.nakshatra"), value: panchangData.nakshatra },
+                          { label: t("panchang.yoga"), value: panchangData.yoga },
+                          { label: t("panchang.karana"), value: panchangData.karana },
+                          { label: t("panchang.sunrise"), value: panchangData.sunrise },
+                          { label: t("panchang.sunset"), value: panchangData.sunset },
+                          { label: t("panchang.moonSign"), value: panchangData.moonSign },
+                          { label: t("panchang.sunSign"), value: panchangData.sunSign },
                         ].map((item, index) => (
                           <tr
                             key={item.label}
@@ -277,7 +290,7 @@ export function Hero() {
                   <div className="mt-4 grid grid-cols-2 gap-3">
                     <div className="rounded-md border border-orange-200 bg-orange-50/50 p-3 text-center">
                       <p className="text-xs font-semibold uppercase text-gray-500">
-                        Rahukaal
+                        {t("panchang.rahukaal")}
                       </p>
                       <p className="mt-0.5 text-sm font-bold text-gray-800">
                         {panchangData.rahukaal}
@@ -285,7 +298,7 @@ export function Hero() {
                     </div>
                     <div className="rounded-md border border-orange-200 bg-orange-50/50 p-3 text-center">
                       <p className="text-xs font-semibold uppercase text-gray-500">
-                        Yamaganda
+                        {t("panchang.yamaganda")}
                       </p>
                       <p className="mt-0.5 text-sm font-bold text-gray-800">
                         {panchangData.yamaganda}
@@ -293,7 +306,7 @@ export function Hero() {
                     </div>
                     <div className="rounded-md border border-orange-200 bg-orange-50/50 p-3 text-center">
                       <p className="text-xs font-semibold uppercase text-gray-500">
-                        Gulika
+                        {t("panchang.gulika")}
                       </p>
                       <p className="mt-0.5 text-sm font-bold text-gray-800">
                         {panchangData.gulika}
@@ -301,7 +314,7 @@ export function Hero() {
                     </div>
                     <div className="rounded-md border border-orange-200 bg-green-50/50 p-3 text-center">
                       <p className="text-xs font-semibold uppercase text-green-700">
-                        Abhijit Muhurta
+                        {t("panchang.abhijitMuhurta")}
                       </p>
                       <p className="mt-0.5 text-sm font-bold text-gray-800">
                         {panchangData.abhijitMuhurta}
@@ -314,20 +327,19 @@ export function Hero() {
                     href="/panchang"
                     className="mt-4 block rounded-md border border-[#FF6600] py-2 text-center text-sm font-bold text-[#FF6600] transition-colors hover:bg-[#FF6600] hover:text-white"
                   >
-                    View Full Panchang Details →
+                    {t("panchang.viewFull")}
                   </a>
                 </>
               ) : (
                 <div className="py-12 text-center text-sm text-gray-400 animate-pulse">
-                  Loading Panchang...
+                  {t("panchang.loading")}
                 </div>
               )}
             </div>
           </div>
+          {/* RIGHT: AI Astrologers vertical list */}
+          <AiAstrologersCarousel />
         </div>
-
-        {/* AI Astrologers Carousel */}
-        <AiAstrologersCarousel />
       </div>
     </section>
   );
@@ -338,7 +350,7 @@ export function Hero() {
 /* ------------------------------------------------------------------ */
 
 const astrologers = [
-  { name: "पंडित शर्मा जी", nameEn: "Pt. Sharma Ji", rate: 15, img: "/astrologers/pandit-sharma.jpg", ring: "#FF6600" },
+  { name: "पंडित शर्मा जी", nameEn: "Pt. Sharma Ji", rate: 15, img: "/astrologers/pandit-sharma.jpg", ring: "#FF6600", faceZoom: true },
   { name: "आचार्य दीपक", nameEn: "Acharya Deepak", rate: 21, img: "/astrologers/acharya-deepak.jpg", ring: "#7C3AED" },
   { name: "ज्योतिषी रेखा", nameEn: "Jyotishi Rekha", rate: 11, img: "/astrologers/jyotishi-rekha.jpg", ring: "#EC4899" },
   { name: "गुरुदेव त्रिपाठी", nameEn: "Gurudev Tripathi", rate: 22, img: "/astrologers/gurudev-tripathi.jpg", ring: "#059669" },
@@ -353,65 +365,51 @@ const astrologers = [
 ];
 
 function AiAstrologersCarousel() {
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const scroll = (dir: "left" | "right") => {
-    if (!scrollRef.current) return;
-    const amount = 240;
-    scrollRef.current.scrollBy({ left: dir === "left" ? -amount : amount, behavior: "smooth" });
-  };
+  const { t } = useLanguage();
 
   return (
-    <div className="mt-6">
-      <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-xl font-bold text-gray-800">AI Astrologers</h2>
-        <div className="flex gap-1">
-          <button
-            onClick={() => scroll("left")}
-            className="flex size-8 items-center justify-center rounded-full border border-gray-300 bg-white text-gray-500 transition-colors hover:border-[#FF6600] hover:text-[#FF6600]"
-          >
-            <ChevronLeft className="size-4" />
-          </button>
-          <button
-            onClick={() => scroll("right")}
-            className="flex size-8 items-center justify-center rounded-full border border-[#FF6600] bg-[#FF6600] text-white transition-colors hover:bg-[#e65c00]"
-          >
-            <ChevronRight className="size-4" />
-          </button>
-        </div>
+    <div className="rounded-lg border-2 border-orange-400 bg-white shadow-sm flex flex-col max-h-[600px]">
+      {/* Header */}
+      <div className="rounded-t-md bg-gradient-to-r from-[#FF6600] to-[#FF8C00] px-3 py-2.5">
+        <h2 className="text-sm font-bold text-white text-center">{t("hero.aiAstrologers")}</h2>
       </div>
+      {/* Scrollable list */}
       <div
-        ref={scrollRef}
-        className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide"
+        className="flex-1 overflow-y-auto p-2 scrollbar-hide"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
-        {astrologers.map((a) => (
-          <button
-            key={a.nameEn}
-            className="group flex shrink-0 flex-col items-center gap-1.5 rounded-lg p-2 transition-colors hover:bg-orange-50"
-            style={{ minWidth: 100 }}
-          >
-            {/* Avatar photo */}
-            <div
-              className="size-[72px] overflow-hidden rounded-full shadow-md transition-transform group-hover:scale-105"
-              style={{ boxShadow: `0 0 0 3px ${a.ring}` }}
+        <div className="flex flex-col gap-2">
+          {astrologers.map((a) => (
+            <button
+              key={a.nameEn}
+              className="group flex items-center gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-orange-50 w-full"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={a.img}
-                alt={a.nameEn}
-                className="size-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            {/* Name */}
-            <span className="max-w-[100px] truncate text-xs font-semibold text-gray-700 group-hover:text-[#FF6600]">
-              {a.name}
-            </span>
-            {/* Rate */}
-            <span className="text-[11px] font-bold text-[#FF6600]">₹{a.rate}/min</span>
-          </button>
-        ))}
+              {/* Avatar photo */}
+              <div
+                className="size-14 shrink-0 overflow-hidden rounded-full shadow-md transition-transform group-hover:scale-105"
+                style={{ boxShadow: `0 0 0 2px ${a.ring}` }}
+              >
+                <Image
+                  src={a.img}
+                  alt={a.nameEn}
+                  width={200}
+                  height={200}
+                  className="size-full object-cover object-top"
+                  style={a.faceZoom ? { transform: `scale(${(a as any).faceScale || 1.5})`, transformOrigin: (a as any).faceOrigin || "center 25%" } : undefined}
+                  quality={95}
+                  unoptimized
+                />
+              </div>
+              {/* Info */}
+              <div className="flex flex-col items-start min-w-0">
+                <span className="truncate text-xs font-semibold text-gray-700 group-hover:text-[#FF6600] max-w-[120px]">
+                  {a.name}
+                </span>
+                <span className="text-[11px] font-bold text-[#FF6600]">₹{a.rate}/min</span>
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

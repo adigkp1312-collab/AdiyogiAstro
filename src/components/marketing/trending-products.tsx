@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { ExternalLink, TrendingUp } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const trendingProducts = [
   {
@@ -95,6 +96,7 @@ const trendingProducts = [
 ];
 
 function ProductCard({ product }: { product: (typeof trendingProducts)[0] }) {
+  const { t } = useLanguage();
   return (
     <a
       href={`https://www.amazon.in/s?k=${product.amazonQuery}`}
@@ -144,7 +146,7 @@ function ProductCard({ product }: { product: (typeof trendingProducts)[0] }) {
         </div>
         <div className="mt-1 flex items-center gap-1 text-[9px] text-gray-400 group-hover:text-[#FF6600]">
           <ExternalLink className="size-2.5" />
-          <span>Buy on Amazon.in</span>
+          <span>{t("trending.buyOnAmazon")}</span>
         </div>
       </div>
     </a>
@@ -152,15 +154,19 @@ function ProductCard({ product }: { product: (typeof trendingProducts)[0] }) {
 }
 
 export function TrendingProducts() {
+  const { t } = useLanguage();
   return (
-    <section className="border-t border-orange-200 bg-gradient-to-b from-orange-50/50 to-white py-6">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden border-t border-orange-200 bg-gradient-to-b from-amber-50/60 via-orange-50/30 to-white py-6">
+      {/* Decorative elements */}
+      <div className="pointer-events-none absolute -right-20 top-0 size-44 rounded-full bg-orange-100/20 blur-3xl" />
+      <div className="pointer-events-none absolute -left-16 bottom-0 size-36 rounded-full bg-amber-100/20 blur-2xl" />
+      <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-4 text-center">
           <div className="mb-1 flex items-center justify-center gap-1.5">
             <TrendingUp className="size-4 text-[#FF6600]" />
             <h2 className="text-lg font-extrabold text-[#FF6600] sm:text-xl">
-              Most Trending Products
+              {t("trending.title")}
             </h2>
           </div>
           <div className="mx-auto flex w-fit items-center gap-1">
@@ -169,7 +175,7 @@ export function TrendingProducts() {
             <span className="h-0.5 w-8 rounded bg-gradient-to-l from-transparent to-[#FF6600]" />
           </div>
           <p className="mt-1 text-xs text-gray-500">
-            Explore top-rated astrology books, gemstones, yantras & spiritual items
+            {t("trending.subtitle")}
           </p>
         </div>
 
@@ -188,7 +194,7 @@ export function TrendingProducts() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 rounded-full border-2 border-[#FF6600] px-4 py-1.5 text-xs font-bold text-[#FF6600] transition-all hover:bg-[#FF6600] hover:text-white"
           >
-            View All on Amazon.in
+            {t("trending.viewAllAmazon")}
             <ExternalLink className="size-3" />
           </a>
         </div>

@@ -6,43 +6,46 @@ import { LogoIcon } from "@/components/shared/logo-icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const quickLinks = [
-  { href: "/horoscopes", label: "Daily Horoscopes" },
-  { href: "/birth-chart/new", label: "Free Kundli" },
-  { href: "/panchang", label: "Today's Panchang" },
-  { href: "/compatibility", label: "Horoscope Matching" },
-  { href: "/festivals", label: "Indian Festivals" },
-  { href: "/transits", label: "Planetary Transits" },
-  { href: "/blog", label: "Astrology Blog" },
-  { href: "/pricing", label: "Premium Plans" },
+  { href: "/horoscopes", key: "footer.dailyHoroscopes" },
+  { href: "/birth-chart/new", key: "nav.freeKundli" },
+  { href: "/panchang", key: "footer.todaysPanchang" },
+  { href: "/compatibility", key: "nav.horoscopeMatching" },
+  { href: "/festivals", key: "footer.indianFestivals" },
+  { href: "/transits", key: "footer.planetaryTransits" },
+  { href: "/blog", key: "footer.astrologyBlog" },
+  { href: "/pricing", key: "footer.premiumPlans" },
 ];
 
 const services = [
-  { href: "/birth-chart/new", label: "Kundli (Birth Chart)" },
-  { href: "/compatibility", label: "Compatibility Report" },
-  { href: "/birth-chart/new", label: "Numerology Calculator" },
-  { href: "/contact", label: "Tarot Reading" },
-  { href: "/birth-chart/new", label: "Gemstones Report" },
-  { href: "/contact", label: "Ask a Question" },
+  { href: "/birth-chart/new", key: "features.kundli" },
+  { href: "/compatibility", key: "footer.compatibilityReport" },
+  { href: "/birth-chart/new", key: "features.numerology" },
+  { href: "/contact", key: "features.tarot" },
+  { href: "/birth-chart/new", key: "features.gemstones" },
+  { href: "/contact", key: "features.askQuestion" },
 ];
 
 const horoscopes = [
-  { href: "/horoscopes/aries", label: "Aries" },
-  { href: "/horoscopes/taurus", label: "Taurus" },
-  { href: "/horoscopes/gemini", label: "Gemini" },
-  { href: "/horoscopes/cancer", label: "Cancer" },
-  { href: "/horoscopes/leo", label: "Leo" },
-  { href: "/horoscopes/virgo", label: "Virgo" },
-  { href: "/horoscopes/libra", label: "Libra" },
-  { href: "/horoscopes/scorpio", label: "Scorpio" },
-  { href: "/horoscopes/sagittarius", label: "Sagittarius" },
-  { href: "/horoscopes/capricorn", label: "Capricorn" },
-  { href: "/horoscopes/aquarius", label: "Aquarius" },
-  { href: "/horoscopes/pisces", label: "Pisces" },
+  { href: "/horoscopes/aries", key: "zodiac.aries" },
+  { href: "/horoscopes/taurus", key: "zodiac.taurus" },
+  { href: "/horoscopes/gemini", key: "zodiac.gemini" },
+  { href: "/horoscopes/cancer", key: "zodiac.cancer" },
+  { href: "/horoscopes/leo", key: "zodiac.leo" },
+  { href: "/horoscopes/virgo", key: "zodiac.virgo" },
+  { href: "/horoscopes/libra", key: "zodiac.libra" },
+  { href: "/horoscopes/scorpio", key: "zodiac.scorpio" },
+  { href: "/horoscopes/sagittarius", key: "zodiac.sagittarius" },
+  { href: "/horoscopes/capricorn", key: "zodiac.capricorn" },
+  { href: "/horoscopes/aquarius", key: "zodiac.aquarius" },
+  { href: "/horoscopes/pisces", key: "zodiac.pisces" },
 ];
 
 export function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer className="border-t-2 border-[#FF6600] bg-gray-100">
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
@@ -53,21 +56,21 @@ export function Footer() {
               <Mail className="size-6 text-[#FF6600]" />
               <div>
                 <h3 className="text-base font-bold text-gray-900">
-                  Subscribe to Our Newsletter
+                  {t("footer.subscribe")}
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Get daily horoscope predictions and astrology insights in your inbox
+                  {t("footer.newsletterDesc")}
                 </p>
               </div>
             </div>
             <div className="flex w-full gap-2 sm:w-auto">
               <Input
                 type="email"
-                placeholder="Enter your email"
+                placeholder={t("footer.enterEmail")}
                 className="h-10 w-full rounded border border-gray-300 bg-white px-3 text-sm text-gray-900 placeholder:text-gray-400 focus-visible:border-orange-400 focus-visible:ring-orange-400/30 sm:w-64"
               />
               <Button className="h-10 shrink-0 rounded bg-gradient-to-r from-[#FF6600] to-[#FF8C00] px-5 text-sm font-bold text-white hover:from-[#e65c00] hover:to-[#e07800]">
-                Subscribe
+                {t("footer.subscribeBtn")}
               </Button>
             </div>
           </div>
@@ -78,16 +81,16 @@ export function Footer() {
           {/* Quick Links Column */}
           <div className="flex flex-col gap-3">
             <h3 className="border-b-2 border-[#FF6600] pb-1 text-sm font-bold uppercase tracking-wider text-[#FF6600]">
-              Quick Links
+              {t("footer.quickLinks")}
             </h3>
             <ul className="flex flex-col gap-1.5">
               {quickLinks.map((link) => (
-                <li key={link.href + link.label}>
+                <li key={link.href + link.key}>
                   <Link
                     href={link.href}
                     className="text-sm text-gray-600 transition-colors hover:text-[#FF6600]"
                   >
-                    {link.label}
+                    {t(link.key)}
                   </Link>
                 </li>
               ))}
@@ -97,16 +100,16 @@ export function Footer() {
           {/* Services Column */}
           <div className="flex flex-col gap-3">
             <h3 className="border-b-2 border-[#FF6600] pb-1 text-sm font-bold uppercase tracking-wider text-[#FF6600]">
-              Services
+              {t("footer.services")}
             </h3>
             <ul className="flex flex-col gap-1.5">
               {services.map((link) => (
-                <li key={link.label}>
+                <li key={link.key}>
                   <Link
                     href={link.href}
                     className="text-sm text-gray-600 transition-colors hover:text-[#FF6600]"
                   >
-                    {link.label}
+                    {t(link.key)}
                   </Link>
                 </li>
               ))}
@@ -116,16 +119,16 @@ export function Footer() {
           {/* Horoscopes Column */}
           <div className="flex flex-col gap-3">
             <h3 className="border-b-2 border-[#FF6600] pb-1 text-sm font-bold uppercase tracking-wider text-[#FF6600]">
-              Horoscopes
+              {t("footer.horoscopes")}
             </h3>
             <ul className="grid grid-cols-2 gap-x-4 gap-y-1.5">
               {horoscopes.map((link) => (
-                <li key={link.label}>
+                <li key={link.key}>
                   <Link
                     href={link.href}
                     className="text-sm text-gray-600 transition-colors hover:text-[#FF6600]"
                   >
-                    {link.label}
+                    {t(link.key)}
                   </Link>
                 </li>
               ))}
@@ -135,7 +138,7 @@ export function Footer() {
           {/* Contact & About Column */}
           <div className="flex flex-col gap-3">
             <h3 className="border-b-2 border-[#FF6600] pb-1 text-sm font-bold uppercase tracking-wider text-[#FF6600]">
-              Contact
+              {t("footer.contact")}
             </h3>
             <div className="flex flex-col gap-2">
               <Link href="/" className="flex items-center gap-2">
@@ -145,21 +148,19 @@ export function Footer() {
                 </span>
               </Link>
               <p className="text-sm leading-relaxed text-gray-600">
-                Your trusted platform for personalized astrology readings,
-                birth chart analysis, and daily horoscope predictions powered
-                by Vedic and Western astrology traditions.
+                {t("footer.companyDesc")}
               </p>
               <Link
                 href="/contact"
                 className="mt-1 inline-flex w-fit items-center rounded border border-[#FF6600] px-3 py-1.5 text-xs font-semibold text-[#FF6600] transition-colors hover:bg-[#FF6600] hover:text-white"
               >
-                Contact Us
+                {t("footer.contactUs")}
               </Link>
 
               {/* Social Media */}
               <div className="mt-3">
                 <p className="mb-2 text-xs font-bold uppercase tracking-wider text-gray-500">
-                  Follow Us
+                  {t("footer.followUs")}
                 </p>
                 <div className="flex items-center gap-2">
                   <a
@@ -206,19 +207,19 @@ export function Footer() {
                 href="/privacy"
                 className="text-xs text-gray-500 hover:text-[#FF6600]"
               >
-                Privacy Policy
+                {t("footer.privacyPolicy")}
               </Link>
               <Link
                 href="/terms"
                 className="text-xs text-gray-500 hover:text-[#FF6600]"
               >
-                Terms of Service
+                {t("footer.terms")}
               </Link>
               <Link
                 href="/disclaimer"
                 className="text-xs text-gray-500 hover:text-[#FF6600]"
               >
-                Disclaimer
+                {t("footer.disclaimer")}
               </Link>
             </div>
           </div>
@@ -228,12 +229,10 @@ export function Footer() {
         <Separator className="my-6 bg-orange-200" />
         <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
           <p className="text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} AstroPath. All rights
-            reserved.
+            &copy; {new Date().getFullYear()} AstroPath. {t("footer.allRights")}
           </p>
           <p className="text-xs text-gray-400">
-            For entertainment purposes only. Not a substitute for professional
-            advice.
+            {t("footer.entertainmentOnly")}
           </p>
         </div>
       </div>

@@ -124,6 +124,274 @@
     @apply bg-background text-foreground;
   }
   html {
-    @apply font-sans;
+    @apply font-sans scroll-smooth;
   }
+}
+
+/* ============================================ */
+/*  Modern Vedic Animations & Utilities         */
+/* ============================================ */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(2deg); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes gradient-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-float { animation: float 5s ease-in-out infinite; }
+.animate-float-slow { animation: float-slow 7s ease-in-out infinite; }
+.animate-pulse-soft { animation: pulse-soft 3s ease-in-out infinite; }
+.animate-fade-up { animation: fade-up 0.7s ease-out forwards; }
+.animate-fade-in { animation: fade-in 0.5s ease-out forwards; }
+.animate-scale-in { animation: scale-in 0.5s ease-out forwards; }
+.animate-spin-slow { animation: spin-slow 25s linear infinite; }
+.animate-gradient { animation: gradient-flow 6s ease infinite; background-size: 200% 200%; }
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* Orange gradient text */
+.text-gradient-vedic {
+  background: linear-gradient(135deg, #FF6600, #FF8C00, #FFa033);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Warm vedic card */
+.vedic-card {
+  background: white;
+  border: 1px solid rgba(255, 102, 0, 0.1);
+  border-radius: 1rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vedic-card:hover {
+  border-color: rgba(255, 102, 0, 0.25);
+  box-shadow: 0 20px 50px -12px rgba(255, 102, 0, 0.12),
+              0 4px 20px -4px rgba(255, 102, 0, 0.06);
+  transform: translateY(-4px);
+}
+
+/* Primary CTA button */
+.btn-vedic {
+  background: linear-gradient(135deg, #FF6600, #FF8C00);
+  color: white;
+  font-weight: 700;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
+}
+
+.btn-vedic:hover {
+  box-shadow: 0 6px 25px rgba(255, 102, 0, 0.45);
+  transform: translateY(-2px);
+}
+
+/* Outline CTA */
+.btn-vedic-outline {
+  border: 2px solid #FF6600;
+  color: #FF6600;
+  font-weight: 700;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+}
+
+.btn-vedic-outline:hover {
+  background: #FF6600;
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
+}
+
+/* Section divider */
+.vedic-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 102, 0, 0.2), transparent);
+}
+
+/* Mandala decorative element */
+.mandala-ring {
+  border: 1px solid rgba(255, 102, 0, 0.15);
+  border-radius: 9999px;
+}
+
+/* Glow effect for icons */
+.vedic-glow {
+  filter: drop-shadow(0 0 8px rgba(255, 102, 0, 0.3));
+}
+
+/* ============================================ */
+/*  Decorative Background Patterns              */
+/* ============================================ */
+
+/* Subtle mandala pattern overlay */
+.bg-mandala-pattern {
+  position: relative;
+}
+.bg-mandala-pattern::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.04;
+  background-image:
+    radial-gradient(circle at 20% 50%, #FF6600 1px, transparent 1px),
+    radial-gradient(circle at 80% 20%, #FF8C00 1px, transparent 1px),
+    radial-gradient(circle at 60% 80%, #FF6600 1px, transparent 1px);
+  background-size: 60px 60px, 80px 80px, 100px 100px;
+  pointer-events: none;
+}
+
+/* Floating orbs decoration */
+@keyframes orb-float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.05); }
+  66% { transform: translate(-15px, 15px) scale(0.95); }
+}
+@keyframes orb-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-25px, 20px) scale(0.95); }
+  66% { transform: translate(20px, -10px) scale(1.05); }
+}
+@keyframes orb-float-3 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(15px, -25px); }
+}
+
+/* Vedic sacred geometry lines */
+.sacred-geometry-bg {
+  position: relative;
+  overflow: hidden;
+}
+.sacred-geometry-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image:
+    linear-gradient(30deg, #FF6600 1px, transparent 1px),
+    linear-gradient(150deg, #FF6600 1px, transparent 1px),
+    linear-gradient(270deg, #FF8C00 1px, transparent 1px);
+  background-size: 80px 140px;
+  pointer-events: none;
+}
+
+/* Star sparkle effect */
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+/* Celestial dots background */
+.celestial-dots {
+  background-image: radial-gradient(circle, rgba(255, 102, 0, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Warm mesh gradient */
+.mesh-gradient-warm {
+  background:
+    radial-gradient(ellipse at 0% 0%, rgba(255, 140, 0, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 0%, rgba(255, 102, 0, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(255, 165, 0, 0.05) 0%, transparent 50%);
+}
+
+/* Pricing section cosmic gradient */
+.cosmic-gradient {
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(255, 102, 0, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(255, 140, 0, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 50%, rgba(255, 165, 0, 0.03) 0%, transparent 80%),
+    linear-gradient(180deg, #FFFBF5 0%, #FFF7ED 50%, #FFFBF5 100%);
+}
+
+/* Glowing border for cards */
+.glow-border {
+  position: relative;
+}
+.glow-border::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 102, 0, 0.2), transparent, rgba(255, 140, 0, 0.15));
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.glow-border:hover::after {
+  opacity: 1;
+}
+
+/* Scrollbar hide utility */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Kundli watermark background */
+.kundli-watermark {
+  position: relative;
+}
+.kundli-watermark::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("/kundli-watermark.png");
+  background-repeat: repeat;
+  background-size: 280px 280px;
+  background-position: center center;
+  opacity: 0.8;
+}
+.kundli-watermark > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Guru avatar spinning glow */
+@keyframes guru-glow-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }

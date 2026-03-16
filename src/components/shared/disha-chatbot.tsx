@@ -1,7 +1,39 @@
 "use client";
 
 import * as React from "react";
-import { MessageCircle, X, Send, Bot, User } from "lucide-react";
+import { MessageCircle, X, Send, User } from "lucide-react";
+import Image from "next/image";
+
+/* Animated Guru avatar for DISHA */
+function GuruAvatar({ size = 32 }: { size?: number }) {
+  return (
+    <div
+      className="relative flex items-center justify-center"
+      style={{ width: size, height: size }}
+    >
+      {/* Animated golden glow ring */}
+      <div
+        className="absolute inset-[-3px] rounded-full"
+        style={{
+          background: "conic-gradient(from 0deg, #FFD700, #FF6600, #FFD700, #FF8C00, #FFD700)",
+          animation: "guru-glow-spin 3s linear infinite",
+        }}
+      />
+      {/* Inner dark ring */}
+      <div className="absolute inset-[-1px] rounded-full bg-[#0a0a2e]" />
+      {/* Image */}
+      <Image
+        src="/disha-guru.png"
+        alt="DISHA Guru"
+        width={size}
+        height={size}
+        className="relative rounded-full object-cover object-top"
+        style={{ width: size, height: size }}
+        unoptimized
+      />
+    </div>
+  );
+}
 
 interface Message {
   id: string;
@@ -248,14 +280,12 @@ export function DishaChatbot() {
       {open && (
         <div className="fixed bottom-24 right-4 z-50 flex h-[480px] w-[360px] flex-col overflow-hidden rounded-2xl border border-orange-200 bg-white shadow-2xl sm:right-6">
           {/* Header */}
-          <div className="flex items-center justify-between bg-gradient-to-r from-[#FF6600] to-[#FF8C00] px-4 py-3">
+          <div className="flex items-center justify-between bg-gradient-to-r from-[#0a0a2e] via-[#1a1a5e] to-[#0a0a2e] px-4 py-3">
             <div className="flex items-center gap-2.5">
-              <div className="flex size-9 items-center justify-center rounded-full bg-white/20">
-                <Bot className="size-5 text-white" />
-              </div>
+              <GuruAvatar size={36} />
               <div>
                 <h3 className="text-sm font-bold text-white">DISHA</h3>
-                <p className="text-[10px] text-orange-100">Astrology Assistant</p>
+                <p className="text-[10px] text-blue-200">Astrology Assistant</p>
               </div>
             </div>
             <button
@@ -274,14 +304,14 @@ export function DishaChatbot() {
                 className={`flex gap-2 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}
               >
                 <div
-                  className={`flex size-7 shrink-0 items-center justify-center rounded-full ${
+                  className={`flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-full ${
                     msg.role === "bot"
-                      ? "bg-[#FF6600] text-white"
+                      ? "bg-orange-100"
                       : "bg-gray-200 text-gray-600"
                   }`}
                 >
                   {msg.role === "bot" ? (
-                    <Bot className="size-4" />
+                    <GuruAvatar size={28} />
                   ) : (
                     <User className="size-4" />
                   )}
@@ -340,13 +370,13 @@ export function DishaChatbot() {
       {/* Floating Button */}
       <button
         onClick={() => setOpen(!open)}
-        className="fixed bottom-5 right-4 z-50 flex items-center gap-2 rounded-full bg-gradient-to-r from-[#FF6600] to-[#FF8C00] px-4 py-3 text-white shadow-lg shadow-orange-300/40 transition-all hover:scale-105 hover:shadow-xl hover:shadow-orange-300/50 sm:right-6"
+        className="fixed bottom-5 right-4 z-50 flex items-center gap-2 rounded-full bg-gradient-to-r from-[#0a0a2e] via-[#1a1a5e] to-[#0a0a2e] py-2 pl-2 pr-4 text-white shadow-lg shadow-[#0a0a2e]/40 transition-all hover:scale-105 hover:shadow-xl hover:shadow-[#1a1a5e]/50 sm:right-6"
       >
         {open ? (
-          <X className="size-5" />
+          <X className="size-5 ml-2" />
         ) : (
           <>
-            <MessageCircle className="size-5" />
+            <GuruAvatar size={32} />
             <span className="text-sm font-bold">DISHA</span>
           </>
         )}

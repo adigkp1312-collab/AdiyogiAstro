@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { ChevronRight, Newspaper } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const articles = [
   {
@@ -55,22 +58,28 @@ const articles = [
 ];
 
 export function Testimonials() {
+  const { t } = useLanguage();
   return (
-    <section className="bg-gray-50 py-8 sm:py-10">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden py-8 sm:py-10" style={{ background: "linear-gradient(135deg, #FFF8F0 0%, #FFF3E6 25%, #FFFAF5 50%, #FFF5EB 75%, #FFFBF7 100%)" }}>
+      {/* Decorative orbs */}
+      <div className="pointer-events-none absolute right-10 top-20 size-32 rounded-full bg-orange-200/20 blur-2xl" style={{ animation: "orb-float-2 18s ease-in-out infinite" }} />
+      <div className="pointer-events-none absolute bottom-10 left-20 size-40 rounded-full bg-amber-100/25 blur-2xl" style={{ animation: "orb-float-1 14s ease-in-out infinite" }} />
+      {/* Subtle dot grid */}
+      <div className="pointer-events-none absolute inset-0 opacity-30" style={{ backgroundImage: "radial-gradient(circle, rgba(255, 102, 0, 0.06) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="mb-6 flex items-center justify-between border-b-2 border-[#FF6600] pb-2">
           <div className="flex items-center gap-2">
             <Newspaper className="size-5 text-[#FF6600]" />
             <h2 className="text-xl font-bold text-[#FF6600] sm:text-2xl">
-              Latest Articles
+              {t("articles.title")}
             </h2>
           </div>
           <Link
             href="/blog"
             className="flex items-center gap-1 text-sm font-semibold text-[#FF6600] transition-colors hover:text-orange-700"
           >
-            View All Articles
+            {t("articles.viewAll")}
             <ChevronRight className="size-4" />
           </Link>
         </div>
@@ -107,7 +116,7 @@ export function Testimonials() {
             href="/blog"
             className="inline-flex items-center gap-1 rounded-md border border-[#FF6600] px-5 py-2 text-sm font-semibold text-[#FF6600] transition-colors hover:bg-[#FF6600] hover:text-white"
           >
-            View All Articles
+            {t("articles.viewAll")}
             <ChevronRight className="size-4" />
           </Link>
         </div>

@@ -13,8 +13,11 @@ import {
   MessageCircle,
   ChevronDown,
   Sparkles,
+  Globe,
 } from "lucide-react";
 import { LogoIcon } from "@/components/shared/logo-icon";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { LANGUAGES } from "@/lib/translations";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -47,45 +50,36 @@ interface NavbarProps {
 /*  Data                                                               */
 /* ------------------------------------------------------------------ */
 
-const zodiacSigns = [
-  "Aries",
-  "Taurus",
-  "Gemini",
-  "Cancer",
-  "Leo",
-  "Virgo",
-  "Libra",
-  "Scorpio",
-  "Sagittarius",
-  "Capricorn",
-  "Aquarius",
-  "Pisces",
+
+const mainNavLinkKeys = [
+  { href: "/", key: "nav.home" },
+  { href: "/horoscopes", key: "nav.horoscope" },
+  { href: "/birth-chart/new", key: "nav.astrology" },
+  { href: "/birth-chart/new", key: "nav.freeReports" },
+  { href: "/panchang", key: "nav.panchang" },
+  { href: "/festivals", key: "nav.festivals" },
+  { href: "/compatibility", key: "nav.compatibility" },
+  { href: "/pricing", key: "nav.calculators" },
 ] as const;
 
-const mainNavLinks = [
-  { href: "/", label: "Home" },
-  { href: "/horoscopes", label: "Horoscope" },
-  { href: "/birth-chart/new", label: "Astrology" },
-  { href: "/birth-chart/new", label: "Free Reports" },
-  { href: "/panchang", label: "Panchang" },
-  { href: "/festivals", label: "Festivals" },
-  { href: "/compatibility", label: "Compatibility" },
-  { href: "/pricing", label: "Calculators" },
+const secondaryLinkKeys = [
+  { href: "/birth-chart/new", key: "nav.freeKundli" },
+  { href: "/compatibility", key: "nav.horoscopeMatching" },
+  { href: "/horoscopes", key: "nav.todaysHoroscope" },
+  { href: "/panchang", key: "nav.panchangToday" },
+  { href: "/pricing", key: "nav.premiumReports" },
+  { href: "/contact", key: "nav.talkToAstrologer" },
 ] as const;
 
-const secondaryLinks = [
-  { href: "/birth-chart/new", label: "Free Kundli" },
-  { href: "/compatibility", label: "Horoscope Matching" },
-  { href: "/horoscopes", label: "Today's Horoscope" },
-  { href: "/panchang", label: "Panchang Today" },
-  { href: "/pricing", label: "Premium Reports" },
-  { href: "/contact", label: "Talk to Astrologer" },
+const utilityLinkKeys = [
+  { href: "/horoscopes", key: "nav.todaysHoroscope" },
+  { href: "/birth-chart/new", key: "nav.kundli" },
+  { href: "/panchang", key: "nav.calendar2026" },
 ] as const;
 
-const utilityLinks = [
-  { href: "/horoscopes", label: "Today's Horoscope" },
-  { href: "/birth-chart/new", label: "Kundli" },
-  { href: "/panchang", label: "Calendar 2026" },
+const zodiacSignKeys = [
+  "aries", "taurus", "gemini", "cancer", "leo", "virgo",
+  "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces",
 ] as const;
 
 /* ------------------------------------------------------------------ */
@@ -115,73 +109,91 @@ export function Navbar({ session }: NavbarProps) {
     setMobileOpen(false);
   }, [pathname]);
 
-  const languages = [
-    { code: "hi", label: "हिन्दी", labelEn: "Hindi" },
-    { code: "bn", label: "বাংলা", labelEn: "Bengali" },
-    { code: "te", label: "తెలుగు", labelEn: "Telugu" },
-    { code: "mr", label: "मराठी", labelEn: "Marathi" },
-    { code: "ta", label: "தமிழ்", labelEn: "Tamil" },
-    { code: "gu", label: "ગુજરાતી", labelEn: "Gujarati" },
-    { code: "kn", label: "ಕನ್ನಡ", labelEn: "Kannada" },
-    { code: "ml", label: "മലയാളം", labelEn: "Malayalam" },
-    { code: "pa", label: "ਪੰਜਾਬੀ", labelEn: "Punjabi" },
-  ];
+  const { language: activeLang, setLanguage: setActiveLang, t } = useLanguage();
+  const languages = LANGUAGES.filter((l) => l.code !== "en");
+  const [langOpen, setLangOpen] = React.useState(false);
+  const langRef = React.useRef<HTMLDivElement>(null);
 
-  const [activeLang, setActiveLang] = React.useState("en");
+  // Close language dropdown on outside click
+  React.useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const activeLangLabel =
+    activeLang === "en"
+      ? "English"
+      : LANGUAGES.find((l) => l.code === activeLang)?.label ?? "English";
 
   return (
     <header className="sticky top-0 z-50 w-full shadow-md">
 
       {/* ============================================================= */}
-      {/*  LAYER 1 -- Language Bar                                       */}
+      {/*  LAYER 1 -- Language Dropdown                                  */}
       {/* ============================================================= */}
       <div className="border-b border-gray-200 bg-gray-50">
-        <div className="mx-auto flex max-w-7xl items-center justify-end gap-1 px-4 py-1 sm:gap-0">
-          <button
-            onClick={() => setActiveLang("en")}
-            className={`px-2 py-0.5 text-[11px] font-medium transition-colors ${
-              activeLang === "en"
-                ? "text-[#FF6600] underline underline-offset-2"
-                : "text-blue-700 hover:text-[#FF6600] hover:underline"
-            }`}
-          >
-            English
-          </button>
-          {languages.map((lang) => (
+        <div className="mx-auto flex max-w-7xl items-center justify-end px-4 py-1">
+          <div ref={langRef} className="relative">
             <button
-              key={lang.code}
-              onClick={() => setActiveLang(lang.code)}
-              className={`px-2 py-0.5 text-[11px] font-medium transition-colors ${
-                activeLang === lang.code
-                  ? "text-[#FF6600] underline underline-offset-2"
-                  : "text-blue-700 hover:text-[#FF6600] hover:underline"
-              }`}
+              onClick={() => setLangOpen(!langOpen)}
+              className="flex cursor-pointer items-center gap-1.5 rounded-md px-2.5 py-1 text-[12px] font-medium text-gray-700 transition-colors hover:bg-gray-200/60 hover:text-[#FF6600]"
             >
-              {lang.label}
+              <Globe className="size-3.5" />
+              {activeLangLabel}
+              <ChevronDown className={`size-3 text-gray-400 transition-transform ${langOpen ? "rotate-180" : ""}`} />
             </button>
-          ))}
+            {langOpen && (
+              <div className="absolute right-0 top-full z-[60] mt-1 w-48 overflow-hidden rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
+                <p className="px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+                  {t("nav.selectLanguage")}
+                </p>
+                <div className="my-1 h-px bg-gray-100" />
+                <button
+                  onClick={() => { setActiveLang("en"); setLangOpen(false); }}
+                  className={`flex w-full items-center px-3 py-1.5 text-left text-[12px] transition-colors hover:bg-[#FFF7ED] ${activeLang === "en" ? "font-bold text-[#FF6600]" : "text-gray-700"}`}
+                >
+                  English
+                </button>
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => { setActiveLang(lang.code); setLangOpen(false); }}
+                    className={`flex w-full items-center justify-between px-3 py-1.5 text-left text-[12px] transition-colors hover:bg-[#FFF7ED] ${activeLang === lang.code ? "font-bold text-[#FF6600]" : "text-gray-700"}`}
+                  >
+                    {lang.label}
+                    <span className="text-[10px] text-gray-400">{lang.labelEn}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
       {/* ============================================================= */}
       {/*  LAYER 2 -- Main Header (Logo + Zodiac Strip)                  */}
       {/* ============================================================= */}
-      <div className="border-b border-[#FF6600]/20 bg-white">
+      <div className="border-b border-[#1a1a4e]/30 bg-gradient-to-r from-[#0a0a2e] via-[#1a1a5e] to-[#0a0a2e]">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-2 px-4 py-3 lg:flex-row lg:gap-6">
           {/* Logo + mobile hamburger row */}
           <div className="flex w-full items-center justify-between lg:w-auto">
             <Link href="/" className="flex items-center gap-2">
               <LogoIcon className="size-8" />
-              <span className="text-2xl font-extrabold tracking-tight text-[#FF6600]">
+              <span className="text-2xl font-extrabold tracking-tight text-[#FF9933]">
                 Astro
-                <span className="text-gray-800">Path</span>
+                <span className="text-white">Path</span>
               </span>
             </Link>
 
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="inline-flex items-center justify-center rounded-md border border-[#FF6600]/30 p-2 text-[#FF6600] transition-colors hover:bg-[#FF6600]/10 lg:hidden"
+              className="inline-flex items-center justify-center rounded-md border border-white/30 p-2 text-white transition-colors hover:bg-white/10 lg:hidden"
               aria-label="Toggle navigation menu"
             >
               {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -191,20 +203,20 @@ export function Navbar({ session }: NavbarProps) {
           {/* Zodiac sign strip -- desktop */}
           <div className="hidden flex-1 overflow-x-auto lg:block">
             <div className="flex items-center justify-center gap-0">
-              {zodiacSigns.map((sign, i) => (
+              {zodiacSignKeys.map((sign, i) => (
                 <React.Fragment key={sign}>
                   {i > 0 && (
-                    <span className="select-none text-[10px] text-[#FF6600]/40">|</span>
+                    <span className="select-none text-[10px] text-white/30">|</span>
                   )}
                   <Link
-                    href={`/horoscopes/${sign.toLowerCase()}`}
-                    className={`whitespace-nowrap px-2 py-1 text-[11px] font-bold uppercase tracking-wider transition-colors hover:text-[#FF6600] ${
-                      pathname === `/horoscopes/${sign.toLowerCase()}`
-                        ? "text-[#FF6600]"
-                        : "text-gray-600"
+                    href={`/horoscopes/${sign}`}
+                    className={`whitespace-nowrap px-2 py-1 text-[11px] font-bold uppercase tracking-wider transition-colors hover:text-[#FF9933] ${
+                      pathname === `/horoscopes/${sign}`
+                        ? "text-[#FF9933]"
+                        : "text-white/80"
                     }`}
                   >
-                    {sign}
+                    {t(`zodiac.${sign}`)}
                   </Link>
                 </React.Fragment>
               ))}
@@ -280,9 +292,9 @@ export function Navbar({ session }: NavbarProps) {
             ) : (
               <Link
                 href="/login"
-                className="rounded-md border-2 border-[#FF6600] bg-[#FF6600] px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#e65c00]"
+                className="rounded-md border-2 border-[#FF9933] bg-[#FF6600] px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#FF9933]"
               >
-                Sign In / Sign Up
+                {t("nav.signIn")}
               </Link>
             )}
           </div>
@@ -295,13 +307,13 @@ export function Navbar({ session }: NavbarProps) {
       <nav className="hidden border-b border-[#FF6600]/20 bg-gradient-to-r from-[#FF6600] to-[#FF8C00] lg:block">
         <div className="mx-auto flex h-10 max-w-7xl items-center justify-center px-4">
           <div className="flex items-center gap-0">
-            {mainNavLinks.map((link, i) => {
+            {mainNavLinkKeys.map((link, i) => {
               const isActive =
                 link.href === "/"
                   ? pathname === "/"
                   : pathname.startsWith(link.href);
               return (
-                <React.Fragment key={link.label}>
+                <React.Fragment key={link.key}>
                   {i > 0 && (
                     <span className="select-none text-white/30">|</span>
                   )}
@@ -313,7 +325,7 @@ export function Navbar({ session }: NavbarProps) {
                         : "text-white/90 hover:bg-white/10 hover:text-white"
                     }`}
                   >
-                    {link.label}
+                    {t(link.key)}
                   </Link>
                 </React.Fragment>
               );
@@ -325,16 +337,16 @@ export function Navbar({ session }: NavbarProps) {
       {/* ============================================================= */}
       {/*  LAYER 4 -- Secondary Quick Links Bar                          */}
       {/* ============================================================= */}
-      <div className="hidden border-b border-gray-200 bg-[#FFF7ED] lg:block">
+      <div className="hidden border-b border-[#333]/60 bg-[#1a1a1a] lg:block">
         <div className="mx-auto flex h-9 max-w-7xl items-center justify-center gap-6 px-4">
-          {secondaryLinks.map((link) => (
+          {secondaryLinkKeys.map((link) => (
             <Link
-              key={link.label}
+              key={link.key}
               href={link.href}
-              className="flex items-center gap-1 text-xs font-medium text-[#FF6600] transition-colors hover:text-[#cc5200] hover:underline"
+              className="flex items-center gap-1 text-xs font-semibold text-[#daa520] transition-colors hover:text-[#ffd700] hover:underline"
             >
               <Sparkles className="size-3" />
-              {link.label}
+              {t(link.key)}
             </Link>
           ))}
         </div>
@@ -376,7 +388,7 @@ export function Navbar({ session }: NavbarProps) {
                   className="rounded-md bg-[#FF6600] px-5 py-2 text-sm font-bold uppercase text-white"
                   onClick={() => setMobileOpen(false)}
                 >
-                  Sign In / Sign Up
+                  {t("nav.signIn")}
                 </Link>
                 <Link
                   href="/contact"
@@ -384,7 +396,7 @@ export function Navbar({ session }: NavbarProps) {
                   onClick={() => setMobileOpen(false)}
                 >
                   <MessageCircle className="size-3.5" />
-                  Chat with Astrologer
+                  {t("nav.chatWithAstrologer")}
                 </Link>
               </div>
             )}
@@ -393,16 +405,16 @@ export function Navbar({ session }: NavbarProps) {
           {/* Mobile main nav */}
           <div className="border-b border-gray-200 px-4 py-2">
             <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-              Navigation
+              {t("nav.navigation")}
             </p>
-            {mainNavLinks.map((link) => {
+            {mainNavLinkKeys.map((link) => {
               const isActive =
                 link.href === "/"
                   ? pathname === "/"
                   : pathname.startsWith(link.href);
               return (
                 <Link
-                  key={link.label}
+                  key={link.key}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
                   className={`block border-b border-gray-100 px-2 py-2.5 text-sm font-semibold transition-colors last:border-b-0 ${
@@ -411,7 +423,7 @@ export function Navbar({ session }: NavbarProps) {
                       : "text-gray-700 hover:text-[#FF6600]"
                   }`}
                 >
-                  {link.label}
+                  {t(link.key)}
                 </Link>
               );
             })}
@@ -420,21 +432,21 @@ export function Navbar({ session }: NavbarProps) {
           {/* Mobile zodiac signs */}
           <div className="border-b border-gray-200 px-4 py-2">
             <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-              Zodiac Signs
+              {t("nav.zodiacSigns")}
             </p>
             <div className="grid grid-cols-3 gap-1">
-              {zodiacSigns.map((sign) => (
+              {zodiacSignKeys.map((sign) => (
                 <Link
                   key={sign}
-                  href={`/horoscopes/${sign.toLowerCase()}`}
+                  href={`/horoscopes/${sign}`}
                   onClick={() => setMobileOpen(false)}
                   className={`rounded-md px-2 py-2 text-center text-xs font-bold uppercase tracking-wide transition-colors ${
-                    pathname === `/horoscopes/${sign.toLowerCase()}`
+                    pathname === `/horoscopes/${sign}`
                       ? "bg-[#FF6600] text-white"
                       : "bg-[#FFF7ED] text-gray-700 hover:bg-[#FF6600]/10 hover:text-[#FF6600]"
                   }`}
                 >
-                  {sign}
+                  {t(`zodiac.${sign}`)}
                 </Link>
               ))}
             </div>
@@ -443,17 +455,17 @@ export function Navbar({ session }: NavbarProps) {
           {/* Mobile quick links */}
           <div className="border-b border-gray-200 px-4 py-2">
             <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-              Popular
+              {t("nav.popular")}
             </p>
-            {secondaryLinks.map((link) => (
+            {secondaryLinkKeys.map((link) => (
               <Link
-                key={link.label}
+                key={link.key}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center gap-2 border-b border-gray-100 px-2 py-2.5 text-sm text-[#FF6600] transition-colors last:border-b-0 hover:underline"
               >
                 <Sparkles className="size-3" />
-                {link.label}
+                {t(link.key)}
               </Link>
             ))}
           </div>
@@ -461,16 +473,16 @@ export function Navbar({ session }: NavbarProps) {
           {/* Mobile utility links */}
           <div className="px-4 py-2">
             <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-              Quick Access
+              {t("nav.quickAccess")}
             </p>
-            {utilityLinks.map((link) => (
+            {utilityLinkKeys.map((link) => (
               <Link
-                key={link.label}
+                key={link.key}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
                 className="block border-b border-gray-100 px-2 py-2.5 text-sm text-gray-600 transition-colors last:border-b-0 hover:text-[#FF6600]"
               >
-                {link.label}
+                {t(link.key)}
               </Link>
             ))}
           </div>
@@ -479,7 +491,7 @@ export function Navbar({ session }: NavbarProps) {
           {session?.user && (
             <div className="border-t border-gray-200 px-4 py-2">
               <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-                Account
+                {t("nav.account")}
               </p>
               <Link
                 href="/dashboard"
