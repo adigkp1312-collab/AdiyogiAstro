@@ -104,7 +104,7 @@ export function Features() {
             <Calendar className="mx-auto mb-1 size-6 text-[#FF6600]" />
             <p className="text-xs font-semibold text-gray-700">{t("features.festivalCalendar")}</p>
           </Link>
-          <Link href="/birth-chart/new" className="rounded-md border border-orange-200 bg-orange-50 p-3 text-center transition-colors hover:border-[#FF6600] hover:bg-orange-100">
+          <Link href="/planet-positions" className="rounded-md border border-orange-200 bg-orange-50 p-3 text-center transition-colors hover:border-[#FF6600] hover:bg-orange-100">
             <Orbit className="mx-auto mb-1 size-6 text-[#FF6600]" />
             <p className="text-xs font-semibold text-gray-700">{t("features.planetPositions")}</p>
           </Link>
