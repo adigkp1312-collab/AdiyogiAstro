@@ -243,9 +243,11 @@ export function DishaChatbot() {
     scrollToBottom();
   }, [messages]);
 
-  const handleSend = (text?: string) => {
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const handleSend = async (text?: string) => {
     const query = text || input.trim();
-    if (!query) return;
+    if (!query || isLoading) return;
 
     const userMsg: Message = {
       id: `user-${Date.now()}`,
@@ -255,16 +257,42 @@ export function DishaChatbot() {
 
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
+    setIsLoading(true);
 
-    // Simulate typing delay
-    setTimeout(() => {
+    try {
+      // Build chat history for context
+      const history = messages
+        .filter((m) => m.id !== "greeting")
+        .map((m) => ({
+          role: m.role === "bot" ? "assistant" : "user",
+          content: m.text,
+        }));
+
+      const res = await fetch("/api/disha-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: query, history }),
+      });
+
+      const data = await res.json();
+
+      const botMsg: Message = {
+        id: `bot-${Date.now()}`,
+        role: "bot",
+        text: data.reply || data.error || findAnswer(query),
+      };
+      setMessages((prev) => [...prev, botMsg]);
+    } catch {
+      // Fallback to local knowledge base if API fails
       const botMsg: Message = {
         id: `bot-${Date.now()}`,
         role: "bot",
         text: findAnswer(query),
       };
       setMessages((prev) => [...prev, botMsg]);
-    }, 500);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -328,6 +356,20 @@ export function DishaChatbot() {
                 </div>
               </div>
             ))}
+            {isLoading && (
+              <div className="flex gap-2">
+                <div className="flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-orange-100">
+                  <GuruAvatar size={28} />
+                </div>
+                <div className="rounded-2xl rounded-tl-sm bg-white px-4 py-3 shadow-sm ring-1 ring-gray-100">
+                  <div className="flex gap-1">
+                    <span className="size-2 rounded-full bg-orange-400" style={{ animation: "typing-dot 1.4s infinite ease-in-out", animationDelay: "0s" }} />
+                    <span className="size-2 rounded-full bg-orange-400" style={{ animation: "typing-dot 1.4s infinite ease-in-out", animationDelay: "0.2s" }} />
+                    <span className="size-2 rounded-full bg-orange-400" style={{ animation: "typing-dot 1.4s infinite ease-in-out", animationDelay: "0.4s" }} />
+                  </div>
+                </div>
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
 
@@ -358,7 +400,7 @@ export function DishaChatbot() {
             />
             <button
               onClick={() => handleSend()}
-              disabled={!input.trim()}
+              disabled={!input.trim() || isLoading}
               className="flex size-9 items-center justify-center rounded-full bg-[#FF6600] text-white transition-colors hover:bg-[#e65c00] disabled:opacity-40"
             >
               <Send className="size-4" />
