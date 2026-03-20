@@ -14,8 +14,8 @@ model User {
   emailVerified     DateTime?
   image             String?
   password          String?
-  role              String    @default("USER")
-  subscriptionTier  String    @default("FREE")
+  role              Role     @default(USER)
+  subscriptionTier  SubscriptionTier @default(FREE)
   stripeCustomerId  String?   @unique
   birthDate         DateTime?
   birthTime         String?
@@ -103,8 +103,8 @@ model BirthChart {
 
 model Horoscope {
   id              String   @id @default(cuid())
-  sign            String
-  type            String
+  sign            ZodiacSign
+  type            HoroscopeType
   title           String
   content         String
   premiumContent  String?
@@ -156,4 +156,36 @@ model ContactMessage {
   message   String
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum SubscriptionTier {
+  FREE
+  PRO
+  PREMIUM
+}
+
+enum ZodiacSign {
+  ARIES
+  TAURUS
+  GEMINI
+  CANCER
+  LEO
+  VIRGO
+  LIBRA
+  SCORPIO
+  SAGITTARIUS
+  CAPRICORN
+  AQUARIUS
+  PISCES
+}
+
+enum HoroscopeType {
+  DAILY
+  WEEKLY
+  MONTHLY
 }

@@ -1,9 +1,9 @@
-import { auth } from "@/lib/auth";
+import NextAuth from "next-auth";
+import { authConfig } from "@/lib/auth.config";
 import { NextResponse } from "next/server";
 
-const protectedRoutes: string[] = [];
+const { auth } = NextAuth(authConfig);
 
-// These sub-routes are publicly accessible (no auth required)
 const publicSubRoutes = [
   "/birth-chart/new",
 ];
@@ -42,17 +42,6 @@ export default auth((req) => {
 
   if (isPublicSubRoute) {
     return NextResponse.next();
-  }
-
-  // Check if the route is a protected route
-  const isProtectedRoute = protectedRoutes.some(
-    (route) => pathname === route || pathname.startsWith(`${route}/`)
-  );
-
-  if (isProtectedRoute && !isLoggedIn) {
-    const loginUrl = new URL("/login", req.nextUrl.origin);
-    loginUrl.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(loginUrl);
   }
 
   return NextResponse.next();
