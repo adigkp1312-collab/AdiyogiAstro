@@ -62,7 +62,7 @@ export async function POST(request: Request) {
         birthPlace: data.birthPlace,
         latitude: data.latitude,
         longitude: data.longitude,
-        chartData: data.chartData as object,
+        chartData: JSON.stringify(data.chartData),
       },
     });
 
