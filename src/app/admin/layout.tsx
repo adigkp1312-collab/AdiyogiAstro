@@ -163,7 +163,7 @@ export default function AdminLayout({
           </div>
           <div className="flex items-center gap-3">
             <span className="text-sm text-gray-600">Admin User</span>
-            <Avatar size="sm">
+            <Avatar className="h-8 w-8">
               <AvatarFallback className="bg-[#FF6600] text-xs text-white">
                 A
               </AvatarFallback>
