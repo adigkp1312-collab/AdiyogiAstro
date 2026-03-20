@@ -1,13 +1,11 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import type { ZodiacSign, HoroscopeType } from "@prisma/client";
-
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const sign = searchParams.get("sign") as ZodiacSign | null;
-    const type = searchParams.get("type") as HoroscopeType | null;
+    const sign = searchParams.get("sign");
+    const type = searchParams.get("type");
     const date = searchParams.get("date");
 
     const session = await auth();
