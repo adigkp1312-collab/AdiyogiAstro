@@ -111,7 +111,7 @@ export default function AdminLayout({
         <div className="p-3">
           {collapsed ? (
             <div className="flex justify-center">
-              <Avatar size="sm">
+              <Avatar className="h-8 w-8">
                 <AvatarFallback className="bg-[#FF6600] text-xs text-white">
                   A
                 </AvatarFallback>
@@ -119,7 +119,7 @@ export default function AdminLayout({
             </div>
           ) : (
             <div className="flex items-center gap-3">
-              <Avatar size="sm">
+              <Avatar className="h-8 w-8">
                 <AvatarFallback className="bg-[#FF6600] text-xs text-white">
                   A
                 </AvatarFallback>
