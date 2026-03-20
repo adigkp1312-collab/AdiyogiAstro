@@ -3,59 +3,27 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  USER
-  ADMIN
-}
-
-enum SubscriptionTier {
-  FREE
-  PREMIUM
-  PRO
-}
-
-enum ZodiacSign {
-  ARIES
-  TAURUS
-  GEMINI
-  CANCER
-  LEO
-  VIRGO
-  LIBRA
-  SCORPIO
-  SAGITTARIUS
-  CAPRICORN
-  AQUARIUS
-  PISCES
-}
-
-enum HoroscopeType {
-  DAILY
-  WEEKLY
-  MONTHLY
-}
-
 model User {
-  id                String           @id @default(cuid())
+  id                String    @id @default(cuid())
   name              String?
-  email             String?          @unique
+  email             String?   @unique
   emailVerified     DateTime?
   image             String?
   password          String?
-  role              Role             @default(USER)
-  subscriptionTier  SubscriptionTier @default(FREE)
-  stripeCustomerId  String?          @unique
+  role              String    @default("USER")
+  subscriptionTier  String    @default("FREE")
+  stripeCustomerId  String?   @unique
   birthDate         DateTime?
   birthTime         String?
   birthPlace        String?
   birthLatitude     Float?
   birthLongitude    Float?
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 
   accounts             Account[]
   sessions             Session[]
@@ -71,12 +39,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -125,7 +93,7 @@ model BirthChart {
   birthPlace  String
   latitude    Float
   longitude   Float
-  chartData   Json
+  chartData   String
   createdAt   DateTime @default(now())
 
   user                  User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -134,35 +102,35 @@ model BirthChart {
 }
 
 model Horoscope {
-  id              String        @id @default(cuid())
-  sign            ZodiacSign
-  type            HoroscopeType
+  id              String   @id @default(cuid())
+  sign            String
+  type            String
   title           String
-  content         String        @db.Text
-  premiumContent  String?       @db.Text
+  content         String
+  premiumContent  String?
   publishDate     DateTime
-  isPublished     Boolean       @default(false)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  isPublished     Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   @@unique([sign, type, publishDate])
 }
 
 model BlogPost {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   title       String
-  slug        String   @unique
-  excerpt     String?  @db.Text
-  content     String   @db.Text
+  slug        String    @unique
+  excerpt     String?
+  content     String
   coverImage  String?
   category    String?
-  tags        String[]
-  isPremium   Boolean  @default(false)
-  isPublished Boolean  @default(false)
+  tags        String    @default("")
+  isPremium   Boolean   @default(false)
+  isPublished Boolean   @default(false)
   authorId    String
   publishedAt DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   author User @relation("author", fields: [authorId], references: [id])
 }
@@ -172,7 +140,7 @@ model CompatibilityReport {
   userId     String
   chart1Id   String
   chart2Id   String
-  reportData Json
+  reportData String
   createdAt  DateTime @default(now())
 
   user   User       @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -185,7 +153,7 @@ model ContactMessage {
   name      String
   email     String
   subject   String
-  message   String   @db.Text
+  message   String
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
 }
