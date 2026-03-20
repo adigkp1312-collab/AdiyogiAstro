@@ -228,7 +228,7 @@ export function Navbar({ session }: NavbarProps) {
             {session?.user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex cursor-pointer items-center gap-2 rounded-md border border-[#FF6600]/30 px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:border-[#FF6600] hover:bg-[#FF6600]/5">
-                  <Avatar size="sm">
+                  <Avatar className="h-8 w-8">
                     {session.user.image && (
                       <AvatarImage
                         src={session.user.image}
@@ -361,7 +361,7 @@ export function Navbar({ session }: NavbarProps) {
           <div className="border-b border-[#FF6600]/20 bg-[#FFF7ED] px-4 py-3">
             {session?.user ? (
               <div className="flex items-center gap-3">
-                <Avatar size="sm">
+                <Avatar className="h-8 w-8">
                   {session.user.image && (
                     <AvatarImage
                       src={session.user.image}

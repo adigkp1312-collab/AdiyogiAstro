@@ -89,7 +89,7 @@ const columns = [
     header: "Name",
     cell: (info) => (
       <div className="flex items-center gap-3">
-        <Avatar size="sm">
+        <Avatar className="h-8 w-8">
           <AvatarFallback className="bg-indigo-600 text-xs text-white">
             {getInitials(info.getValue())}
           </AvatarFallback>
