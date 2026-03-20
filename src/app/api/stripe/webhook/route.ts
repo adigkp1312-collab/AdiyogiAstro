@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import { stripe } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 import type Stripe from "stripe";
-import type { SubscriptionTier } from "@prisma/client";
+import type { SubscriptionTier } from "@/types";
 import { PLANS } from "@/lib/stripe";
 
 function getTierFromPriceId(priceId: string): SubscriptionTier {

@@ -1,6 +1,9 @@
-import { Role, SubscriptionTier, ZodiacSign, HoroscopeType } from "@prisma/client";
-
-export type { Role, SubscriptionTier, ZodiacSign, HoroscopeType };
+export type Role = "USER" | "ADMIN";
+export type SubscriptionTier = "FREE" | "PRO" | "PREMIUM";
+export type ZodiacSign = 
+  | "ARIES" | "TAURUS" | "GEMINI" | "CANCER" | "LEO" | "VIRGO"
+  | "LIBRA" | "SCORPIO" | "SAGITTARIUS" | "CAPRICORN" | "AQUARIUS" | "PISCES";
+export type HoroscopeType = "DAILY" | "WEEKLY" | "MONTHLY";
 
 declare module "next-auth" {
   interface Session {
