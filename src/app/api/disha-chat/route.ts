@@ -71,11 +71,11 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ reply });
   } catch (error: unknown) {
-    console.error("DISHA Chat Error:", error);
+    // Log only a brief warning instead of full error stack
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    return NextResponse.json(
-      { error: "Failed to get response from DISHA", details: errorMessage },
-      { status: 500 }
-    );
+    console.warn("DISHA Chat: Bedrock unavailable, client will use local KB. Reason:", errorMessage);
+
+    // Return 200 with no reply so client falls back to local knowledge base gracefully
+    return NextResponse.json({ reply: null });
   }
 }

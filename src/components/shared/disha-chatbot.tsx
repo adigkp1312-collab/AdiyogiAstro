@@ -276,10 +276,11 @@ export function DishaChatbot() {
 
       const data = await res.json();
 
+      // If API returned an error or no reply, fall back to local knowledge base
       const botMsg: Message = {
         id: `bot-${Date.now()}`,
         role: "bot",
-        text: data.reply || data.error || findAnswer(query),
+        text: data.reply || findAnswer(query),
       };
       setMessages((prev) => [...prev, botMsg]);
     } catch {

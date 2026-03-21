@@ -1,3 +1,75 @@
+// Pre-computed coordinates to avoid floating-point hydration mismatches
+const ANGLES_12 = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330];
+const ANGLES_12_OFFSET = [15, 45, 75, 105, 135, 165, 195, 225, 255, 285, 315, 345];
+
+function coord(cx: number, r: number, angleDeg: number): number {
+  return Math.round((cx + r * Math.cos((angleDeg * Math.PI) / 180)) * 100) / 100;
+}
+
+// Pre-compute all coordinate values at module level (runs once, same on server & client)
+const dividerLines = ANGLES_12.map((angle) => ({
+  x1: coord(24, 14, angle),
+  y1: coord(24, 14, angle),
+  x2: coord(24, 21, angle),
+  y2: coord(24, 21, angle),
+}));
+
+// Actually we need separate x/y computations
+const precomputed = {
+  dividers: ANGLES_12.map((angle) => {
+    const cos = Math.round(Math.cos((angle * Math.PI) / 180) * 10000) / 10000;
+    const sin = Math.round(Math.sin((angle * Math.PI) / 180) * 10000) / 10000;
+    return {
+      x1: Math.round((24 + 14 * cos) * 100) / 100,
+      y1: Math.round((24 + 14 * sin) * 100) / 100,
+      x2: Math.round((24 + 21 * cos) * 100) / 100,
+      y2: Math.round((24 + 21 * sin) * 100) / 100,
+    };
+  }),
+  zodiacSymbols: [
+    { symbol: "♈", angle: -75 },
+    { symbol: "♉", angle: -45 },
+    { symbol: "♊", angle: -15 },
+    { symbol: "♋", angle: 15 },
+    { symbol: "♌", angle: 45 },
+    { symbol: "♍", angle: 75 },
+    { symbol: "♎", angle: 105 },
+    { symbol: "♏", angle: 135 },
+    { symbol: "♐", angle: 165 },
+    { symbol: "♑", angle: 195 },
+    { symbol: "♒", angle: 225 },
+    { symbol: "♓", angle: 255 },
+  ].map(({ symbol, angle }) => {
+    const cos = Math.round(Math.cos((angle * Math.PI) / 180) * 10000) / 10000;
+    const sin = Math.round(Math.sin((angle * Math.PI) / 180) * 10000) / 10000;
+    return {
+      symbol,
+      x: Math.round((24 + 17.5 * cos) * 100) / 100,
+      y: Math.round((24 + 17.5 * sin + 1.5) * 100) / 100,
+    };
+  }),
+  sunRays: ANGLES_12.map((angle) => {
+    const cos = Math.round(Math.cos((angle * Math.PI) / 180) * 10000) / 10000;
+    const sin = Math.round(Math.sin((angle * Math.PI) / 180) * 10000) / 10000;
+    return {
+      x1: Math.round((24 + 10.5 * cos) * 100) / 100,
+      y1: Math.round((24 + 10.5 * sin) * 100) / 100,
+      x2: Math.round((24 + 13.5 * cos) * 100) / 100,
+      y2: Math.round((24 + 13.5 * sin) * 100) / 100,
+    };
+  }),
+  wavyRays: ANGLES_12_OFFSET.map((angle) => {
+    const cos = Math.round(Math.cos((angle * Math.PI) / 180) * 10000) / 10000;
+    const sin = Math.round(Math.sin((angle * Math.PI) / 180) * 10000) / 10000;
+    return {
+      x1: Math.round((24 + 10.5 * cos) * 100) / 100,
+      y1: Math.round((24 + 10.5 * sin) * 100) / 100,
+      x2: Math.round((24 + 12.5 * cos) * 100) / 100,
+      y2: Math.round((24 + 12.5 * sin) * 100) / 100,
+    };
+  }),
+};
+
 export function LogoIcon({ className = "size-7" }: { className?: string }) {
   return (
     <svg
@@ -31,13 +103,13 @@ export function LogoIcon({ className = "size-7" }: { className?: string }) {
       <circle cx="24" cy="24" r="14" fill="url(#astroSunGrad)" />
 
       {/* Divider lines between zodiac sections */}
-      {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle) => (
+      {precomputed.dividers.map((d, i) => (
         <line
-          key={angle}
-          x1={24 + 14 * Math.cos((angle * Math.PI) / 180)}
-          y1={24 + 14 * Math.sin((angle * Math.PI) / 180)}
-          x2={24 + 21 * Math.cos((angle * Math.PI) / 180)}
-          y2={24 + 21 * Math.sin((angle * Math.PI) / 180)}
+          key={ANGLES_12[i]}
+          x1={d.x1}
+          y1={d.y1}
+          x2={d.x2}
+          y2={d.y2}
           stroke="#DAA520"
           strokeWidth="0.4"
           opacity="0.6"
@@ -45,24 +117,11 @@ export function LogoIcon({ className = "size-7" }: { className?: string }) {
       ))}
 
       {/* Zodiac symbols around the ring */}
-      {[
-        { symbol: "♈", angle: -75 },
-        { symbol: "♉", angle: -45 },
-        { symbol: "♊", angle: -15 },
-        { symbol: "♋", angle: 15 },
-        { symbol: "♌", angle: 45 },
-        { symbol: "♍", angle: 75 },
-        { symbol: "♎", angle: 105 },
-        { symbol: "♏", angle: 135 },
-        { symbol: "♐", angle: 165 },
-        { symbol: "♑", angle: 195 },
-        { symbol: "♒", angle: 225 },
-        { symbol: "♓", angle: 255 },
-      ].map(({ symbol, angle }) => (
+      {precomputed.zodiacSymbols.map(({ symbol, x, y }) => (
         <text
           key={symbol}
-          x={24 + 17.5 * Math.cos((angle * Math.PI) / 180)}
-          y={24 + 17.5 * Math.sin((angle * Math.PI) / 180) + 1.5}
+          x={x}
+          y={y}
           textAnchor="middle"
           fontSize="4"
           fill="#B8860B"
@@ -76,13 +135,13 @@ export function LogoIcon({ className = "size-7" }: { className?: string }) {
       <circle cx="24" cy="24" r="10" fill="url(#astroFaceGrad)" stroke="#B8860B" strokeWidth="0.8" />
 
       {/* Sun rays */}
-      {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle) => (
+      {precomputed.sunRays.map((d, i) => (
         <line
-          key={`ray-${angle}`}
-          x1={24 + 10.5 * Math.cos((angle * Math.PI) / 180)}
-          y1={24 + 10.5 * Math.sin((angle * Math.PI) / 180)}
-          x2={24 + 13.5 * Math.cos((angle * Math.PI) / 180)}
-          y2={24 + 13.5 * Math.sin((angle * Math.PI) / 180)}
+          key={`ray-${ANGLES_12[i]}`}
+          x1={d.x1}
+          y1={d.y1}
+          x2={d.x2}
+          y2={d.y2}
           stroke="#FFD700"
           strokeWidth="1.2"
           strokeLinecap="round"
@@ -90,13 +149,13 @@ export function LogoIcon({ className = "size-7" }: { className?: string }) {
       ))}
 
       {/* Wavy rays between straight rays */}
-      {[15, 45, 75, 105, 135, 165, 195, 225, 255, 285, 315, 345].map((angle) => (
+      {precomputed.wavyRays.map((d, i) => (
         <line
-          key={`wray-${angle}`}
-          x1={24 + 10.5 * Math.cos((angle * Math.PI) / 180)}
-          y1={24 + 10.5 * Math.sin((angle * Math.PI) / 180)}
-          x2={24 + 12.5 * Math.cos((angle * Math.PI) / 180)}
-          y2={24 + 12.5 * Math.sin((angle * Math.PI) / 180)}
+          key={`wray-${ANGLES_12_OFFSET[i]}`}
+          x1={d.x1}
+          y1={d.y1}
+          x2={d.x2}
+          y2={d.y2}
           stroke="#DAA520"
           strokeWidth="0.7"
           strokeLinecap="round"
