@@ -177,3 +177,5 @@ export const HOUSES: string[] = [
 export const ELEMENTS: string[] = ["Fire", "Earth", "Air", "Water"];
 
 export const QUALITIES: string[] = ["Cardinal", "Fixed", "Mutable"];
+
+export const CHAT_POLL_INTERVAL_MS = 5000;
