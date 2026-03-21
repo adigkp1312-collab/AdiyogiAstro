@@ -51,6 +51,42 @@ export interface Aspect {
   orb: number;
 }
 
+export interface User {
+  id: string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+  phone?: string | null;
+  role: string;
+  subscriptionTier: string;
+  birthDate?: string | null;
+  birthTime?: string | null;
+  birthPlace?: string | null;
+}
+
+export interface RegistrationData {
+  name: string;
+  email?: string;
+  birthDate?: string;
+  birthTime?: string;
+  birthPlace?: string;
+}
+
+export interface Message {
+  id: number;
+  content: string;
+  sender: string;
+  createdAt: string;
+}
+
+export interface WalletTransaction {
+  id: string;
+  type: string;
+  amount: number;
+  description: string;
+  createdAt: string;
+}
+
 export interface SignInfo {
   name: string;
   symbol: string;
