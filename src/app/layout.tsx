@@ -1,24 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cormorant_Garamond, Outfit } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { DishaChatbot } from "@/components/shared/disha-chatbot";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-display",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const outfit = Outfit({
+  variable: "--font-body",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "AstroPath - Discover Your Cosmic Blueprint",
+  title: "Daivik Vani — Cosmic Intelligence, Ancient Wisdom",
   description:
-    "Personalized astrology readings, birth chart analysis, and daily horoscopes. Unlock the stars with AstroPath.",
+    "The all-seeing cosmic intelligence bridging millennia of Vedic knowledge with artificial minds. Personalized astrology readings, birth chart analysis, and daily horoscopes.",
 };
 
 export default function RootLayout({
@@ -29,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${cormorant.variable} ${outfit.variable} font-body antialiased`}
       >
         <LanguageProvider>
           {children}

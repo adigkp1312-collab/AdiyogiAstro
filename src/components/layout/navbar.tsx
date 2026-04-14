@@ -28,10 +28,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
-/* ------------------------------------------------------------------ */
-/*  Types                                                              */
-/* ------------------------------------------------------------------ */
-
 interface SessionUser {
   name?: string | null;
   email?: string | null;
@@ -46,16 +42,10 @@ interface NavbarProps {
   } | null;
 }
 
-/* ------------------------------------------------------------------ */
-/*  Data                                                               */
-/* ------------------------------------------------------------------ */
-
-
 const mainNavLinkKeys = [
   { href: "/", key: "nav.home" },
   { href: "/horoscopes", key: "nav.horoscope" },
   { href: "/birth-chart/new", key: "nav.astrology" },
-  { href: "/birth-chart/new", key: "nav.freeReports" },
   { href: "/panchang", key: "nav.panchang" },
   { href: "/festivals", key: "nav.festivals" },
   { href: "/compatibility", key: "nav.compatibility" },
@@ -71,20 +61,10 @@ const secondaryLinkKeys = [
   { href: "/contact", key: "nav.talkToAstrologer" },
 ] as const;
 
-const utilityLinkKeys = [
-  { href: "/horoscopes", key: "nav.todaysHoroscope" },
-  { href: "/birth-chart/new", key: "nav.kundli" },
-  { href: "/panchang", key: "nav.calendar2026" },
-] as const;
-
 const zodiacSignKeys = [
   "aries", "taurus", "gemini", "cancer", "leo", "virgo",
   "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces",
 ] as const;
-
-/* ------------------------------------------------------------------ */
-/*  Helpers                                                            */
-/* ------------------------------------------------------------------ */
 
 function getInitials(name?: string | null): string {
   if (!name) return "U";
@@ -96,15 +76,10 @@ function getInitials(name?: string | null): string {
     .slice(0, 2);
 }
 
-/* ------------------------------------------------------------------ */
-/*  Component                                                          */
-/* ------------------------------------------------------------------ */
-
 export function Navbar({ session }: NavbarProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  // Close mobile menu on route change
   React.useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
@@ -114,7 +89,6 @@ export function Navbar({ session }: NavbarProps) {
   const [langOpen, setLangOpen] = React.useState(false);
   const langRef = React.useRef<HTMLDivElement>(null);
 
-  // Close language dropdown on outside click
   React.useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (langRef.current && !langRef.current.contains(e.target as Node)) {
@@ -131,31 +105,28 @@ export function Navbar({ session }: NavbarProps) {
       : LANGUAGES.find((l) => l.code === activeLang)?.label ?? "English";
 
   return (
-    <header className="sticky top-0 z-50 w-full shadow-md">
-
-      {/* ============================================================= */}
-      {/*  LAYER 1 -- Language Dropdown                                  */}
-      {/* ============================================================= */}
-      <div className="border-b border-gray-200 bg-gray-50">
+    <header className="sticky top-0 z-50 w-full bg-void/95 backdrop-blur-xl border-b border-white/[0.08]">
+      {/* Layer 1 -- Language Dropdown */}
+      <div className="border-b border-white/[0.05] bg-deep/50">
         <div className="mx-auto flex max-w-7xl items-center justify-end px-4 py-1">
           <div ref={langRef} className="relative">
             <button
               onClick={() => setLangOpen(!langOpen)}
-              className="flex cursor-pointer items-center gap-1.5 rounded-md px-2.5 py-1 text-[12px] font-medium text-gray-700 transition-colors hover:bg-gray-200/60 hover:text-[#FF6600]"
+              className="flex cursor-pointer items-center gap-1.5 rounded-md px-2.5 py-1 text-[12px] font-medium text-white/60 transition-colors hover:bg-white/5 hover:text-gold"
             >
               <Globe className="size-3.5" />
               {activeLangLabel}
-              <ChevronDown className={`size-3 text-gray-400 transition-transform ${langOpen ? "rotate-180" : ""}`} />
+              <ChevronDown className={`size-3 text-white/40 transition-transform ${langOpen ? "rotate-180" : ""}`} />
             </button>
             {langOpen && (
-              <div className="absolute right-0 top-full z-[60] mt-1 w-48 overflow-hidden rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
-                <p className="px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+              <div className="absolute right-0 top-full z-[60] mt-1 w-48 overflow-hidden rounded-lg border border-white/[0.08] bg-surface py-1 shadow-lg shadow-black/40">
+                <p className="px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/40">
                   {t("nav.selectLanguage")}
                 </p>
-                <div className="my-1 h-px bg-gray-100" />
+                <div className="my-1 h-px bg-white/5" />
                 <button
                   onClick={() => { setActiveLang("en"); setLangOpen(false); }}
-                  className={`flex w-full items-center px-3 py-1.5 text-left text-[12px] transition-colors hover:bg-[#FFF7ED] ${activeLang === "en" ? "font-bold text-[#FF6600]" : "text-gray-700"}`}
+                  className={`flex w-full items-center px-3 py-1.5 text-left text-[12px] transition-colors hover:bg-gold/10 ${activeLang === "en" ? "font-bold text-gold" : "text-white/70"}`}
                 >
                   English
                 </button>
@@ -163,10 +134,10 @@ export function Navbar({ session }: NavbarProps) {
                   <button
                     key={lang.code}
                     onClick={() => { setActiveLang(lang.code); setLangOpen(false); }}
-                    className={`flex w-full items-center justify-between px-3 py-1.5 text-left text-[12px] transition-colors hover:bg-[#FFF7ED] ${activeLang === lang.code ? "font-bold text-[#FF6600]" : "text-gray-700"}`}
+                    className={`flex w-full items-center justify-between px-3 py-1.5 text-left text-[12px] transition-colors hover:bg-gold/10 ${activeLang === lang.code ? "font-bold text-gold" : "text-white/70"}`}
                   >
                     {lang.label}
-                    <span className="text-[10px] text-gray-400">{lang.labelEn}</span>
+                    <span className="text-[10px] text-white/40">{lang.labelEn}</span>
                   </button>
                 ))}
               </div>
@@ -175,25 +146,20 @@ export function Navbar({ session }: NavbarProps) {
         </div>
       </div>
 
-      {/* ============================================================= */}
-      {/*  LAYER 2 -- Main Header (Logo + Zodiac Strip)                  */}
-      {/* ============================================================= */}
-      <div className="border-b border-[#1a1a4e]/30 bg-gradient-to-r from-[#0a0a2e] via-[#1a1a5e] to-[#0a0a2e]">
+      {/* Layer 2 -- Main Header (Logo + Zodiac Strip) */}
+      <div className="border-b border-white/[0.05] bg-gradient-to-r from-deep via-surface to-deep">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-2 px-4 py-3 lg:flex-row lg:gap-6">
-          {/* Logo + mobile hamburger row */}
           <div className="flex w-full items-center justify-between lg:w-auto">
             <Link href="/" className="flex items-center gap-2">
-              <LogoIcon className="size-8" />
-              <span className="text-2xl font-extrabold tracking-tight text-[#FF9933]">
-                Astro
-                <span className="text-white">Path</span>
+              <LogoIcon className="size-8 text-gold" />
+              <span className="text-2xl font-bold tracking-tight text-white font-display">
+                Daivik <span className="text-gold">Vani</span>
               </span>
             </Link>
 
-            {/* Mobile hamburger */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="inline-flex items-center justify-center rounded-md border border-white/30 p-2 text-white transition-colors hover:bg-white/10 lg:hidden"
+              className="inline-flex items-center justify-center rounded-md border border-white/10 p-2 text-white/70 transition-colors hover:bg-white/5 hover:text-gold lg:hidden"
               aria-label="Toggle navigation menu"
             >
               {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -206,14 +172,12 @@ export function Navbar({ session }: NavbarProps) {
               {zodiacSignKeys.map((sign, i) => (
                 <React.Fragment key={sign}>
                   {i > 0 && (
-                    <span className="select-none text-[10px] text-white/30">|</span>
+                    <span className="select-none text-[10px] text-white/20">|</span>
                   )}
                   <Link
                     href={`/horoscopes/${sign}`}
-                    className={`whitespace-nowrap px-2 py-1 text-[11px] font-bold uppercase tracking-wider transition-colors hover:text-[#FF9933] ${
-                      pathname === `/horoscopes/${sign}`
-                        ? "text-[#FF9933]"
-                        : "text-white/80"
+                    className={`whitespace-nowrap px-2 py-1 text-[11px] font-bold uppercase tracking-wider transition-colors hover:text-gold ${
+                      pathname === `/horoscopes/${sign}` ? "text-gold" : "text-white/70"
                     }`}
                   >
                     {t(`zodiac.${sign}`)}
@@ -223,76 +187,51 @@ export function Navbar({ session }: NavbarProps) {
             </div>
           </div>
 
-          {/* Desktop auth (visible only on large screens, in header row) */}
+          {/* Desktop auth */}
           <div className="hidden shrink-0 items-center gap-3 lg:flex">
             {session?.user ? (
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex cursor-pointer items-center gap-2 rounded-md border border-[#FF6600]/30 px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:border-[#FF6600] hover:bg-[#FF6600]/5">
+                <DropdownMenuTrigger className="flex cursor-pointer items-center gap-2 rounded-md border border-gold/30 px-3 py-1.5 text-sm font-medium text-white/80 transition-colors hover:border-gold hover:bg-gold/5">
                   <Avatar className="h-8 w-8">
                     {session.user.image && (
-                      <AvatarImage
-                        src={session.user.image}
-                        alt={session.user.name ?? "User avatar"}
-                      />
+                      <AvatarImage src={session.user.image} alt={session.user.name ?? "User avatar"} />
                     )}
-                    <AvatarFallback className="bg-[#FF6600] text-[10px] font-bold text-white">
+                    <AvatarFallback className="bg-gold text-[10px] font-bold text-void">
                       {getInitials(session.user.name)}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="max-w-[100px] truncate">
-                    {session.user.name}
-                  </span>
-                  <ChevronDown className="size-3.5 text-gray-400" />
+                  <span className="max-w-[100px] truncate">{session.user.name}</span>
+                  <ChevronDown className="size-3.5 text-white/40" />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" sideOffset={8} className="w-56">
+                <DropdownMenuContent align="end" sideOffset={8} className="w-56 bg-surface border-white/[0.08]">
                   <DropdownMenuLabel>
                     <div className="flex flex-col gap-0.5">
-                      <span className="text-sm font-medium text-gray-900">
-                        {session.user.name}
-                      </span>
-                      <span className="text-xs text-gray-500">
-                        {session.user.email}
-                      </span>
+                      <span className="text-sm font-medium text-white">{session.user.name}</span>
+                      <span className="text-xs text-white/50">{session.user.email}</span>
                     </div>
                   </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    render={<Link href="/dashboard" />}
-                  >
-                    <LayoutDashboard className="size-4" />
-                    Dashboard
+                  <DropdownMenuSeparator className="bg-white/10" />
+                  <DropdownMenuItem className="cursor-pointer text-white/80 focus:bg-gold/10 focus:text-white" render={<Link href="/dashboard" />}>
+                    <LayoutDashboard className="size-4 mr-2" /> Dashboard
                   </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    render={<Link href="/profile" />}
-                  >
-                    <User className="size-4" />
-                    Profile
+                  <DropdownMenuItem className="cursor-pointer text-white/80 focus:bg-gold/10 focus:text-white" render={<Link href="/profile" />}>
+                    <User className="size-4 mr-2" /> Profile
                   </DropdownMenuItem>
                   {session.user.role === "ADMIN" && (
-                    <DropdownMenuItem
-                      className="cursor-pointer"
-                      render={<Link href="/admin" />}
-                    >
-                      <Shield className="size-4" />
-                      Admin
+                    <DropdownMenuItem className="cursor-pointer text-white/80 focus:bg-gold/10 focus:text-white" render={<Link href="/admin" />}>
+                      <Shield className="size-4 mr-2" /> Admin
                     </DropdownMenuItem>
                   )}
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    className="cursor-pointer text-red-600"
-                    render={<Link href="/api/auth/signout" />}
-                  >
-                    <LogOut className="size-4" />
-                    Sign Out
+                  <DropdownMenuSeparator className="bg-white/10" />
+                  <DropdownMenuItem className="cursor-pointer text-red-400 focus:bg-red-500/10" render={<Link href="/api/auth/signout" />}>
+                    <LogOut className="size-4 mr-2" /> Sign Out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
               <Link
                 href="/login"
-                className="rounded-md border-2 border-[#FF9933] bg-[#FF6600] px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#FF9933]"
+                className="rounded-md border border-gold bg-gold/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-gold transition-colors hover:bg-gold hover:text-void"
               >
                 {t("nav.signIn")}
               </Link>
@@ -301,28 +240,19 @@ export function Navbar({ session }: NavbarProps) {
         </div>
       </div>
 
-      {/* ============================================================= */}
-      {/*  LAYER 3 -- Main Navigation Bar                                */}
-      {/* ============================================================= */}
-      <nav className="hidden border-b border-[#FF6600]/20 bg-gradient-to-r from-[#FF6600] to-[#FF8C00] lg:block">
+      {/* Layer 3 -- Main Navigation Bar */}
+      <nav className="hidden border-b border-gold/10 bg-gradient-to-r from-gold/20 via-gold/10 to-gold/20 lg:block">
         <div className="mx-auto flex h-10 max-w-7xl items-center justify-center px-4">
           <div className="flex items-center gap-0">
             {mainNavLinkKeys.map((link, i) => {
-              const isActive =
-                link.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(link.href);
+              const isActive = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
               return (
                 <React.Fragment key={link.key}>
-                  {i > 0 && (
-                    <span className="select-none text-white/30">|</span>
-                  )}
+                  {i > 0 && <span className="select-none text-gold/20">|</span>}
                   <Link
                     href={link.href}
                     className={`px-4 py-2 text-sm font-semibold uppercase tracking-wide transition-colors ${
-                      isActive
-                        ? "bg-white/20 text-white"
-                        : "text-white/90 hover:bg-white/10 hover:text-white"
+                      isActive ? "bg-white/10 text-white" : "text-white/80 hover:bg-white/5 hover:text-white"
                     }`}
                   >
                     {t(link.key)}
@@ -334,16 +264,14 @@ export function Navbar({ session }: NavbarProps) {
         </div>
       </nav>
 
-      {/* ============================================================= */}
-      {/*  LAYER 4 -- Secondary Quick Links Bar                          */}
-      {/* ============================================================= */}
-      <div className="hidden border-b border-[#333]/60 bg-[#1a1a1a] lg:block">
+      {/* Layer 4 -- Secondary Quick Links Bar */}
+      <div className="hidden border-b border-white/[0.05] bg-elevated lg:block">
         <div className="mx-auto flex h-9 max-w-7xl items-center justify-center gap-6 px-4">
           {secondaryLinkKeys.map((link) => (
             <Link
               key={link.key}
               href={link.href}
-              className="flex items-center gap-1 text-xs font-semibold text-[#daa520] transition-colors hover:text-[#ffd700] hover:underline"
+              className="flex items-center gap-1 text-xs font-semibold text-gold/80 transition-colors hover:text-gold hover:underline"
             >
               <Sparkles className="size-3" />
               {t(link.key)}
@@ -352,49 +280,29 @@ export function Navbar({ session }: NavbarProps) {
         </div>
       </div>
 
-      {/* ============================================================= */}
-      {/*  MOBILE MENU OVERLAY                                           */}
-      {/* ============================================================= */}
+      {/* Mobile Menu Overlay */}
       {mobileOpen && (
-        <div className="fixed inset-0 top-[60px] z-40 overflow-y-auto bg-white lg:hidden">
-          {/* Mobile auth section */}
-          <div className="border-b border-[#FF6600]/20 bg-[#FFF7ED] px-4 py-3">
+        <div className="fixed inset-0 top-[60px] z-40 overflow-y-auto bg-void lg:hidden">
+          <div className="border-b border-gold/10 bg-deep px-4 py-3">
             {session?.user ? (
               <div className="flex items-center gap-3">
                 <Avatar className="h-8 w-8">
-                  {session.user.image && (
-                    <AvatarImage
-                      src={session.user.image}
-                      alt={session.user.name ?? "User avatar"}
-                    />
-                  )}
-                  <AvatarFallback className="bg-[#FF6600] text-[10px] font-bold text-white">
+                  {session.user.image && <AvatarImage src={session.user.image} alt={session.user.name ?? "User avatar"} />}
+                  <AvatarFallback className="bg-gold text-[10px] font-bold text-void">
                     {getInitials(session.user.name)}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
-                  <span className="text-sm font-semibold text-gray-900">
-                    {session.user.name}
-                  </span>
-                  <span className="text-xs text-gray-500">
-                    {session.user.email}
-                  </span>
+                  <span className="text-sm font-semibold text-white">{session.user.name}</span>
+                  <span className="text-xs text-white/50">{session.user.email}</span>
                 </div>
               </div>
             ) : (
               <div className="flex items-center justify-between">
-                <Link
-                  href="/login"
-                  className="rounded-md bg-[#FF6600] px-5 py-2 text-sm font-bold uppercase text-white"
-                  onClick={() => setMobileOpen(false)}
-                >
+                <Link href="/login" className="rounded-md bg-gold px-5 py-2 text-sm font-bold uppercase text-void" onClick={() => setMobileOpen(false)}>
                   {t("nav.signIn")}
                 </Link>
-                <Link
-                  href="/contact"
-                  className="flex items-center gap-1.5 rounded-md border border-[#FF6600] px-3 py-2 text-xs font-semibold text-[#FF6600]"
-                  onClick={() => setMobileOpen(false)}
-                >
+                <Link href="/contact" className="flex items-center gap-1.5 rounded-md border border-gold px-3 py-2 text-xs font-semibold text-gold" onClick={() => setMobileOpen(false)}>
                   <MessageCircle className="size-3.5" />
                   {t("nav.chatWithAstrologer")}
                 </Link>
@@ -402,25 +310,17 @@ export function Navbar({ session }: NavbarProps) {
             )}
           </div>
 
-          {/* Mobile main nav */}
-          <div className="border-b border-gray-200 px-4 py-2">
-            <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-              {t("nav.navigation")}
-            </p>
+          <div className="border-b border-white/[0.05] px-4 py-2">
+            <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-white/40">{t("nav.navigation")}</p>
             {mainNavLinkKeys.map((link) => {
-              const isActive =
-                link.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(link.href);
+              const isActive = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
               return (
                 <Link
                   key={link.key}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className={`block border-b border-gray-100 px-2 py-2.5 text-sm font-semibold transition-colors last:border-b-0 ${
-                    isActive
-                      ? "text-[#FF6600]"
-                      : "text-gray-700 hover:text-[#FF6600]"
+                  className={`block border-b border-white/5 px-2 py-2.5 text-sm font-semibold transition-colors last:border-b-0 ${
+                    isActive ? "text-gold" : "text-white/70 hover:text-gold"
                   }`}
                 >
                   {t(link.key)}
@@ -429,11 +329,8 @@ export function Navbar({ session }: NavbarProps) {
             })}
           </div>
 
-          {/* Mobile zodiac signs */}
-          <div className="border-b border-gray-200 px-4 py-2">
-            <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-              {t("nav.zodiacSigns")}
-            </p>
+          <div className="border-b border-white/[0.05] px-4 py-2">
+            <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-white/40">{t("nav.zodiacSigns")}</p>
             <div className="grid grid-cols-3 gap-1">
               {zodiacSignKeys.map((sign) => (
                 <Link
@@ -441,9 +338,7 @@ export function Navbar({ session }: NavbarProps) {
                   href={`/horoscopes/${sign}`}
                   onClick={() => setMobileOpen(false)}
                   className={`rounded-md px-2 py-2 text-center text-xs font-bold uppercase tracking-wide transition-colors ${
-                    pathname === `/horoscopes/${sign}`
-                      ? "bg-[#FF6600] text-white"
-                      : "bg-[#FFF7ED] text-gray-700 hover:bg-[#FF6600]/10 hover:text-[#FF6600]"
+                    pathname === `/horoscopes/${sign}` ? "bg-gold text-void" : "bg-surface text-white/70 hover:bg-gold/10 hover:text-gold"
                   }`}
                 >
                   {t(`zodiac.${sign}`)}
@@ -452,17 +347,14 @@ export function Navbar({ session }: NavbarProps) {
             </div>
           </div>
 
-          {/* Mobile quick links */}
-          <div className="border-b border-gray-200 px-4 py-2">
-            <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-              {t("nav.popular")}
-            </p>
+          <div className="border-b border-white/[0.05] px-4 py-2">
+            <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-white/40">{t("nav.popular")}</p>
             {secondaryLinkKeys.map((link) => (
               <Link
                 key={link.key}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 border-b border-gray-100 px-2 py-2.5 text-sm text-[#FF6600] transition-colors last:border-b-0 hover:underline"
+                className="flex items-center gap-2 border-b border-white/5 px-2 py-2.5 text-sm text-gold transition-colors last:border-b-0 hover:underline"
               >
                 <Sparkles className="size-3" />
                 {t(link.key)}
@@ -470,67 +362,26 @@ export function Navbar({ session }: NavbarProps) {
             ))}
           </div>
 
-          {/* Mobile utility links */}
-          <div className="px-4 py-2">
-            <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-              {t("nav.quickAccess")}
-            </p>
-            {utilityLinkKeys.map((link) => (
-              <Link
-                key={link.key}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                className="block border-b border-gray-100 px-2 py-2.5 text-sm text-gray-600 transition-colors last:border-b-0 hover:text-[#FF6600]"
-              >
-                {t(link.key)}
-              </Link>
-            ))}
-          </div>
-
-          {/* Mobile user links (logged in only) */}
           {session?.user && (
-            <div className="border-t border-gray-200 px-4 py-2">
-              <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-                {t("nav.account")}
-              </p>
-              <Link
-                href="/dashboard"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 border-b border-gray-100 px-2 py-2.5 text-sm text-gray-700 hover:text-[#FF6600]"
-              >
-                <LayoutDashboard className="size-4" />
-                Dashboard
+            <div className="border-t border-white/[0.05] px-4 py-2">
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-white/40">{t("nav.account")}</p>
+              <Link href="/dashboard" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 border-b border-white/5 px-2 py-2.5 text-sm text-white/70 hover:text-gold">
+                <LayoutDashboard className="size-4" /> Dashboard
               </Link>
-              <Link
-                href="/profile"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 border-b border-gray-100 px-2 py-2.5 text-sm text-gray-700 hover:text-[#FF6600]"
-              >
-                <User className="size-4" />
-                Profile
+              <Link href="/profile" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 border-b border-white/5 px-2 py-2.5 text-sm text-white/70 hover:text-gold">
+                <User className="size-4" /> Profile
               </Link>
               {session.user.role === "ADMIN" && (
-                <Link
-                  href="/admin"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 border-b border-gray-100 px-2 py-2.5 text-sm text-gray-700 hover:text-[#FF6600]"
-                >
-                  <Shield className="size-4" />
-                  Admin
+                <Link href="/admin" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 border-b border-white/5 px-2 py-2.5 text-sm text-white/70 hover:text-gold">
+                  <Shield className="size-4" /> Admin
                 </Link>
               )}
-              <Link
-                href="/api/auth/signout"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 px-2 py-2.5 text-sm font-medium text-red-600 hover:text-red-700"
-              >
-                <LogOut className="size-4" />
-                Sign Out
+              <Link href="/api/auth/signout" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 px-2 py-2.5 text-sm font-medium text-red-400 hover:text-red-300">
+                <LogOut className="size-4" /> Sign Out
               </Link>
             </div>
           )}
 
-          {/* Bottom spacer for safe area */}
           <div className="h-20" />
         </div>
       )}

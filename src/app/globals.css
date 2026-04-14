@@ -7,8 +7,22 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-body);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --color-void: #04030a;
+  --color-deep: #080610;
+  --color-surface: #0c0a14;
+  --color-elevated: #12101c;
+  --color-gold: #c9a227;
+  --color-gold-bright: #e8c547;
+  --color-gold-dim: rgba(201, 162, 39, 0.15);
+  --color-saturn: #c9956c;
+  --color-mars: #c45c3e;
+  --color-text-primary: #f0ebe3;
+  --color-text-secondary: rgba(240, 235, 227, 0.7);
+  --color-text-muted: rgba(240, 235, 227, 0.45);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -399,4 +413,101 @@
 @keyframes typing-dot {
   0%, 80%, 100% { transform: scale(0.4); opacity: 0.4; }
   40% { transform: scale(1); opacity: 1; }
+}
+/* ============================================ */
+/*  Daivik Design Tokens                        */
+/* ============================================ */
+
+:root {
+  --void: #04030a;
+  --deep: #080610;
+  --surface: #0c0a14;
+  --elevated: #12101c;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.15);
+  --border-glow: rgba(201, 162, 39, 0.2);
+  --text: #f0ebe3;
+  --text-secondary: rgba(240, 235, 227, 0.7);
+  --text-muted: rgba(240, 235, 227, 0.45);
+  --gold: #c9a227;
+  --gold-bright: #e8c547;
+  --gold-dim: rgba(201, 162, 39, 0.15);
+  --saturn: #c9956c;
+  --mars: #c45c3e;
+
+  /* Legacy celestial vars for dormant components */
+  --color-cosmos-dark: #04030a;
+  --color-cosmos-deeper: #080610;
+  --color-cosmos-card: #0c0a14;
+  --color-celestial-gold: #c9a227;
+  --color-celestial-purple: #7c3abe;
+  --color-celestial-violet: #9d4edd;
+  --color-celestial-rose: #c9956c;
+}
+
+.font-display { font-family: var(--font-display), Georgia, serif; }
+.font-body { font-family: var(--font-body), system-ui, sans-serif; }
+
+.bg-void { background-color: var(--void); }
+.bg-deep { background-color: var(--deep); }
+.bg-surface { background-color: var(--surface); }
+.bg-elevated { background-color: var(--elevated); }
+
+.text-gold { color: var(--gold); }
+.text-gold-bright { color: var(--gold-bright); }
+.text-saturn { color: var(--saturn); }
+.text-mars { color: var(--mars); }
+
+.border-gold { border-color: var(--gold); }
+.border-subtle { border-color: var(--border-subtle); }
+.border-strong { border-color: var(--border-strong); }
+
+/* Celestial button styles */
+.btn-celestial {
+  background: linear-gradient(135deg, var(--gold), var(--saturn));
+  color: var(--void);
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+}
+.btn-celestial:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 40px rgba(201, 162, 39, 0.3);
+}
+
+.btn-celestial-outline {
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  background: transparent;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+}
+.btn-celestial-outline:hover {
+  background: var(--gold);
+  color: var(--void);
+}
+
+/* Glass card styles */
+.glass-card {
+  background: rgba(12, 10, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+}
+.glass-card-hover:hover {
+  border-color: rgba(201, 162, 39, 0.25);
+  background: rgba(18, 16, 28, 0.7);
+}
+
+.text-shimmer-gold {
+  background: linear-gradient(90deg, var(--gold), var(--gold-bright), var(--gold));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+.celestial-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.3), transparent);
 }
