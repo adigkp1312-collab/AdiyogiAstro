@@ -1,5 +1,4 @@
 import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
 
 export default function MarketingLayout({
   children,
@@ -7,10 +6,10 @@ export default function MarketingLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen flex-col bg-void text-primary-foreground">
+    <div className="flex min-h-screen flex-col" style={{ background: "#ede0c0" }}>
       <Navbar session={null} />
       <main className="flex-1">{children}</main>
-      <Footer />
+      {/* newspaper page has its own footer inside .mandir-darpan */}
     </div>
   );
 }
