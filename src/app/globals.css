@@ -419,6 +419,10 @@
 /* ============================================ */
 
 :root {
+  /* Newspaper tokens — required by mandir-darpan.css */
+  --color-border-muted: #c4b68f;
+  --color-map-water-border: #89b8d3;
+
   --void: #04030a;
   --deep: #080610;
   --surface: #0c0a14;

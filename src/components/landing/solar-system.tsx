@@ -414,7 +414,7 @@ export default function SolarSystem({ className }: SolarSystemProps) {
 
     // Scene
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000005);
+    scene.background = null;
     sceneRef.current = scene;
 
     // Camera - cinematic angle matching reference
@@ -424,8 +424,10 @@ export default function SolarSystem({ className }: SolarSystemProps) {
     // Renderer with better quality
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
+      alpha: true,
       powerPreference: "high-performance",
     });
+    renderer.setClearColor(0x000000, 0);
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
